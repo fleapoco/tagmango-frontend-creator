@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { CreateTask } from '../../../../view/tasks/createtask';
-import PageLayout from '@/app/layout/page';
+import PageLayout from "@/app/layout/page";
+import { CreateTask } from "../../../../view/tasks/createtask";
 
 const AddTaskPage = () => {
   return (

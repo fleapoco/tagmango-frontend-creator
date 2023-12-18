@@ -1,30 +1,46 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-import { Table, Popover, Button } from 'antd';
-import type { ColumnsType, TableProps } from 'antd/es/table';
-import { FormInput } from '../../../components/form/input';
-import { PrimaryButton } from '../../../components/common/button';
-import { CustomTag } from '../../../components/common/tag';
+import { GetTask } from "@/types/fetchCall";
+import { Popover, Table } from "antd";
+import type { ColumnsType, TableProps } from "antd/es/table";
+import dayjs from "dayjs";
+import { PrimaryButton } from "../../../components/common/button";
+import { FormInput } from "../../../components/form/input";
 
 interface DataType {
-  [x: string]: any;
-  key: React.Key;
-  task: string;
-  category: string;
-  deadline: any;
-  status: any;
+  id: string;
+  title: string | null;
+  category: string | null;
+  endDate?: string;
+  status: string;
 }
 
-const onChange: TableProps<DataType>['onChange'] = (
+interface PropTypeForTable {
+  data: GetTask[];
+  handleDelete: (id: string) => void;
+  handlePagination: (page: number, pageSize: number) => void;
+  CountData: number;
+  dataPerPage: number;
+  currentPage: number;
+}
+
+const onChange: TableProps<DataType>["onChange"] = (
   pagination,
   filters,
   sorter,
   extra
 ) => {
-  console.log('params', pagination, filters, sorter, extra);
+  console.log("params", pagination, filters, sorter, extra);
 };
 
-export const TaskTable = () => {
+export const TaskTable = ({
+  data,
+  handleDelete,
+  handlePagination,
+  dataPerPage,
+  CountData,
+  currentPage,
+}: PropTypeForTable) => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
 
   const handlePopoverOpen = (index: number) => {
@@ -33,58 +49,57 @@ export const TaskTable = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Task',
-      dataIndex: 'task',
+      title: "Task",
+      dataIndex: "title",
     },
     {
-      title: 'Category',
-      dataIndex: 'category',
+      title: "Category",
+      dataIndex: "category",
     },
     {
-      title: 'Deadline',
-      dataIndex: 'deadline',
-      sorter: {
-        compare: (a, b) => a.math - b.math,
-        multiple: 2,
+      title: "Deadline",
+      dataIndex: "endDate",
+      render: (value, record) => {
+        return dayjs(value).format("MM/DD/YYYY [by] hh:mmA");
       },
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
+      title: "Status",
+      dataIndex: "status",
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'x',
+      title: "",
+      dataIndex: "",
+      key: "x",
       render: (text, record, index) => (
         <Popover
           content={
-            <div style={{ width: '130px', padding: '5px' }}>
+            <div style={{ width: "130px", padding: "5px" }}>
               <span
                 onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block', marginBottom: '12px' }}
+                style={{ display: "block", marginBottom: "12px" }}
               >
                 Edit
               </span>
               <span
                 onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block' }}
+                style={{ display: "block" }}
               >
                 Delete
               </span>
             </div>
           }
-          trigger='click'
-          visible={openPopoverIndex === index}
-          onVisibleChange={(visible) => {
+          trigger="click"
+          open={openPopoverIndex === index}
+          onOpenChange={(visible) => {
             if (!visible) {
               setOpenPopoverIndex(null);
             }
           }}
         >
           <PrimaryButton
-            text=''
-            variant='info'
+            text=""
+            variant="info"
             onClick={() => handlePopoverOpen(index)}
           />
         </Popover>
@@ -92,40 +107,40 @@ export const TaskTable = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: '1',
-      task: 'Task name here Task name here ',
-      category: 'Selling',
-      deadline: '08/12/2020 by 06:00PM',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '2',
-      task: 'Task name here',
-      category: 'Selling',
-      deadline: '08/12/2020 by 06:00PM',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '3',
-      task: 'Task name here',
-      category: 'Selling',
-      deadline: '01/12/2020 by 06:00PM',
-      status: <CustomTag variant='success' title='Completed' />,
-    },
-    {
-      key: '4',
-      task: 'Task name here',
-      category: 'Selling',
-      deadline: '28/12/2020 by 06:00PM',
-      status: <CustomTag variant='success' title='Completed' />,
-    },
-  ];
+  // const data: DataType[] = [
+  //   {
+  //     key: "1",
+  //     task: "Task name here Task name here ",
+  //     category: "Selling",
+  //     deadline: "08/12/2020 by 06:00PM",
+  //     status: <PrimaryButton text="Mark as complete" variant="secondary" />,
+  //   },
+  //   {
+  //     key: "2",
+  //     task: "Task name here",
+  //     category: "Selling",
+  //     deadline: "08/12/2020 by 06:00PM",
+  //     status: <PrimaryButton text="Mark as complete" variant="secondary" />,
+  //   },
+  //   {
+  //     key: "3",
+  //     task: "Task name here",
+  //     category: "Selling",
+  //     deadline: "01/12/2020 by 06:00PM",
+  //     status: <CustomTag variant="success" title="Completed" />,
+  //   },
+  //   {
+  //     key: "4",
+  //     task: "Task name here",
+  //     category: "Selling",
+  //     deadline: "28/12/2020 by 06:00PM",
+  //     status: <CustomTag variant="success" title="Completed" />,
+  //   },
+  // ];
   return (
     <>
-      <div style={{ background: '#fff', padding: '15px' }}>
-        <FormInput type='search' placeholder='Search' />
+      <div style={{ background: "#fff", padding: "15px" }}>
+        <FormInput type="search" placeholder="Search" />
         <Table columns={columns} dataSource={data} onChange={onChange} />
       </div>
     </>
