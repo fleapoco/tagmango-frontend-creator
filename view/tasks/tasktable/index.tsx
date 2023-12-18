@@ -22,6 +22,8 @@ interface PropTypeForTable {
   CountData: number;
   dataPerPage: number;
   currentPage: number;
+  searchQuery?: string;
+  setSearchQuery?: (searchQuery: string) => void;
 }
 
 const onChange: TableProps<DataType>["onChange"] = (
@@ -140,9 +142,30 @@ export const TaskTable = ({
   return (
     <>
       <div style={{ background: "#fff", padding: "15px" }}>
-        <FormInput type="search" placeholder="Search" />
+        {/* <FormInput type="search" placeholder="Search" value={""} /> */}
         <Table columns={columns} dataSource={data} onChange={onChange} />
       </div>
     </>
   );
 };
+
+{
+  /* <DatePicker
+                style={{ width: "100%", padding: "7.5px 12px" }}
+                onChange={(date, dateString) =>
+                  setCreateTaskFormData({
+                    ...createTaskFormData,
+                    startDate: dateString,
+                  })
+                }
+              />
+              <TimePicker
+                style={{ width: "100%", padding: "7.5px 12px" }}
+                defaultOpenValue={dayjs("00:00:00", "HH:mm:ss")}
+                onChange={(time, timeString) =>
+                  setCreateTaskFormData({
+                    ...createTaskFormData,
+                    startTime: timeString,
+                  })
+                } */
+}

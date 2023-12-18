@@ -2,20 +2,17 @@ import { GetTask } from "@/types/fetchCall";
 
 export const emptyTask: GetTask = {
   category: null,
-  createdAt: "",
-  deletedAt: null,
-  endDate: "",
-  endTime: "",
+
+  endDate: null,
+  endTime: null,
   firstDayOfTheWeek: "",
-  frequency: "",
-  id: "",
+  frequency: "daily",
+
   lastDayOfTheWeek: "",
   points: 0,
-  startDate: "",
-  startTime: "",
-  status: "",
+  startDate: null,
+  startTime: null,
+  status: "pending",
   title: "",
-  type: "",
-  updatedAt: "",
-  userId: "",
+  type: "one-time",
 };

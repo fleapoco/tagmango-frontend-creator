@@ -2,14 +2,16 @@
 import type { RadioChangeEvent } from "antd";
 import { Col, Row, Tabs } from "antd";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import style from "../../../style/task.module.scss";
 
 import useAPI from "@/hooks/useApi";
+import { useDebounce } from "@/hooks/useDebounce";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { getTaskStored, setTasks } from "@/redux/reducers/task.reducer";
 import { PrimaryButton } from "../../../components/common/button";
 import { PrimaryCard } from "../../../components/common/card";
+import { FormInput } from "../../../components/form/input";
 import PageTitle from "../../../components/pagetitle";
 import { CalendarTask } from "../../../view/tasks/calendar";
 import { TaskTable } from "../../../view/tasks/tasktable";
@@ -18,6 +20,9 @@ import PageLayout from "../layout/page";
 const { TabPane } = Tabs;
 
 const Task = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
+  const debouncedQuery = useDebounce<string>(searchQuery, 500);
   const dispatch = useAppDispatch();
   const { getTasks } = useAPI();
 
@@ -25,12 +30,18 @@ const Task = () => {
   console.log({ storedTasks });
 
   const getTask = async () => {
-    const tasks = await getTasks();
+    const tasks = await getTasks({ query: debouncedSearchQuery });
     dispatch(setTasks(tasks));
   };
+
+  useEffect(() => {
+    setDebouncedSearchQuery(debouncedQuery);
+  }, [debouncedQuery]);
+
   useEffect(() => {
     getTask();
-  }, []);
+  }, [debouncedSearchQuery]);
+
   console.log("hello");
   const [value, setValue] = useState(1);
 
@@ -43,6 +54,12 @@ const Task = () => {
   const handleButtonClick = () => {
     router.push("/task/addtask");
   };
+
+  const search = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <>
       <PageLayout>
@@ -100,6 +117,13 @@ const Task = () => {
                   <TabPane tab="My Tasks" key="2">
                     <div className="my-tasks-wrapper">
                       <div className="table-wrapper">
+                        <FormInput
+                          type="search"
+                          placeholder="Search"
+                          onChange={(e) => search(e)}
+                          value={searchQuery}
+                        />
+
                         <TaskTable
                           data={storedTasks}
                           handleDelete={function (id: string): void {
