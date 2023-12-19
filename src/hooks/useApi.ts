@@ -1,5 +1,5 @@
 import { setLoading } from "@/redux/reducers/loader.reducer";
-import { GetTask, GetTasksQuery, IFetchAPICall } from "@/types/fetchCall";
+import { GetTask, GetTasksQuery, IFetchAPICall, TaskAnalytics } from "@/types";
 import { useAppDispatch } from "./useRedux";
 
 const useAPI = () => {
@@ -10,7 +10,7 @@ const useAPI = () => {
     dispatch(setLoading(true));
     const token =
       localStorage.getItem("token") ??
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmMyZTYzODQzMDUxZGFkMTAyZjdiMyIsInJvbGVzIjpbImR1YWwiXSwiaWF0IjoxNzAyOTA2ODI2LCJleHAiOjE3MDI5OTMyMjZ9.E5o6cuxubEnPMt2lPQpkfAPY0Ubr3bDEQtEZ5kKJobA";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmMyZTYzODQzMDUxZGFkMTAyZjdiMyIsInJvbGVzIjpbImR1YWwiXSwiaWF0IjoxNzAyOTY2ODUwLCJleHAiOjE3MDMwNTMyNTB9.yPzUrFBVhEvHaF055EwCy8pzIpCakwwJ8aN8wC923EI";
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path.replace(
       /^\/+/,
       ""
@@ -52,6 +52,25 @@ const useAPI = () => {
     return http("/tasks/create", { method: "POST", data });
   };
 
+  const taskCounts = (): Promise<TaskAnalytics> => {
+    return http("/tasks/count");
+  };
+
+  const getTodaysTasks = (): Promise<GetTask[]> => {
+    return http("/tasks/today");
+  };
+
+  const updateTask = (
+    id: string,
+    data: Partial<GetTask>
+  ): Promise<GetTask[]> => {
+    return http(`/tasks/update/${id}`, { method: "PUT", data });
+  };
+
+  const deleteTask = (id?: string) => {
+    return http(`tasks/delete/${id}`, { method: "DELETE" });
+  };
+
   //   const postUserFireNumbers = (data: IFireNumber) => {
   //     return http(`/fire-number`, { method: "POST", data });
   //   };
@@ -62,6 +81,10 @@ const useAPI = () => {
   return {
     getTasks,
     createTask,
+    taskCounts,
+    getTodaysTasks,
+    updateTask,
+    deleteTask,
   };
 };
 

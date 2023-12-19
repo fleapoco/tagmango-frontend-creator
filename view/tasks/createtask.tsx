@@ -4,9 +4,11 @@ import type { RadioChangeEvent } from "antd";
 import { Col, Flex, Radio, Row, Space } from "antd";
 import PageTitle from "../../components/pagetitle";
 
-import { emptyTask } from "@/empty-state-objects/empty";
+import { initialTaskState } from "@/empty-state-objects/empty";
 import useAPI from "@/hooks/useApi";
-import { GetTask } from "@/types/fetchCall";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { setTasks } from "@/redux/reducers/task.reducer";
+import { GetTask, TaskFrequency, TaskType } from "@/types";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
 import { FormSelect } from "../../components/form/select";
@@ -14,28 +16,32 @@ const frequencyArray = ["daily", "bi-weekly", "weekly", "monthly"];
 const typeArray = ["one-time", "recurring"];
 
 export const CreateTask = () => {
-  const { createTask } = useAPI();
-  const [value, setValue] = useState(1);
-  const [frequency, setFrequency] = useState(1);
+  const { createTask, getTasks } = useAPI();
+  const dispatch = useAppDispatch();
+  const [value, setValue] = useState(TaskType.ONE_TIME);
+  const [frequency, setFrequency] = useState(TaskFrequency.DAILY);
   const [createTaskFormData, setCreateTaskFormData] =
-    useState<GetTask>(emptyTask);
+    useState<GetTask>(initialTaskState);
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
     setValue(e.target.value);
     setCreateTaskFormData({ ...createTaskFormData, type: e.target.value });
   };
+
   const onFrequencyChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
     setFrequency(e.target.value);
     setCreateTaskFormData({ ...createTaskFormData, frequency: e.target.value });
   };
 
-  console.log(createTaskFormData);
-
   const handleSave = async () => {
-    await createTask(createTaskFormData);
+    try {
+      await createTask(createTaskFormData);
+      const tasks = await getTasks({});
+      dispatch(setTasks(tasks));
+      setCreateTaskFormData(initialTaskState);
+    } catch (error) {}
   };
+
   return (
     <>
       <div className={`common-panel-wrapper`}>
@@ -113,7 +119,7 @@ export const CreateTask = () => {
                     <Row gutter={24}>
                       <Col span={12}>
                         <FormInput
-                          label="Date"
+                          label="Start Date"
                           type="date"
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
@@ -125,7 +131,7 @@ export const CreateTask = () => {
                       </Col>
                       <Col span={12}>
                         <FormInput
-                          label="Date"
+                          label="End Date"
                           type="date"
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
@@ -182,11 +188,11 @@ export const CreateTask = () => {
                       <FormInput
                         label="Second day of the Week"
                         type="text"
-                        value={createTaskFormData.lastDayOfTheWeek}
+                        value={createTaskFormData.secondDayOfTheWeek}
                         onChange={(e) =>
                           setCreateTaskFormData({
                             ...createTaskFormData,
-                            lastDayOfTheWeek: e.target.value,
+                            secondDayOfTheWeek: e.target.value,
                           })
                         }
                       />

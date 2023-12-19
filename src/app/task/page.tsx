@@ -8,6 +8,10 @@ import style from "../../../style/task.module.scss";
 import useAPI from "@/hooks/useApi";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import {
+  getTasksCounts,
+  setTaskCounts,
+} from "@/redux/reducers/task-counts.reducer";
 import { getTaskStored, setTasks } from "@/redux/reducers/task.reducer";
 import { PrimaryButton } from "../../../components/common/button";
 import { PrimaryCard } from "../../../components/common/card";
@@ -20,29 +24,47 @@ import PageLayout from "../layout/page";
 const { TabPane } = Tabs;
 
 const Task = () => {
+  const dispatch = useAppDispatch();
+  const counts = useAppSelector(getTasksCounts);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
   const debouncedQuery = useDebounce<string>(searchQuery, 500);
-  const dispatch = useAppDispatch();
-  const { getTasks } = useAPI();
+  const { getTasks, taskCounts, deleteTask } = useAPI();
 
   const storedTasks = useAppSelector(getTaskStored);
   console.log({ storedTasks });
 
-  const getTask = async () => {
+  const _getTasks = async () => {
     const tasks = await getTasks({ query: debouncedSearchQuery });
     dispatch(setTasks(tasks));
   };
+
+  const getTaskCounts = async () => {
+    try {
+      const counts = await taskCounts();
+      dispatch(
+        setTaskCounts({
+          pending: counts.pending,
+          completed: counts.completed,
+          inProgress: counts.inProgress,
+          total: counts.total,
+        })
+      );
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getTaskCounts();
+  }, [dispatch]);
 
   useEffect(() => {
     setDebouncedSearchQuery(debouncedQuery);
   }, [debouncedQuery]);
 
   useEffect(() => {
-    getTask();
-  }, [debouncedSearchQuery]);
+    _getTasks();
+  }, [debouncedSearchQuery, dispatch]);
 
-  console.log("hello");
   const [value, setValue] = useState(1);
 
   const onChange = (e: RadioChangeEvent) => {
@@ -58,6 +80,13 @@ const Task = () => {
   const search = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setSearchQuery(e.target.value);
+  };
+
+  const handleDeleteTask = async (id: string) => {
+    console.log({ before: "hi" });
+    try {
+      const data = await deleteTask(id);
+    } catch (error) {}
   };
 
   return (
@@ -86,16 +115,16 @@ const Task = () => {
             <Row gutter={12} className=" ">
               {[
                 {
-                  taskName: "Total Tasks Pending",
-                  count: 3,
+                  taskName: "Total Tasks completed",
+                  count: counts.completed,
                 },
                 {
                   taskName: "Total Tasks Pending",
-                  count: 3,
+                  count: counts.pending,
                 },
                 {
-                  taskName: "Total Tasks Pending",
-                  count: 3,
+                  taskName: "Total Tasks In Progress",
+                  count: counts.inProgress,
                 },
               ].map((ele, i) => (
                 <Col key={i} span={6}>
@@ -126,9 +155,7 @@ const Task = () => {
 
                         <TaskTable
                           data={storedTasks}
-                          handleDelete={function (id: string): void {
-                            throw new Error("Function not implemented.");
-                          }}
+                          handleDelete={(id) => handleDeleteTask(id)}
                           handlePagination={function (
                             page: number,
                             pageSize: number

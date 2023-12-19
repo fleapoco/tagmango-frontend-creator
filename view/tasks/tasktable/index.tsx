@@ -1,17 +1,16 @@
 import { useState } from "react";
 
-import { GetTask } from "@/types/fetchCall";
-import { Popover, Table } from "antd";
+import { GetTask } from "@/types";
+import { Popconfirm, Popover, Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import dayjs from "dayjs";
 import { PrimaryButton } from "../../../components/common/button";
-import { FormInput } from "../../../components/form/input";
 
 interface DataType {
-  id: string;
+  id?: string;
   title: string | null;
   category: string | null;
-  endDate?: string;
+  endDate?: string | null;
   status: string;
 }
 
@@ -60,9 +59,9 @@ export const TaskTable = ({
     },
     {
       title: "Deadline",
-      dataIndex: "endDate",
+      dataIndex: "startDate",
       render: (value, record) => {
-        return dayjs(value).format("MM/DD/YYYY [by] hh:mmA");
+        return dayjs(value).format("MM/DD/YYYY");
       },
     },
     {
@@ -83,12 +82,14 @@ export const TaskTable = ({
               >
                 Edit
               </span>
-              <span
-                onClick={() => handlePopoverOpen(index)}
-                style={{ display: "block" }}
+              <Popconfirm
+                onConfirm={() => handleDelete(record?.id ?? "")}
+                title="Are you sure to delete?"
+                okText="Yes"
+                cancelText="No"
               >
                 Delete
-              </span>
+              </Popconfirm>
             </div>
           }
           trigger="click"
@@ -109,36 +110,6 @@ export const TaskTable = ({
     },
   ];
 
-  // const data: DataType[] = [
-  //   {
-  //     key: "1",
-  //     task: "Task name here Task name here ",
-  //     category: "Selling",
-  //     deadline: "08/12/2020 by 06:00PM",
-  //     status: <PrimaryButton text="Mark as complete" variant="secondary" />,
-  //   },
-  //   {
-  //     key: "2",
-  //     task: "Task name here",
-  //     category: "Selling",
-  //     deadline: "08/12/2020 by 06:00PM",
-  //     status: <PrimaryButton text="Mark as complete" variant="secondary" />,
-  //   },
-  //   {
-  //     key: "3",
-  //     task: "Task name here",
-  //     category: "Selling",
-  //     deadline: "01/12/2020 by 06:00PM",
-  //     status: <CustomTag variant="success" title="Completed" />,
-  //   },
-  //   {
-  //     key: "4",
-  //     task: "Task name here",
-  //     category: "Selling",
-  //     deadline: "28/12/2020 by 06:00PM",
-  //     status: <CustomTag variant="success" title="Completed" />,
-  //   },
-  // ];
   return (
     <>
       <div style={{ background: "#fff", padding: "15px" }}>

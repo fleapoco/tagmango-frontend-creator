@@ -1,5 +1,5 @@
+import { GetTask } from "@/types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { GetTask, IFetchAPICall } from "@/types/fetchCall";
 import { RootState } from "../store";
 
 const initialState = { tasks: [] };

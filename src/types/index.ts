@@ -14,6 +14,20 @@ export enum TaskStatus {
   COMPLETED = "completed",
 }
 
+export enum TaskFrequency {
+  DAILY = "daily",
+  BI_WEEKLY = "bi-weekly",
+  WEEKLY = "weekly",
+  MONTHLY = "monthly",
+}
+
+export interface TaskAnalytics {
+  total: number;
+  completed: number;
+  pending: number;
+  inProgress: number;
+}
+
 export interface GetTasksQuery {
   query: string;
   status: TaskStatus;
@@ -21,18 +35,17 @@ export interface GetTasksQuery {
 }
 
 export interface GetTask {
+  id?: string;
   category: string | null;
-
   endDate: string | null;
   endTime: string | null;
   firstDayOfTheWeek: string;
-  frequency: string;
-
-  lastDayOfTheWeek: string;
+  frequency: TaskFrequency;
+  secondDayOfTheWeek: string;
   points: number;
   startDate: string | null;
   startTime: string | null;
-  status: string;
+  status: TaskStatus;
   title: string;
-  type: string;
+  type: TaskType;
 }

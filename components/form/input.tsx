@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import type { DatePickerProps } from "antd";
 import { DatePicker, Input, TimePicker } from "antd";
@@ -32,6 +32,7 @@ interface Props {
 }
 
 export const FormInput = (props: Props) => {
+  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
   return (
     <>
       <div className="form-group">
@@ -39,18 +40,19 @@ export const FormInput = (props: Props) => {
 
         {props.type === "date" ? (
           <DatePicker
-            onChange={(date, dateString) =>
-              props.onDateChange?.(date, dateString)
-            }
+            onChange={(date, dateString) => {
+              props.onDateChange?.(date, dateString);
+              setStartDate(date);
+            }}
             style={{ width: "100%", padding: "7.5px 12px" }}
           />
         ) : props.type === "time" ? (
           <TimePicker
             style={{ width: "100%", padding: "7.5px 12px" }}
-            defaultOpenValue={dayjs("00:00:00", "HH:mm:ss")}
-            onChange={(time, timeString) =>
-              props.onTimeChange?.(time, timeString)
-            }
+            defaultValue={dayjs("00:00:00", "HH:mm:ss")}
+            onChange={(time, timeString) => {
+              props.onTimeChange?.(time, timeString);
+            }}
           />
         ) : props.type === "month" ? (
           <DatePicker
