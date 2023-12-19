@@ -13,6 +13,7 @@ import {
   setTaskCounts,
 } from "@/redux/reducers/task-counts.reducer";
 import { getTaskStored, setTasks } from "@/redux/reducers/task.reducer";
+import { GetTask } from "@/types";
 import { PrimaryButton } from "../../../components/common/button";
 import { PrimaryCard } from "../../../components/common/card";
 import { FormInput } from "../../../components/form/input";
@@ -31,7 +32,7 @@ const Task = () => {
   const debouncedQuery = useDebounce<string>(searchQuery, 500);
   const { getTasks, taskCounts, deleteTask } = useAPI();
 
-  const storedTasks = useAppSelector(getTaskStored);
+  const storedTasks: GetTask[] = useAppSelector(getTaskStored);
   console.log({ storedTasks });
 
   const _getTasks = async () => {

@@ -1,35 +1,50 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-import { Table, Popover, Button } from 'antd';
-import type { ColumnsType, TableProps } from 'antd/es/table';
-import { FormInput } from '../../../components/form/input';
-import { PrimaryButton } from '../../../components/common/button';
-import { CustomTag } from '../../../components/common/tag';
+import { DataAnalyticsTypes } from "@/types";
+import { Popconfirm, Popover, Table } from "antd";
+import type { ColumnsType, TableProps } from "antd/es/table";
+import dayjs from "dayjs";
+import { PrimaryButton } from "../../../components/common/button";
+import { FormInput } from "../../../components/form/input";
 
 interface DataType {
-  [x: string]: any;
-  key: React.Key;
+  id?: string;
   month: string;
-  totalrevvenue: string;
-  totalspends: string;
-  averagecost: string;
-  totalleads: string;
-  totalpaidcustomer: string;
-  totalgroupsize: string;
-  roas: string;
-  status: any;
+  revenueEarned: string;
+  adSpends: string;
+  costPerLead: string;
+  totalLeadsGenerated: string;
+  totalPaidCustomers: string;
+  vipGroupSize: string;
+  adSpendsReturn: string;
 }
 
-const onChange: TableProps<DataType>['onChange'] = (
+interface PropTypeForTable {
+  data: Partial<DataAnalyticsTypes[]>;
+  handleDelete: (id: string) => void;
+  handlePagination: (page: number, pageSize: number) => void;
+  CountData: number;
+  dataPerPage: number;
+  currentPage: number;
+}
+
+const onChange: TableProps<DataType>["onChange"] = (
   pagination,
   filters,
   sorter,
   extra
 ) => {
-  console.log('params', pagination, filters, sorter, extra);
+  console.log("params", pagination, filters, sorter, extra);
 };
 
-export const BusinessData = () => {
+export const BusinessData = ({
+  data,
+  handleDelete,
+  handlePagination,
+  dataPerPage,
+  CountData,
+  currentPage,
+}: PropTypeForTable) => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
 
   const handlePopoverOpen = (index: number) => {
@@ -38,70 +53,75 @@ export const BusinessData = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Month',
-      dataIndex: 'month',
+      title: "Month",
+      dataIndex: "month",
+      render: (value, record) => {
+        return dayjs(value).format("YYYY-MM");
+      },
     },
     {
-      title: 'Total Revenue Earned',
-      dataIndex: 'totalrevvenue',
+      title: "Total Revenue Earned",
+      dataIndex: "revenueEarned",
     },
     {
-      title: 'Total Ad Spends',
-      dataIndex: 'totalspends',
+      title: "Total Ad Spends",
+      dataIndex: "adSpends",
     },
     {
-      title: 'Average Cost/Lead',
-      dataIndex: 'averagecost',
+      title: "Average Cost/Lead",
+      dataIndex: "costPerLead",
     },
     {
-      title: 'Total Leads Generated',
-      dataIndex: 'totalleads',
+      title: "Total Leads Generated",
+      dataIndex: "totalLeadsGenerated",
     },
     {
-      title: 'Total Paid Customers',
-      dataIndex: 'totalpaidcustomer',
+      title: "Total Paid Customers",
+      dataIndex: "totalPaidCustomers",
     },
     {
-      title: 'Total Group Size',
-      dataIndex: 'totalgroupsize',
+      title: "Total Group Size",
+      dataIndex: "vipGroupSize",
     },
     {
-      title: 'ROAS',
-      dataIndex: 'roas',
+      title: "ROAS",
+      dataIndex: "adSpendsReturn",
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'x',
+      title: "",
+      dataIndex: "",
+      key: "x",
       render: (text, record, index) => (
         <Popover
           content={
-            <div style={{ width: '130px', padding: '5px' }}>
+            <div style={{ width: "130px", padding: "5px" }}>
               <span
                 onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block', marginBottom: '12px' }}
+                style={{ display: "block", marginBottom: "12px" }}
               >
                 Edit
               </span>
-              <span
-                onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block' }}
+              <Popconfirm
+                onConfirm={() => handleDelete(record?.id ?? "")}
+                title="Are you sure to delete?"
+                okText="Yes"
+                cancelText="No"
               >
                 Delete
-              </span>
+              </Popconfirm>
             </div>
           }
-          trigger='click'
-          visible={openPopoverIndex === index}
-          onVisibleChange={(visible) => {
+          trigger="click"
+          open={openPopoverIndex === index}
+          onOpenChange={(visible) => {
             if (!visible) {
               setOpenPopoverIndex(null);
             }
           }}
         >
           <PrimaryButton
-            text=''
-            variant='info'
+            text=""
+            variant="info"
             onClick={() => handlePopoverOpen(index)}
           />
         </Popover>
@@ -109,181 +129,11 @@ export const BusinessData = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '1',
-      month: 'Dec 2022',
-      totalrevvenue: '-',
-      totalspends: '-',
-      averagecost: '-',
-      totalleads: '-',
-      totalpaidcustomer: '-',
-      totalgroupsize: '-',
-      roas: '-',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-  ];
   return (
     <>
-      <div style={{ background: '#fff', padding: '15px' }}>
-        <FormInput type='search' placeholder='Search' />
-        <Table columns={columns} dataSource={data} onChange={onChange} />
+      <div style={{ background: "#fff", padding: "15px" }}>
+        <FormInput type="search" placeholder="Search" />
+        <Table columns={columns} dataSource={data as any} onChange={onChange} />
       </div>
     </>
   );

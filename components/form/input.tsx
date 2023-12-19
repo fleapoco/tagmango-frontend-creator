@@ -26,6 +26,7 @@ interface Props {
   placeholder?: string;
   value?: string | number;
   icon?: React.ReactNode;
+  required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => unknown;
   onTimeChange?: (time: any, timeString: string) => unknown;
   onDateChange?: (date: any, dateString: string) => unknown;
@@ -58,6 +59,9 @@ export const FormInput = (props: Props) => {
           <DatePicker
             picker="month"
             style={{ width: "100%", padding: "7.5px 12px" }}
+            onChange={(date, dateString) => {
+              props.onDateChange?.(date, dateString);
+            }}
           />
         ) : props.type === "week" ? (
           <DatePicker
@@ -69,6 +73,7 @@ export const FormInput = (props: Props) => {
             placeholder={props.placeholder}
             onChange={(e) => props.onChange?.(e)}
             prefix={props.icon}
+            required={props.required ? props.required : false}
             type={props.type}
             id="label"
             value={props.value}

@@ -1,4 +1,6 @@
 import {
+  CharitiesType,
+  DataAnalyticsTypes,
   GetTask,
   TaskAnalytics,
   TaskFrequency,
@@ -27,4 +29,21 @@ export const initialTaskCounts: TaskAnalytics = {
   inProgress: 0,
   completed: 0,
   total: 0,
+};
+
+export const initialDataAnalyticsState: DataAnalyticsTypes = {
+  revenueEarned: 0,
+  adSpends: 0,
+  costPerLead: 0,
+  adSpendsReturn: 0,
+  vipGroupSize: 0,
+  totalPaidCustomers: 0,
+  totalLeadsGenerated: 0,
+  month: null,
+};
+
+export const initialCharitiesState: CharitiesType = {
+  organizationName: "",
+  amount: 0,
+  category: null,
 };

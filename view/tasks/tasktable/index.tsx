@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { GetTask } from "@/types";
+import { CategoryType, GetTask } from "@/types";
 import { Popconfirm, Popover, Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import dayjs from "dayjs";
@@ -9,7 +9,7 @@ import { PrimaryButton } from "../../../components/common/button";
 interface DataType {
   id?: string;
   title: string | null;
-  category: string | null;
+  category: CategoryType | null;
   endDate?: string | null;
   status: string;
 }
@@ -56,6 +56,9 @@ export const TaskTable = ({
     {
       title: "Category",
       dataIndex: "category",
+      render: (value, record) => {
+        return record.category?.title;
+      },
     },
     {
       title: "Deadline",

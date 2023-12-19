@@ -36,7 +36,7 @@ export interface GetTasksQuery {
 
 export interface GetTask {
   id?: string;
-  category: string | null;
+  category: CategoryType | null;
   endDate: string | null;
   endTime: string | null;
   firstDayOfTheWeek: string;
@@ -48,4 +48,30 @@ export interface GetTask {
   status: TaskStatus;
   title: string;
   type: TaskType;
+}
+
+export interface DataAnalyticsTypes {
+  id?: string;
+  revenueEarned?: number;
+  adSpends?: number;
+  costPerLead?: number;
+  adSpendsReturn?: number;
+  vipGroupSize?: number;
+  totalPaidCustomers?: number;
+  totalLeadsGenerated?: number;
+  month?: string | null;
+}
+
+export interface CategoryType {
+  id?: string;
+  creatorId: string;
+  title: string;
+  type: string;
+}
+
+export interface CharitiesType {
+  id?: string;
+  organizationName: string;
+  amount?: number;
+  category: CategoryType | null;
 }

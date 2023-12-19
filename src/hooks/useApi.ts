@@ -1,5 +1,12 @@
 import { setLoading } from "@/redux/reducers/loader.reducer";
-import { GetTask, GetTasksQuery, IFetchAPICall, TaskAnalytics } from "@/types";
+import {
+  CharitiesType,
+  DataAnalyticsTypes,
+  GetTask,
+  GetTasksQuery,
+  IFetchAPICall,
+  TaskAnalytics,
+} from "@/types";
 import { useAppDispatch } from "./useRedux";
 
 const useAPI = () => {
@@ -60,6 +67,10 @@ const useAPI = () => {
     return http("/tasks/today");
   };
 
+  const getDataAnalytics = (): Promise<DataAnalyticsTypes[]> => {
+    return http("/analytics");
+  };
+
   const updateTask = (
     id: string,
     data: Partial<GetTask>
@@ -68,7 +79,19 @@ const useAPI = () => {
   };
 
   const deleteTask = (id?: string) => {
-    return http(`tasks/delete/${id}`, { method: "DELETE" });
+    return http(`/tasks/delete/${id}`, { method: "DELETE" });
+  };
+
+  const deleteAnalytic = (id?: string) => {
+    return http(`/analytics/${id}`, { method: "DELETE" });
+  };
+
+  const createAnalytics = (data: Partial<DataAnalyticsTypes>) => {
+    return http(`/analytics/create`, { method: "POST", data });
+  };
+
+  const createCharities = (data: Partial<CharitiesType>) => {
+    return http(`/charities/create`, { method: "POST", data });
   };
 
   //   const postUserFireNumbers = (data: IFireNumber) => {
@@ -85,6 +108,10 @@ const useAPI = () => {
     getTodaysTasks,
     updateTask,
     deleteTask,
+    getDataAnalytics,
+    deleteAnalytic,
+    createAnalytics,
+    createCharities,
   };
 };
 
