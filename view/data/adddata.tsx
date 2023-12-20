@@ -4,12 +4,14 @@ import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
 import useApi from "@/hooks/useApi";
 import { DataAnalyticsTypes } from "@/types";
 import { Col, Flex, Row } from "antd";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
 import PageTitle from "../../components/pagetitle";
 
 export const AddData = () => {
+  const router = useRouter();
   const { createAnalytics } = useApi();
   const [data, setData] = useState<DataAnalyticsTypes>(
     initialDataAnalyticsState
@@ -18,6 +20,8 @@ export const AddData = () => {
   const handleCreateAnalytics = async () => {
     try {
       await createAnalytics(data);
+      setData(initialDataAnalyticsState);
+      router.push("/data");
     } catch (error) {}
   };
 

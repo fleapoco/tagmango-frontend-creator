@@ -20,27 +20,32 @@ export const AddCharity = () => {
   const handleCreateCharity = async () => {
     try {
       await createCharities(fromData);
-      setFormData(initialCharitiesState);
+      setFormData((initialCharitiesState) => ({
+        ...initialCharitiesState,
+        categoryId: categories.at(0)?.value,
+      }));
+
       message.success("charity added");
     } catch (error) {
     } finally {
     }
   };
 
-  const fetchCharities = async () => {
+  const fetchCategories = async () => {
     try {
-      const data = await getCategories({ type: TypeCategory.TASK });
+      const data = await getCategories({ type: TypeCategory.CHARITY });
       setCategories(
-        data.map((charity) => ({
-          label: charity.title,
-          value: charity.id ?? "",
+        data.map((category) => ({
+          label: category.title,
+          value: category.id,
         }))
       );
+      setFormData((formData) => ({ ...formData, categoryId: data.at(0)?.id }));
     } catch (error) {}
   };
 
   useEffect(() => {
-    fetchCharities();
+    fetchCategories();
   }, []);
 
   return (
@@ -63,8 +68,12 @@ export const AddCharity = () => {
                 label="Category"
                 options={categories}
                 handleChange={(value) =>
-                  setFormData({ ...fromData, categoryId: value })
+                  setFormData((fromData) => ({
+                    ...fromData,
+                    categoryId: value,
+                  }))
                 }
+                value={fromData.categoryId}
               />
             </Col>
             <Col span={24}>

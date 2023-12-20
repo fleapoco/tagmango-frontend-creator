@@ -22,6 +22,7 @@ export enum TaskFrequency {
 }
 export enum TypeCategory {
   TASK = "task",
+  CHARITY = "charity",
 }
 
 export interface TaskAnalytics {
@@ -67,7 +68,7 @@ export interface DataAnalyticsTypes {
 }
 
 export interface CategoryType {
-  id?: string;
+  id: string;
   creatorId: string;
   title: string;
   type: TypeCategory;

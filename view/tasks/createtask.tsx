@@ -41,11 +41,14 @@ export const CreateTask = () => {
       await createTask(createTaskFormData);
       const tasks = await getTasks({});
       dispatch(setTasks(tasks));
-      setCreateTaskFormData(initialTaskState);
+      setCreateTaskFormData((initialTaskState) => ({
+        ...initialTaskState,
+        categoryId: categories.at(0)?.value,
+      }));
     } catch (error) {}
   };
 
-  const fetchCharities = async () => {
+  const fetchCategories = async () => {
     try {
       const data = await getCategories({ type: TypeCategory.TASK });
       setCategories(
@@ -54,11 +57,15 @@ export const CreateTask = () => {
           value: charity.id ?? "",
         }))
       );
+      setCreateTaskFormData((createTaskFormData) => ({
+        ...createTaskFormData,
+        categoryId: data.at(0)?.id,
+      }));
     } catch (error) {}
   };
 
   useEffect(() => {
-    fetchCharities();
+    fetchCategories();
   }, []);
 
   return (
@@ -81,11 +88,12 @@ export const CreateTask = () => {
                 label="Category"
                 options={categories}
                 handleChange={(value) =>
-                  setCreateTaskFormData({
+                  setCreateTaskFormData((createTaskFormData) => ({
                     ...createTaskFormData,
                     categoryId: value,
-                  })
+                  }))
                 }
+                value={createTaskFormData.categoryId}
               />
               <FormInput
                 label="Title"

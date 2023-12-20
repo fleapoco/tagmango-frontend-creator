@@ -1,11 +1,10 @@
-// "use client";
+import { ReduxWrapper } from "@/wrappers/ReduxWrapper";
 import { ConfigProvider } from "antd";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Suspense } from "react";
+import PageLayout from "../../components/Layout";
 import "../../style/global.scss";
-
-import { ReduxWrapper } from "@/wrappers/ReduxWrapper";
-import PageLayout from "./layout/page";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -28,48 +27,50 @@ export default function RootLayout({
     <html lang="en">
       <body className={poppins.className}>
         <ReduxWrapper>
-          <ConfigProvider
-            theme={{
-              token: {
-                fontFamily: "var(--font-poppins)",
-                colorPrimary: "#f0870f",
-                colorText: "rgba(0,0,0,.85)",
-              },
-              components: {
-                Menu: {
-                  itemSelectedBg: "hsl(29,87.9%,90%)",
-                  itemBorderRadius: 6,
+          <Suspense fallback={<>loading...</>}>
+            <ConfigProvider
+              theme={{
+                token: {
+                  fontFamily: "var(--font-poppins)",
+                  colorPrimary: "#f0870f",
+                  colorText: "rgba(0,0,0,.85)",
                 },
-                Input: {
-                  colorBorder: "#ced0d4",
-                  borderRadius: 4,
-                  fontSize: 16,
-                  colorPrimaryText: "#424242",
-                  colorTextPlaceholder: "rgb(117, 117, 117)",
-                },
-                DatePicker: {
-                  colorBorder: "#ced0d4",
-                  borderRadius: 4,
-                  fontSize: 16,
-                  colorPrimaryText: "#424242",
-                  colorTextPlaceholder: "rgb(117, 117, 117)",
-                },
-                Select: {
-                  colorBorder: "#ced0d4",
-                  borderRadius: 4,
-                  fontSize: 16,
-                  colorPrimaryText: "#424242",
-                  colorTextPlaceholder: "rgb(117, 117, 117)",
-                },
+                components: {
+                  Menu: {
+                    itemSelectedBg: "hsl(29,87.9%,90%)",
+                    itemBorderRadius: 6,
+                  },
+                  Input: {
+                    colorBorder: "#ced0d4",
+                    borderRadius: 4,
+                    fontSize: 16,
+                    colorPrimaryText: "#424242",
+                    colorTextPlaceholder: "rgb(117, 117, 117)",
+                  },
+                  DatePicker: {
+                    colorBorder: "#ced0d4",
+                    borderRadius: 4,
+                    fontSize: 16,
+                    colorPrimaryText: "#424242",
+                    colorTextPlaceholder: "rgb(117, 117, 117)",
+                  },
+                  Select: {
+                    colorBorder: "#ced0d4",
+                    borderRadius: 4,
+                    fontSize: 16,
+                    colorPrimaryText: "#424242",
+                    colorTextPlaceholder: "rgb(117, 117, 117)",
+                  },
 
-                Breadcrumb: {
-                  linkColor: "blue",
+                  Breadcrumb: {
+                    linkColor: "blue",
+                  },
                 },
-              },
-            }}
-          >
-            <PageLayout>{children}</PageLayout>
-          </ConfigProvider>
+              }}
+            >
+              <PageLayout>{children}</PageLayout>
+            </ConfigProvider>
+          </Suspense>
         </ReduxWrapper>
       </body>
     </html>

@@ -1,4 +1,5 @@
 "use client";
+
 import useApi from "@/hooks/useApi";
 import { FileOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -7,7 +8,7 @@ import SubMenu from "antd/es/menu/SubMenu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import style from "../../../style/dashboard.module.scss";
+import style from "../style/dashboard.module.scss";
 const { Sider, Content } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];

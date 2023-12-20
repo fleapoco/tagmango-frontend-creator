@@ -53,7 +53,11 @@ const CharityPage = () => {
                     <label htmlFor="filter" style={{ marginBottom: 0 }}>
                       Filter by
                     </label>
-                    <FormSelect />
+                    <FormSelect
+                      handleChange={function (value: string): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                    />
                   </div>
                 </Col>
                 <Col span={8}>

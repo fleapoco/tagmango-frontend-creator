@@ -16,6 +16,7 @@ import { useAppDispatch } from "@/hooks/useRedux";
 import { setTaskCounts } from "@/redux/reducers/task-counts.reducer";
 import { GetTask, TaskStatus } from "@/types";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { PrimaryCard } from "../../../components/common/card";
 import { CustomTag } from "../../../components/common/tag";
@@ -94,7 +95,12 @@ export const CalendarTask = () => {
                               </Checkbox>
                             </Space>
                             <span className="mock-block">
-                              <CustomTag variant="gray" title="10:00PM" />
+                              <CustomTag
+                                variant="gray"
+                                title={dayjs(
+                                  e.endTime !== null ? e.endTime : e.startTime
+                                ).format("hh:mm")}
+                              />
                             </span>
                           </Space>
                         </PrimaryCard>
