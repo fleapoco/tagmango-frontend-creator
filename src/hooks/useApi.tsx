@@ -1,5 +1,6 @@
 import { setLoading } from "@/redux/reducers/loader.reducer";
 import {
+  CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
   GetTask,
@@ -13,17 +14,15 @@ const useAPI = () => {
   const dispatch = useAppDispatch();
 
   const http = async (path: string, options?: IFetchAPICall) => {
-    console.log(options);
     dispatch(setLoading(true));
     const token =
       localStorage.getItem("token") ??
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmMyZTYzODQzMDUxZGFkMTAyZjdiMyIsInJvbGVzIjpbImR1YWwiXSwiaWF0IjoxNzAyOTY2ODUwLCJleHAiOjE3MDMwNTMyNTB9.yPzUrFBVhEvHaF055EwCy8pzIpCakwwJ8aN8wC923EI";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmMyZTYzODQzMDUxZGFkMTAyZjdiMyIsInJvbGVzIjpbImR1YWwiXSwiaWF0IjoxNzAzMDU0Mzk2LCJleHAiOjE3MDMxNDA3OTZ9.aLB9LRZIuk_MJgPsJC6DMDlIHIAjTadm2hb0Me9knck";
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path.replace(
       /^\/+/,
       ""
     )}`;
     try {
-      console.log(url);
       const raw = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token ?? ""} `,
@@ -36,7 +35,6 @@ const useAPI = () => {
       const data = await raw.json();
       return data;
     } catch (error: any) {
-      throw new Error(error);
     } finally {
       dispatch(setLoading(false));
     }
@@ -71,6 +69,18 @@ const useAPI = () => {
     return http("/analytics");
   };
 
+  const getCategories = ({
+    type,
+  }: {
+    type: string;
+  }): Promise<CategoryType[]> => {
+    const params = new URLSearchParams();
+    if (type) params.append("type", type);
+    const queryString = params.toString();
+    const endPoint = `/categories${queryString ? `?${queryString}` : ""}`;
+    return http(endPoint);
+  };
+
   const updateTask = (
     id: string,
     data: Partial<GetTask>
@@ -94,6 +104,25 @@ const useAPI = () => {
     return http(`/charities/create`, { method: "POST", data });
   };
 
+  const getCharities = ({
+    query,
+    createdAt,
+  }: {
+    query?: string;
+    createdAt?: string;
+  }): Promise<CharitiesType[]> => {
+    const params = new URLSearchParams();
+    if (query) params.append("query", query);
+    if (createdAt) params.append("createdAt", createdAt);
+    const queryString = params.toString();
+    const endPoint = `/charities${queryString ? `?${queryString}` : ""}`;
+    return http(endPoint, { method: "GET" });
+  };
+
+  const deleteCharity = (id: string) => {
+    return http(`/charities/${id}`, { method: "DELETE" });
+  };
+
   //   const postUserFireNumbers = (data: IFireNumber) => {
   //     return http(`/fire-number`, { method: "POST", data });
   //   };
@@ -112,6 +141,9 @@ const useAPI = () => {
     deleteAnalytic,
     createAnalytics,
     createCharities,
+    getCharities,
+    deleteCharity,
+    getCategories,
   };
 };
 

@@ -1,15 +1,18 @@
 import { initialCharitiesState } from "@/empty-state-objects/empty";
 import useAPI from "@/hooks/useApi";
-import { CharitiesType } from "@/types";
-import { Col, Flex, Row } from "antd";
-import { useState } from "react";
+import { CharitiesType, TypeCategory } from "@/types";
+import { Col, Flex, Row, message } from "antd";
+import { useEffect, useState } from "react";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
 import { FormSelect } from "../../components/form/select";
 import PageTitle from "../../components/pagetitle";
 
 export const AddCharity = () => {
-  const { createCharities } = useAPI();
+  const { createCharities, getCategories } = useAPI();
+  const [categories, setCategories] = useState<
+    { value: string; label: string }[]
+  >([]);
   const [fromData, setFormData] = useState<Partial<CharitiesType>>(
     initialCharitiesState
   );
@@ -17,8 +20,28 @@ export const AddCharity = () => {
   const handleCreateCharity = async () => {
     try {
       await createCharities(fromData);
+      setFormData(initialCharitiesState);
+      message.success("charity added");
+    } catch (error) {
+    } finally {
+    }
+  };
+
+  const fetchCharities = async () => {
+    try {
+      const data = await getCategories({ type: TypeCategory.TASK });
+      setCategories(
+        data.map((charity) => ({
+          label: charity.title,
+          value: charity.id ?? "",
+        }))
+      );
     } catch (error) {}
   };
+
+  useEffect(() => {
+    fetchCharities();
+  }, []);
 
   return (
     <>
@@ -38,12 +61,10 @@ export const AddCharity = () => {
             <Col span={24}>
               <FormSelect
                 label="Category"
-                options={[
-                  { value: "jack", label: "Jack" },
-                  { value: "lucy", label: "Lucy" },
-                  { value: "Yiminghe", label: "yiminghe" },
-                  { value: "disabled", label: "Disabled" },
-                ]}
+                options={categories}
+                handleChange={(value) =>
+                  setFormData({ ...fromData, categoryId: value })
+                }
               />
             </Col>
             <Col span={24}>

@@ -1,36 +1,48 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-import { Col, Row, Table, Popover } from 'antd';
-import style from '../../style/task.module.scss';
-import { useRouter } from 'next/navigation';
-import PageTitle from '../../components/pagetitle';
-import { PrimaryButton } from '../../components/common/button';
-import { DisplayGraph } from '../../components/common/graph';
-import { FormInput } from '../../components/form/input';
-import { CustomTag } from '../../components/common/tag';
-import type { ColumnsType, TableProps } from 'antd/es/table';
-import { FormSelect } from '../../components/form/select';
+import { CharitiesType } from "@/types";
+import { Col, Popconfirm, Popover, Row, Table } from "antd";
+import type { ColumnsType, TableProps } from "antd/es/table";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { PrimaryButton } from "../../components/common/button";
+import PageTitle from "../../components/pagetitle";
+import style from "../../style/task.module.scss";
 
-interface DataType {
-  [x: string]: any;
-  key: React.Key;
-  date: string;
-  category: string;
-  amount: number;
-  organisation: string;
-  status: any;
+// interface DataType {
+//   createdAt: string;
+//   category?: string | null;
+//   amount: number;
+//   organizationName: string;
+//   status?: any;
+// }
+
+interface PropTypeForTable {
+  data: CharitiesType[];
+  handleDelete: (id: string) => void;
+  handlePagination: (page: number, pageSize: number) => void;
+  CountData: number;
+  dataPerPage: number;
+  currentPage: number;
 }
 
-const onChange: TableProps<DataType>['onChange'] = (
+const onChange: TableProps<Partial<CharitiesType>>["onChange"] = (
   pagination,
   filters,
   sorter,
   extra
 ) => {
-  console.log('params', pagination, filters, sorter, extra);
+  console.log("params", pagination, filters, sorter, extra);
 };
 
-export const Charity = () => {
+export const Charity = ({
+  data,
+  handleDelete,
+  handlePagination,
+  dataPerPage,
+  CountData,
+  currentPage,
+}: PropTypeForTable) => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
 
   const handlePopoverOpen = (index: number) => {
@@ -40,67 +52,71 @@ export const Charity = () => {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push('/charity/addcharity');
+    router.push("/charity/addcharity");
   };
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<Partial<CharitiesType>> = [
     {
-      title: 'Date',
-      dataIndex: 'date',
-    },
-    {
-      title: 'Category',
-      dataIndex: 'category',
-    },
-    {
-      title: 'Amount',
-      dataIndex: 'amount',
-      sorter: {
-        compare: (a, b) => a.math - b.math,
-        multiple: 2,
+      title: "Date",
+      dataIndex: "createdAt",
+      render: (value, record) => {
+        return dayjs(value).format("DD-MM-YYYY");
       },
     },
     {
-      title: 'Organisation',
-      dataIndex: 'organisation',
+      title: "Category",
+      dataIndex: "category",
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
+      title: "Amount",
+      dataIndex: "amount",
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'x',
+      title: "Organization Name",
+      dataIndex: "organizationName",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: () => {
+        return "completed";
+      },
+    },
+    {
+      title: "",
+      dataIndex: "",
+      key: "x",
       render: (text, record, index) => (
         <Popover
           content={
-            <div style={{ width: '130px', padding: '5px' }}>
+            <div style={{ width: "130px", padding: "5px" }}>
               <span
                 onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block', marginBottom: '12px' }}
+                style={{ display: "block", marginBottom: "12px" }}
               >
                 Edit
               </span>
-              <span
-                onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block' }}
+              <Popconfirm
+                onConfirm={() => handleDelete(record?.id ?? "")}
+                title="Are you sure to delete?"
+                okText="Yes"
+                cancelText="No"
               >
                 Delete
-              </span>
+              </Popconfirm>
             </div>
           }
-          trigger='click'
-          visible={openPopoverIndex === index}
-          onVisibleChange={(visible) => {
+          trigger="click"
+          open={openPopoverIndex === index}
+          onOpenChange={(visible) => {
             if (!visible) {
               setOpenPopoverIndex(null);
             }
           }}
         >
           <PrimaryButton
-            text=''
-            variant='info'
+            text=""
+            variant="info"
             onClick={() => handlePopoverOpen(index)}
           />
         </Popover>
@@ -108,76 +124,27 @@ export const Charity = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: '3',
-      date: '07/12/2023',
-      category: 'Food',
-      amount: 322332,
-      organisation: 'Keto India',
-      status: <CustomTag variant='success' title='Completed' />,
-    },
-    {
-      key: '4',
-      date: '03/11/2023',
-      category: 'Food',
-      amount: 2323,
-      organisation: 'Keto India',
-      status: <CustomTag variant='success' title='Completed' />,
-    },
-  ];
   return (
     <>
-      <div className={`${style['charity-page']} common-panel-wrapper`}>
+      <div className={`${style["charity-page"]} common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={'space-between'}
-          style={{ alignItems: 'center' }}
-          className='p-15'
+          justify={"space-between"}
+          style={{ alignItems: "center" }}
+          className="p-15"
         >
           <Col span={12}>
-            <PageTitle title='Charity' />
+            <PageTitle title="Charity" />
           </Col>
-          <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
+          <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
             <PrimaryButton
-              text='Add Data'
-              variant='dark'
+              text="Add Data"
+              variant="dark"
               onClick={handleButtonClick}
             />
           </Col>
         </Row>
-        <div className='gray-box p-15 charity-table'>
-          <Row gutter={[0, 12]}>
-            <Col span={24}>
-              <DisplayGraph />
-            </Col>
-            <Col span={24}>
-              <div style={{ background: '#fff', padding: '15px' }}>
-                <Row gutter={[24, 0]} className='filter-wrapper'>
-                  <Col span={6}>
-                    <FormInput type='search' placeholder='Search' />
-                  </Col>
-                  <Col span={10}>
-                    <div className='form-group filter-by'>
-                      <label htmlFor='filter' style={{ marginBottom: 0 }}>
-                        Filter by
-                      </label>
-                      <FormSelect />
-                    </div>
-                  </Col>
-                  <Col span={8}>
-                    <FormInput type='date' placeholder='Select date' />
-                  </Col>
-                </Row>
-                <Table
-                  columns={columns}
-                  dataSource={data}
-                  onChange={onChange}
-                />
-              </div>
-            </Col>
-          </Row>
-        </div>
+        <Table columns={columns} dataSource={data} onChange={onChange} />
       </div>
     </>
   );

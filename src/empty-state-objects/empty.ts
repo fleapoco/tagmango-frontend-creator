@@ -10,6 +10,7 @@ import {
 
 export const initialTaskState: GetTask = {
   category: null,
+  categoryId: null,
 
   endDate: null,
   endTime: null,
@@ -43,7 +44,9 @@ export const initialDataAnalyticsState: DataAnalyticsTypes = {
 };
 
 export const initialCharitiesState: CharitiesType = {
+  createdAt: "",
   organizationName: "",
   amount: 0,
   category: null,
+  categoryId: null,
 };

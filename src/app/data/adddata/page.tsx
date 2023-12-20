@@ -1,15 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { AddData } from '../../../../view/data/adddata';
-import PageLayout from '@/app/layout/page';
+import { AddData } from "../../../../view/data/adddata";
 
 const AddDataPage = () => {
   return (
     <>
-      <PageLayout>
-        <AddData />
-      </PageLayout>
+      <AddData />
     </>
   );
 };

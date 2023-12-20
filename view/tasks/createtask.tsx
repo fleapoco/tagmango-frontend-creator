@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { RadioChangeEvent } from "antd";
 import { Col, Flex, Radio, Row, Space } from "antd";
@@ -8,7 +8,7 @@ import { initialTaskState } from "@/empty-state-objects/empty";
 import useAPI from "@/hooks/useApi";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { setTasks } from "@/redux/reducers/task.reducer";
-import { GetTask, TaskFrequency, TaskType } from "@/types";
+import { GetTask, TaskFrequency, TaskType, TypeCategory } from "@/types";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
 import { FormSelect } from "../../components/form/select";
@@ -16,7 +16,10 @@ const frequencyArray = ["daily", "bi-weekly", "weekly", "monthly"];
 const typeArray = ["one-time", "recurring"];
 
 export const CreateTask = () => {
-  const { createTask, getTasks } = useAPI();
+  const { createTask, getTasks, getCategories } = useAPI();
+  const [categories, setCategories] = useState<
+    { value: string; label: string }[]
+  >([]);
   const dispatch = useAppDispatch();
   const [value, setValue] = useState(TaskType.ONE_TIME);
   const [frequency, setFrequency] = useState(TaskFrequency.DAILY);
@@ -42,6 +45,22 @@ export const CreateTask = () => {
     } catch (error) {}
   };
 
+  const fetchCharities = async () => {
+    try {
+      const data = await getCategories({ type: TypeCategory.TASK });
+      setCategories(
+        data.map((charity) => ({
+          label: charity.title,
+          value: charity.id ?? "",
+        }))
+      );
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchCharities();
+  }, []);
+
   return (
     <>
       <div className={`common-panel-wrapper`}>
@@ -58,7 +77,16 @@ export const CreateTask = () => {
         <div className="gray-box p-15">
           <Row>
             <Col span={24}>
-              <FormSelect label="Category" />
+              <FormSelect
+                label="Category"
+                options={categories}
+                handleChange={(value) =>
+                  setCreateTaskFormData({
+                    ...createTaskFormData,
+                    categoryId: value,
+                  })
+                }
+              />
               <FormInput
                 label="Title"
                 placeholder="E.g. Finish gamification"

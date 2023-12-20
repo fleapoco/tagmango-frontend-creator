@@ -20,6 +20,9 @@ export enum TaskFrequency {
   WEEKLY = "weekly",
   MONTHLY = "monthly",
 }
+export enum TypeCategory {
+  TASK = "task",
+}
 
 export interface TaskAnalytics {
   total: number;
@@ -37,6 +40,7 @@ export interface GetTasksQuery {
 export interface GetTask {
   id?: string;
   category: CategoryType | null;
+  categoryId?: string | null;
   endDate: string | null;
   endTime: string | null;
   firstDayOfTheWeek: string;
@@ -66,7 +70,7 @@ export interface CategoryType {
   id?: string;
   creatorId: string;
   title: string;
-  type: string;
+  type: TypeCategory;
 }
 
 export interface CharitiesType {
@@ -74,4 +78,6 @@ export interface CharitiesType {
   organizationName: string;
   amount?: number;
   category: CategoryType | null;
+  categoryId?: string | null;
+  createdAt: string;
 }

@@ -1,4 +1,5 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
+import categoryReducer from "./reducers/category.reducer";
 import dataAnalyticReducer from "./reducers/data-analytic.reducer";
 import taskCountsReducer from "./reducers/task-counts.reducer";
 import taskReducer from "./reducers/task.reducer";
@@ -8,6 +9,7 @@ export const store = configureStore({
     tasks: taskReducer,
     taskCounts: taskCountsReducer,
     dataAnalytics: dataAnalyticReducer,
+    categories: categoryReducer,
   },
 });
 

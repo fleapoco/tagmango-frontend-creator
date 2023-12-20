@@ -1,24 +1,22 @@
 import { Select } from "antd";
-
-const handleChange = (value: string) => {
-  console.log(`selected ${value}`);
-};
+import React from "react";
 
 interface Props {
   label?: string;
   options?: { value: string; label: string }[];
+  handleChange: (value: string) => void;
 }
 
-export const FormSelect = (props: Props) => {
+export const FormSelect: React.FC<Props> = (props: Props) => {
   return (
     <div>
       <div className="form-group">
         {props.label ? <label htmlFor="label">{props.label}</label> : ""}
 
         <Select
-          defaultValue="lucy"
+          defaultActiveFirstOption={true}
           style={{ width: "100%", height: "42px" }}
-          onChange={handleChange}
+          onChange={(value) => props.handleChange(value)}
           options={props.options}
         />
       </div>

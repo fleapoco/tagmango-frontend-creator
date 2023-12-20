@@ -1,10 +1,11 @@
 // "use client";
+import { ConfigProvider } from "antd";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "../../style/global.scss";
-import { ConfigProvider } from "antd";
 
 import { ReduxWrapper } from "@/wrappers/ReduxWrapper";
+import PageLayout from "./layout/page";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -67,7 +68,7 @@ export default function RootLayout({
               },
             }}
           >
-            {children}
+            <PageLayout>{children}</PageLayout>
           </ConfigProvider>
         </ReduxWrapper>
       </body>

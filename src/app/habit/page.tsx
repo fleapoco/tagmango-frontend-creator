@@ -1,15 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Habit } from '../../../view/habit';
-import PageLayout from '../layout/page';
+import { Habit } from "../../../view/habit";
 
 const HabitPage = () => {
   return (
     <>
-      <PageLayout>
-        <Habit />
-      </PageLayout>
+      <Habit />
     </>
   );
 };

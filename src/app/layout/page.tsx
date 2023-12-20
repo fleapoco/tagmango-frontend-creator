@@ -1,17 +1,16 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import type { MenuProps } from 'antd';
-import style from '../../../style/dashboard.module.scss';
-import { Layout, Space, Menu } from 'antd';
-import Link from 'next/link';
-
+"use client";
+import useApi from "@/hooks/useApi";
+import { FileOutlined, UserOutlined } from "@ant-design/icons";
+import type { MenuProps } from "antd";
+import { Layout, Menu, Space } from "antd";
+import SubMenu from "antd/es/menu/SubMenu";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import style from "../../../style/dashboard.module.scss";
 const { Sider, Content } = Layout;
 
-import { FileOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
-import SubMenu from 'antd/es/menu/SubMenu';
-
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>["items"][number];
 
 type ItemType = {
   key: string;
@@ -23,36 +22,36 @@ type ItemType = {
 
 const items: ItemType[] = [
   {
-    key: '1',
-    label: 'Dashboard',
-    link: '/',
+    key: "1",
+    label: "Dashboard",
+    link: "/",
   },
   {
-    key: 'sub1',
-    label: 'Productivity',
+    key: "sub1",
+    label: "Productivity",
     icon: <UserOutlined />,
     children: [
-      { key: '3', label: 'Habits', link: '/habit' },
-      { key: '4', label: 'Tasks', link: '/task' },
+      { key: "3", label: "Habits", link: "/habit" },
+      { key: "4", label: "Tasks", link: "/task" },
     ],
   },
   {
-    key: '2',
-    label: 'Data',
+    key: "2",
+    label: "Data",
     icon: <FileOutlined />,
-    link: '/data',
+    link: "/data",
   },
   {
-    key: '5',
-    label: 'Charity',
+    key: "5",
+    label: "Charity",
     icon: <FileOutlined />,
-    link: '/charity',
+    link: "/charity",
   },
   {
-    key: '6',
-    label: 'Quizzes',
+    key: "6",
+    label: "Quizzes",
     icon: <FileOutlined />,
-    link: '/quizzes',
+    link: "/quizzes",
   },
 ];
 
@@ -61,6 +60,7 @@ interface Props {
 }
 
 export default function PageLayout(props: Props) {
+  const { getCharities } = useApi();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const currentPathname = usePathname();
 
@@ -71,19 +71,20 @@ export default function PageLayout(props: Props) {
       setSelectedKeys([key]);
     }
   }, [currentPathname]);
+
   return (
     <>
-      <div className={`${style['dashboard-wrapper']}`}>
-        <Space direction='vertical' style={{ width: '100%' }}>
-          <Layout className='main-layout'>
-            <Sider className='sidebar-main'>
-              <div className='inner-sidebar'>
+      <div className={`${style["dashboard-wrapper"]}`}>
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <Layout className="main-layout">
+            <Sider className="sidebar-main">
+              <div className="inner-sidebar">
                 <Menu
-                  defaultSelectedKeys={['1']}
+                  defaultSelectedKeys={["1"]}
                   selectedKeys={selectedKeys}
-                  mode='inline'
-                  className='sidebar'
-                  style={{ padding: '0 8px' }}
+                  mode="inline"
+                  className="sidebar"
+                  style={{ padding: "0 8px" }}
                 >
                   {items.map((item) =>
                     item.children ? (
@@ -115,7 +116,7 @@ export default function PageLayout(props: Props) {
                 </Menu>
               </div>
             </Sider>
-            <Layout className='main-contain-layout'>
+            <Layout className="main-contain-layout">
               <Content>{props.children}</Content>
             </Layout>
           </Layout>
