@@ -162,18 +162,29 @@ p {
     font-weight: 600;
   }
 
-  &.dark-btn {
-    background-color: #0f2137 !important;
-
+  &.small-btn {
+    padding: 6px 20px !important;
     span {
-      color: #fff !important;
+      font-size: 13px;
     }
   }
-  &.gray-btn {
+
+  &.primary-btn {
+    background-color: #f18926 !important;
+  }
+
+  &.secondary-btn {
     background-color: #e4e6eb !important;
 
     span {
       color: #424242;
+    }
+  }
+  &.sdark-btn {
+    background-color: #0f2137 !important;
+
+    span {
+      color: #fff !important;
     }
   }
   &.into-btn {

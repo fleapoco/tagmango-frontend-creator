@@ -1,12 +1,13 @@
-import { initialCharitiesState } from "@/empty-state-objects/empty";
-import useAPI from "@/hooks/useApi";
-import { CharitiesType, TypeCategory } from "@/types";
-import { Col, Flex, Row, message } from "antd";
-import { useEffect, useState } from "react";
-import { PrimaryButton } from "../../components/common/button";
-import { FormInput } from "../../components/form/input";
-import { FormSelect } from "../../components/form/select";
-import PageTitle from "../../components/pagetitle";
+import { initialCharitiesState } from '@/empty-state-objects/empty';
+import useAPI from '@/hooks/useApi';
+import { CharitiesType, TypeCategory } from '@/types';
+import { Col, Flex, Row, message } from 'antd';
+import { useEffect, useState } from 'react';
+import { BreadCrumbNav } from '../../components/common/breadcrumb';
+import { PrimaryButton } from '../../components/common/button';
+import { FormInput } from '../../components/form/input';
+import { FormSelect } from '../../components/form/select';
+import PageTitle from '../../components/pagetitle';
 
 export const AddCharity = () => {
   const { createCharities, getCategories } = useAPI();
@@ -21,7 +22,7 @@ export const AddCharity = () => {
     try {
       await createCharities(fromData);
       setFormData(initialCharitiesState);
-      message.success("charity added");
+      message.success('charity added');
     } catch (error) {
     } finally {
     }
@@ -33,7 +34,7 @@ export const AddCharity = () => {
       setCategories(
         data.map((charity) => ({
           label: charity.title,
-          value: charity.id ?? "",
+          value: charity.id ?? '',
         }))
       );
     } catch (error) {}
@@ -43,24 +44,35 @@ export const AddCharity = () => {
     fetchCharities();
   }, []);
 
+  const breadCrumbItems = [
+    {
+      title: 'Charity',
+      link: '/charity',
+    },
+    {
+      title: 'Add Charity',
+    },
+  ];
+
   return (
     <>
+      <BreadCrumbNav item={breadCrumbItems} />
       <div className={`common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
+          justify={'space-between'}
+          style={{ alignItems: 'center' }}
+          className='p-15'
         >
           <Col span={24}>
-            <PageTitle title="Add Data" />
+            <PageTitle title='Add Data' />
           </Col>
         </Row>
-        <div className="gray-box p-15">
+        <div className='gray-box p-15'>
           <Row gutter={[16, 0]}>
             <Col span={24}>
               <FormSelect
-                label="Category"
+                label='Category'
                 options={categories}
                 handleChange={(value) =>
                   setFormData({ ...fromData, categoryId: value })
@@ -69,10 +81,10 @@ export const AddCharity = () => {
             </Col>
             <Col span={24}>
               <FormInput
-                placeholder=""
-                label="Amount Donated"
-                icon={"₹"}
-                type="number"
+                placeholder=''
+                label='Amount Donated'
+                icon={'₹'}
+                type='number'
                 value={fromData.amount}
                 onChange={(e) =>
                   setFormData({ ...fromData, amount: Number(e.target.value) })
@@ -81,9 +93,9 @@ export const AddCharity = () => {
             </Col>
             <Col span={24}>
               <FormInput
-                placeholder=""
-                label="Organisation Name"
-                type="text"
+                placeholder=''
+                label='Organisation Name'
+                type='text'
                 value={fromData.organizationName}
                 onChange={(e) =>
                   setFormData({
@@ -94,11 +106,11 @@ export const AddCharity = () => {
               />
             </Col>
             <Col span={24}>
-              <Flex gap="middle" justify="end">
-                <PrimaryButton variant="secondary" text="Cancel" />
+              <Flex gap='middle' justify='end'>
+                <PrimaryButton variant='secondary' text='Cancel' />
                 <PrimaryButton
-                  variant="dark"
-                  text="Save"
+                  variant='primary'
+                  text='Save'
                   onClick={handleCreateCharity}
                 />
               </Flex>

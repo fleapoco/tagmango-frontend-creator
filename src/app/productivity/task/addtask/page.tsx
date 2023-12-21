@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { CreateTask } from "../../../../view/tasks/createtask";
+import { CreateTask } from '../../../../../view/tasks/createtask';
 
 const AddTaskPage = () => {
   return (

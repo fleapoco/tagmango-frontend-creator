@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import type { RadioChangeEvent } from "antd";
-import { Col, Flex, Radio, Row, Space } from "antd";
-import PageTitle from "../../components/pagetitle";
+import type { RadioChangeEvent } from 'antd';
+import { Col, Flex, Radio, Row, Space } from 'antd';
+import PageTitle from '../../components/pagetitle';
 
-import { initialTaskState } from "@/empty-state-objects/empty";
-import useAPI from "@/hooks/useApi";
-import { useAppDispatch } from "@/hooks/useRedux";
-import { setTasks } from "@/redux/reducers/task.reducer";
-import { GetTask, TaskFrequency, TaskType, TypeCategory } from "@/types";
-import { PrimaryButton } from "../../components/common/button";
-import { FormInput } from "../../components/form/input";
-import { FormSelect } from "../../components/form/select";
-const frequencyArray = ["daily", "bi-weekly", "weekly", "monthly"];
-const typeArray = ["one-time", "recurring"];
+import { initialTaskState } from '@/empty-state-objects/empty';
+import useAPI from '@/hooks/useApi';
+import { useAppDispatch } from '@/hooks/useRedux';
+import { setTasks } from '@/redux/reducers/task.reducer';
+import { GetTask, TaskFrequency, TaskType, TypeCategory } from '@/types';
+import { BreadCrumbNav } from '../../components/common/breadcrumb';
+import { PrimaryButton } from '../../components/common/button';
+import { FormInput } from '../../components/form/input';
+import { FormSelect } from '../../components/form/select';
+const frequencyArray = ['daily', 'bi-weekly', 'weekly', 'monthly'];
+const typeArray = ['one-time', 'recurring'];
 
 export const CreateTask = () => {
   const { createTask, getTasks, getCategories } = useAPI();
@@ -51,7 +52,7 @@ export const CreateTask = () => {
       setCategories(
         data.map((charity) => ({
           label: charity.title,
-          value: charity.id ?? "",
+          value: charity.id ?? '',
         }))
       );
     } catch (error) {}
@@ -61,24 +62,35 @@ export const CreateTask = () => {
     fetchCharities();
   }, []);
 
+  const breadCrumbItems = [
+    {
+      title: 'Task',
+      link: '/productivity/task',
+    },
+    {
+      title: 'Create Task',
+    },
+  ];
+
   return (
     <>
+      <BreadCrumbNav item={breadCrumbItems} />
       <div className={`common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
+          justify={'space-between'}
+          style={{ alignItems: 'center' }}
+          className='p-15'
         >
           <Col span={24}>
-            <PageTitle title="Create Task" />
+            <PageTitle title='Create Task' />
           </Col>
         </Row>
-        <div className="gray-box p-15">
+        <div className='gray-box p-15'>
           <Row>
             <Col span={24}>
               <FormSelect
-                label="Category"
+                label='Category'
                 options={categories}
                 handleChange={(value) =>
                   setCreateTaskFormData({
@@ -88,9 +100,9 @@ export const CreateTask = () => {
                 }
               />
               <FormInput
-                label="Title"
-                placeholder="E.g. Finish gamification"
-                type="text"
+                label='Title'
+                placeholder='E.g. Finish gamification'
+                type='text'
                 value={createTaskFormData.title}
                 onChange={(e) =>
                   setCreateTaskFormData({
@@ -99,13 +111,13 @@ export const CreateTask = () => {
                   })
                 }
               />
-              <div className="form-group">
-                <Row style={{ display: "flex", alignItems: "center" }}>
-                  <label htmlFor="type" style={{ marginRight: "30px" }}>
+              <div className='form-group'>
+                <Row style={{ display: 'flex', alignItems: 'center' }}>
+                  <label htmlFor='type' style={{ marginRight: '30px' }}>
                     Type
                   </label>
                   <Radio.Group onChange={onChange} value={value}>
-                    <Space direction="horizontal">
+                    <Space direction='horizontal'>
                       {typeArray.map((e) => (
                         <Radio value={e}>{e}</Radio>
                       ))}
@@ -114,11 +126,11 @@ export const CreateTask = () => {
                 </Row>
               </div>
               {/* Check One Time */}
-              {createTaskFormData.type === "one-time" && (
+              {createTaskFormData.type === 'one-time' && (
                 <div>
                   <FormInput
-                    label="Date"
-                    type="date"
+                    label='Date'
+                    type='date'
                     onDateChange={(date, dateString) =>
                       setCreateTaskFormData({
                         ...createTaskFormData,
@@ -127,8 +139,8 @@ export const CreateTask = () => {
                     }
                   />
                   <FormInput
-                    label="Time"
-                    type="time"
+                    label='Time'
+                    type='time'
                     onTimeChange={(time, timeString) =>
                       setCreateTaskFormData({
                         ...createTaskFormData,
@@ -142,13 +154,13 @@ export const CreateTask = () => {
               {/* Recurring */}
 
               <div>
-                {createTaskFormData.type === "recurring" && (
+                {createTaskFormData.type === 'recurring' && (
                   <>
                     <Row gutter={24}>
                       <Col span={12}>
                         <FormInput
-                          label="Start Date"
-                          type="date"
+                          label='Start Date'
+                          type='date'
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
                               ...createTaskFormData,
@@ -159,8 +171,8 @@ export const CreateTask = () => {
                       </Col>
                       <Col span={12}>
                         <FormInput
-                          label="End Date"
-                          type="date"
+                          label='End Date'
+                          type='date'
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
                               ...createTaskFormData,
@@ -171,8 +183,8 @@ export const CreateTask = () => {
                       </Col>
                     </Row>
                     <FormInput
-                      label="Time"
-                      type="time"
+                      label='Time'
+                      type='time'
                       onTimeChange={(time, timeString) =>
                         setCreateTaskFormData({
                           ...createTaskFormData,
@@ -183,13 +195,13 @@ export const CreateTask = () => {
                   </>
                 )}
 
-                <div className="form-group">
-                  <Row style={{ display: "flex", alignItems: "center" }}>
-                    <label htmlFor="type" style={{ marginRight: "30px" }}>
+                <div className='form-group'>
+                  <Row style={{ display: 'flex', alignItems: 'center' }}>
+                    <label htmlFor='type' style={{ marginRight: '30px' }}>
                       Frequency
                     </label>
                     <Radio.Group onChange={onFrequencyChange} value={frequency}>
-                      <Space direction="horizontal">
+                      <Space direction='horizontal'>
                         {frequencyArray.map((e) => (
                           <Radio value={e}>{e}</Radio>
                         ))}
@@ -197,12 +209,12 @@ export const CreateTask = () => {
                     </Radio.Group>
                   </Row>
                 </div>
-                {createTaskFormData.frequency === "bi-weekly" && (
+                {createTaskFormData.frequency === 'bi-weekly' && (
                   <Row gutter={24}>
                     <Col span={12}>
                       <FormInput
-                        label="First day of the Week"
-                        type="text"
+                        label='First day of the Week'
+                        type='text'
                         value={createTaskFormData.firstDayOfTheWeek}
                         onChange={(e) =>
                           setCreateTaskFormData({
@@ -214,8 +226,8 @@ export const CreateTask = () => {
                     </Col>
                     <Col span={12}>
                       <FormInput
-                        label="Second day of the Week"
-                        type="text"
+                        label='Second day of the Week'
+                        type='text'
                         value={createTaskFormData.secondDayOfTheWeek}
                         onChange={(e) =>
                           setCreateTaskFormData({
@@ -228,12 +240,12 @@ export const CreateTask = () => {
                   </Row>
                 )}
               </div>
-              <Flex gap={"middle"} justify="end">
-                <PrimaryButton text="Cancel" variant="secondary" />
+              <Flex gap={'middle'} justify='end'>
+                <PrimaryButton text='Cancel' variant='secondary' />
                 <PrimaryButton
                   onClick={() => handleSave()}
-                  text="Save"
-                  variant="dark"
+                  text='Save'
+                  variant='primary'
                 />
               </Flex>
             </Col>

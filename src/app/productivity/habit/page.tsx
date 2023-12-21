@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Habit } from "../../../view/habit";
+import { Habit } from '../../../../view/habit';
 
 const HabitPage = () => {
   return (

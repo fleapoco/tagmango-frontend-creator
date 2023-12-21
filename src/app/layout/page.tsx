@@ -1,16 +1,19 @@
-"use client";
-import useApi from "@/hooks/useApi";
-import { FileOutlined, UserOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Layout, Menu, Space } from "antd";
-import SubMenu from "antd/es/menu/SubMenu";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import style from "../../../style/dashboard.module.scss";
+'use client';
+import useApi from '@/hooks/useApi';
+
+import type { MenuProps } from 'antd';
+import { Flex, Layout, Menu, Space, Typography } from 'antd';
+import SubMenu from 'antd/es/menu/SubMenu';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Analytics } from '../../../components/common/icons';
+import style from '../../../style/dashboard.module.scss';
 const { Sider, Content } = Layout;
 
-type MenuItem = Required<MenuProps>["items"][number];
+const { Title } = Typography;
+
+type MenuItem = Required<MenuProps>['items'][number];
 
 type ItemType = {
   key: string;
@@ -22,36 +25,47 @@ type ItemType = {
 
 const items: ItemType[] = [
   {
-    key: "1",
-    label: "Dashboard",
-    link: "/",
+    key: '1',
+    label: 'Dashboard',
+    link: '/',
+    icon: <Analytics />,
   },
   {
-    key: "sub1",
-    label: "Productivity",
-    icon: <UserOutlined />,
+    key: 'sub1',
+    label: 'Productivity',
+    icon: <Analytics />,
     children: [
-      { key: "3", label: "Habits", link: "/habit" },
-      { key: "4", label: "Tasks", link: "/task" },
+      {
+        key: '3',
+        label: 'Habits',
+        link: '/productivity/habit',
+        icon: <Analytics />,
+      },
+      {
+        key: '4',
+        label: 'Tasks',
+        link: '/productivity/task',
+        icon: <Analytics />,
+      },
     ],
   },
   {
-    key: "2",
-    label: "Data",
-    icon: <FileOutlined />,
-    link: "/data",
+    key: '2',
+    label: 'Data',
+    icon: <Analytics />,
+    link: '/data',
   },
   {
-    key: "5",
-    label: "Charity",
-    icon: <FileOutlined />,
-    link: "/charity",
+    key: '5',
+    label: 'Charity',
+    icon: <Analytics />,
+    link: '/charity',
   },
   {
-    key: "6",
-    label: "Quizzes",
-    icon: <FileOutlined />,
-    link: "/quizzes",
+    key: '6',
+    label: 'Quizzes',
+    icon: <Analytics />,
+    link: '/quizzes',
   },
 ];
 
@@ -74,17 +88,26 @@ export default function PageLayout(props: Props) {
 
   return (
     <>
-      <div className={`${style["dashboard-wrapper"]}`}>
-        <Space direction="vertical" style={{ width: "100%" }}>
-          <Layout className="main-layout">
-            <Sider className="sidebar-main">
-              <div className="inner-sidebar">
+      <div className={`${style['dashboard-wrapper']}`}>
+        <Space direction='vertical' style={{ width: '100%' }}>
+          <Layout className='main-layout'>
+            <Sider className='sidebar-main'>
+              <Flex gap='middle' className='user-name-display' align='center'>
+                <div className='avatar-circle'>
+                  <img
+                    src='https://tagmango.com/staticassets/avatar-placeholder.png-1612857612139.png'
+                    alt='Avatar'
+                  />
+                </div>
+                <h1>Welcome, Fleapo</h1>
+              </Flex>
+              <div className='inner-sidebar'>
                 <Menu
-                  defaultSelectedKeys={["1"]}
+                  defaultSelectedKeys={['1']}
                   selectedKeys={selectedKeys}
-                  mode="inline"
-                  className="sidebar"
-                  style={{ padding: "0 8px" }}
+                  mode='inline'
+                  className='sidebar'
+                  style={{ padding: '0 8px', width: '100%', marginLeft: 0 }}
                 >
                   {items.map((item) =>
                     item.children ? (
@@ -116,7 +139,7 @@ export default function PageLayout(props: Props) {
                 </Menu>
               </div>
             </Sider>
-            <Layout className="main-contain-layout">
+            <Layout className='main-contain-layout'>
               <Content>{props.children}</Content>
             </Layout>
           </Layout>

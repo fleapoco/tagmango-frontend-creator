@@ -1,12 +1,9 @@
-import React from 'react';
-
-import style from '../../style/task.module.scss';
-import { Card, Col, Row } from 'antd';
-import PageTitle from '../../components/pagetitle';
+import { Col, Row, Typography } from 'antd';
 import { PrimaryButton } from '../../components/common/button';
-import { CustomTag } from '../../components/common/tag';
-import { Typography } from 'antd';
 import { PrimaryCard } from '../../components/common/card';
+import { CustomTag } from '../../components/common/tag';
+import PageTitle from '../../components/pagetitle';
+import style from '../../style/task.module.scss';
 
 const { Title } = Typography;
 

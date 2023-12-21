@@ -1,22 +1,11 @@
-import React from 'react';
-import style from '../../style/task.module.scss';
-import {
-  Col,
-  Row,
-  Calendar,
-  CalendarProps,
-  Typography,
-  Card,
-  Space,
-  Tag,
-  Checkbox,
-} from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+import { Calendar, CalendarProps, Col, Row, Typography } from 'antd';
 import type { Dayjs } from 'dayjs';
-import PageTitle from '../../components/pagetitle';
+import { PrimaryButton } from '../../components/common/button';
 import { PrimaryCard } from '../../components/common/card';
 import { CustomTag } from '../../components/common/tag';
-import { PrimaryButton } from '../../components/common/button';
-import { CloseOutlined } from '@ant-design/icons';
+import PageTitle from '../../components/pagetitle';
+import style from '../../style/task.module.scss';
 
 const { Title } = Typography;
 
@@ -74,7 +63,8 @@ export const Habit = () => {
                           <CustomTag variant='success' title='20XP' />
                           <Title level={5}>Learn - Podcast or course</Title>
                           <PrimaryButton
-                            text='Mark as complete'
+                            text='Mark as complete '
+                            size='small'
                             variant='secondary'
                           />
                         </div>

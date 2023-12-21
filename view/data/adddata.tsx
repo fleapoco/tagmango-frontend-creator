@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
-import useApi from "@/hooks/useApi";
-import { DataAnalyticsTypes } from "@/types";
-import { Col, Flex, Row } from "antd";
-import { useState } from "react";
-import { PrimaryButton } from "../../components/common/button";
-import { FormInput } from "../../components/form/input";
-import PageTitle from "../../components/pagetitle";
+import { initialDataAnalyticsState } from '@/empty-state-objects/empty';
+import useApi from '@/hooks/useApi';
+import { DataAnalyticsTypes } from '@/types';
+import { Col, Flex, Row } from 'antd';
+import { useState } from 'react';
+import { BreadCrumbNav } from '../../components/common/breadcrumb';
+import { PrimaryButton } from '../../components/common/button';
+import { FormInput } from '../../components/form/input';
+import PageTitle from '../../components/pagetitle';
 
 export const AddData = () => {
   const { createAnalytics } = useApi();
@@ -21,26 +22,37 @@ export const AddData = () => {
     } catch (error) {}
   };
 
+  const breadCrumbItems = [
+    {
+      title: 'Data',
+      link: '/productivity/task',
+    },
+    {
+      title: 'Add Data',
+    },
+  ];
+
   return (
     <>
+      <BreadCrumbNav item={breadCrumbItems} />
       <div className={`common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
+          justify={'space-between'}
+          style={{ alignItems: 'center' }}
+          className='p-15'
         >
           <Col span={24}>
-            <PageTitle title="Add Data" />
+            <PageTitle title='Add Data' />
           </Col>
         </Row>
-        <div className="gray-box p-15">
+        <div className='gray-box p-15'>
           <Row gutter={[16, 0]}>
             <Col span={24}>
               <FormInput
-                placeholder="Select Month"
-                label="Month"
-                type="month"
+                placeholder='Select Month'
+                label='Month'
+                type='month'
                 onDateChange={(date, dateString) =>
                   setData({ ...data, month: dateString })
                 }
@@ -48,21 +60,21 @@ export const AddData = () => {
             </Col>
             <Col span={24}>
               <FormInput
-                placeholder=""
-                label="Revenue Earned"
-                icon={"₹"}
+                placeholder=''
+                label='Revenue Earned'
+                icon={'₹'}
                 value={data.revenueEarned}
                 onChange={(e) =>
                   setData({ ...data, revenueEarned: Number(e.target.value) })
                 }
-                type="number"
+                type='number'
               />
             </Col>
             <Col span={24}>
               <FormInput
-                label="Ad Spends"
-                icon={"₹"}
-                type="number"
+                label='Ad Spends'
+                icon={'₹'}
+                type='number'
                 value={data.adSpends}
                 onChange={(e) =>
                   setData({ ...data, adSpends: Number(e.target.value) })
@@ -71,18 +83,18 @@ export const AddData = () => {
             </Col>
             <Col span={24}>
               <FormInput
-                label="Average Cost Per Lead"
-                icon={"₹"}
+                label='Average Cost Per Lead'
+                icon={'₹'}
                 value={data.costPerLead}
                 onChange={(e) =>
                   setData({ ...data, costPerLead: Number(e.target.value) })
                 }
-                type="number"
+                type='number'
               />
             </Col>
             <Col span={24}>
               <FormInput
-                label="Total Leads Generated"
+                label='Total Leads Generated'
                 value={data.totalLeadsGenerated}
                 onChange={(e) =>
                   setData({
@@ -94,7 +106,7 @@ export const AddData = () => {
             </Col>
             <Col span={24}>
               <FormInput
-                label="Total Paid Customers"
+                label='Total Paid Customers'
                 value={data.totalPaidCustomers}
                 onChange={(e) =>
                   setData({
@@ -106,8 +118,8 @@ export const AddData = () => {
             </Col>
             <Col span={24}>
               <FormInput
-                label="Total Group Size"
-                type="number"
+                label='Total Group Size'
+                type='number'
                 value={data.vipGroupSize}
                 onChange={(e) =>
                   setData({
@@ -120,7 +132,7 @@ export const AddData = () => {
             <Col span={24}>
               <FormInput
                 value={data.adSpendsReturn}
-                label="ROAS"
+                label='ROAS'
                 onChange={(e) =>
                   setData({
                     ...data,
@@ -130,11 +142,11 @@ export const AddData = () => {
               />
             </Col>
             <Col span={24}>
-              <Flex gap="middle" justify="end">
-                <PrimaryButton variant="secondary" text="Cancel" />
+              <Flex gap='middle' justify='end'>
+                <PrimaryButton variant='secondary' text='Cancel' />
                 <PrimaryButton
-                  variant="dark"
-                  text="Save"
+                  variant='primary'
+                  text='Save'
                   onClick={handleCreateAnalytics}
                 />
               </Flex>
