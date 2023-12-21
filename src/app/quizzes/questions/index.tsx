@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Col, Flex, Row, Typography } from 'antd';
+import { Card, Checkbox, Col, Flex, Row, Typography } from 'antd';
 import { PrimaryButton } from '../../../../components/common/button';
 import { CustomTag } from '../../../../components/common/tag';
 import PageTitle from '../../../../components/pagetitle';
@@ -49,9 +49,25 @@ const QuizQuestions = () => {
                       </div>
                       <CustomTag variant='success' title='30xp' />
                     </Flex>
+                    {/* Questions Wrapper */}
+                    <Flex vertical className='q-wrapper'>
+                      <li>
+                        <Checkbox className='q-name-list'> HTML</Checkbox>
+                      </li>
+                      <li>
+                        <Checkbox className='q-name-list'> CSS</Checkbox>
+                      </li>
+                      <li>
+                        <Checkbox className='q-name-list'> JS</Checkbox>
+                      </li>
+                      <li>
+                        <Checkbox className='q-name-list'> React</Checkbox>
+                      </li>
+                    </Flex>
+                    {/* Buttons Wrapper */}
                     <Flex gap='middle' className='btns-wrapper'>
                       <PrimaryButton text='Skip' variant='secondary' />
-                      <PrimaryButton text='Submit' variant='primary' />
+                      <PrimaryButton text='Next' variant='dark' />
                     </Flex>
                   </div>
                 </Card>

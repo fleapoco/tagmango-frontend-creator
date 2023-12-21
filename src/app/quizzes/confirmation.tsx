@@ -31,14 +31,17 @@ const QuizzesConfirmation = () => {
               <Col span={12} key={i} className='quizzes-confirmation-card'>
                 <PrimaryCard>
                   <div className='content-wrapper'>
-                    <Title level={3}>Heading Title</Title>
-                    <p>Heading Title</p>
+                    <h2>Quiz Title Here</h2>
+                    <p>
+                      You're about to submit your quiz. Once you click Submit
+                      Quiz button you can not return to your quiz.
+                    </p>
                     <Flex gap='middle' justify='center'>
                       <PrimaryButton
                         text='Back To Questions'
                         variant='secondary'
                       />
-                      <PrimaryButton text='Submit Quizze' variant='dark' />
+                      <PrimaryButton text='Submit Quizze' variant='primary' />
                     </Flex>
                   </div>
                 </PrimaryCard>

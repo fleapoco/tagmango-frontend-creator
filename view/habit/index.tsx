@@ -1,5 +1,5 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { Calendar, CalendarProps, Col, Row, Typography } from 'antd';
+import { Button, Calendar, CalendarProps, Col, Row, Typography } from 'antd';
 import type { Dayjs } from 'dayjs';
 import { PrimaryButton } from '../../components/common/button';
 import { PrimaryCard } from '../../components/common/card';
@@ -55,7 +55,9 @@ export const Habit = () => {
                       <PrimaryCard
                         extra={
                           <>
-                            <CloseOutlined />
+                            <Button type='text' shape='circle' size='small'>
+                              <CloseOutlined size={2} />
+                            </Button>
                           </>
                         }
                       >

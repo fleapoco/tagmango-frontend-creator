@@ -7,6 +7,7 @@ import { PrimaryButton } from '../../../components/common/button';
 import { PrimaryCard } from '../../../components/common/card';
 import { CustomTag } from '../../../components/common/tag';
 import PageTitle from '../../../components/pagetitle';
+import QuizzesConfirmation from './confirmation';
 import QuizQuestions from './questions';
 
 const { Title } = Typography;
@@ -48,6 +49,8 @@ const QuizzesPage = () => {
       </div>
 
       <QuizQuestions />
+
+      <QuizzesConfirmation />
     </>
   );
 };

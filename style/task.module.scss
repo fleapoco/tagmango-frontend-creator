@@ -62,6 +62,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: #050505;
+        margin-bottom: 8px;
+      }
+      p {
+        margin: 0 0 30px 0;
+      }
     }
 
     .quizzes-confirmation-card {
@@ -98,6 +109,33 @@
             font-size: 17px;
             font-weight: 600;
             color: #050505;
+          }
+        }
+        .q-wrapper {
+          & > li {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 6px;
+            &:not(:last-child) {
+              margin-bottom: 15px;
+            }
+          }
+          margin-top: 20px;
+          .q-name-list {
+            width: 100%;
+            justify-content: space-between;
+            flex-direction: row-reverse;
+
+            &::after {
+              display: none;
+            }
+
+            span {
+              &:last-child {
+                padding: 0;
+                font-weight: 500;
+              }
+            }
           }
         }
         .btns-wrapper {
