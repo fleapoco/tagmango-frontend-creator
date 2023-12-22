@@ -1,4 +1,3 @@
-import { setLoading } from "@/redux/reducers/loader.reducer";
 import {
   CategoryType,
   CharitiesType,
@@ -8,36 +7,28 @@ import {
   IFetchAPICall,
   TaskAnalytics,
 } from "@/types";
-import { useAppDispatch } from "./useRedux";
 
 const useAPI = () => {
-  const dispatch = useAppDispatch();
-
   const http = async (path: string, options?: IFetchAPICall) => {
-    dispatch(setLoading(true));
     const token =
       localStorage.getItem("token") ??
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmMyZTYzODQzMDUxZGFkMTAyZjdiMyIsInJvbGVzIjpbImR1YWwiXSwiaWF0IjoxNzAzMDU0Mzk2LCJleHAiOjE3MDMxNDA3OTZ9.aLB9LRZIuk_MJgPsJC6DMDlIHIAjTadm2hb0Me9knck";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODQyZTY3ZTk4NjY2ODA0YzZmYzc5MCIsInJvbGVzIjpbImZhbl9jb21wbGV0ZWQiXSwiaWF0IjoxNzAzMTYyMjQwLCJleHAiOjE3MDMyNDg2NDB9.zs3cHPO9W541qBLraOMj6AFJ2Ep8bpjpwyW29AHEl6Y";
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path.replace(
       /^\/+/,
       ""
     )}`;
-    try {
-      const raw = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token ?? ""} `,
-          "Content-Type": "application/json",
-        },
-        method: options?.method ?? "GET",
-        body: options?.data ? JSON.stringify(options?.data) : undefined,
-      });
 
-      const data = await raw.json();
-      return data;
-    } catch (error: any) {
-    } finally {
-      dispatch(setLoading(false));
-    }
+    const raw = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token ?? ""} `,
+        "Content-Type": "application/json",
+      },
+      method: options?.method ?? "GET",
+      body: options?.data ? JSON.stringify(options?.data) : undefined,
+    });
+
+    const data = await raw.json();
+    return data;
   };
   const getTasks = ({
     query,

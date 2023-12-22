@@ -53,6 +53,7 @@ export interface GetTask {
   status: TaskStatus;
   title: string;
   type: TaskType;
+  groupId?: string;
 }
 
 export interface DataAnalyticsTypes {

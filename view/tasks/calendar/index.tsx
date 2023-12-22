@@ -25,6 +25,7 @@ export const CalendarTask = () => {
   const dispatch = useAppDispatch();
   const { getTodaysTasks, updateTask, taskCounts } = useAPI();
   const [task, setTasks] = useState<GetTask[]>();
+  const [checkedStatus, setCheckedStatus] = useState<boolean>(false);
 
   const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
     console.log(value.format("YYYY-MM-DD"), mode);
@@ -37,7 +38,10 @@ export const CalendarTask = () => {
     } catch (error) {}
   };
 
+  console.log(task);
+
   const onChange = async (e: CheckboxChangeEvent, task: GetTask) => {
+    setCheckedStatus(!checkedStatus);
     try {
       await updateTask(task.id ?? "", {
         status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
@@ -72,7 +76,7 @@ export const CalendarTask = () => {
                 </Title>
                 {task && (
                   <Row gutter={[0, 12]}>
-                    {task.map((e, i) => (
+                    {task.map((e) => (
                       <Col span={24} key={e.id}>
                         <PrimaryCard>
                           <Space
@@ -84,11 +88,7 @@ export const CalendarTask = () => {
                           >
                             <Space className="strike-check-box">
                               <Checkbox
-                                checked={
-                                  e.status === TaskStatus.COMPLETED
-                                    ? true
-                                    : false
-                                }
+                                checked={e.status === TaskStatus.COMPLETED}
                                 onChange={(event) => onChange(event, e)}
                               >
                                 {e.title}

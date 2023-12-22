@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { RadioChangeEvent } from "antd";
-import { Col, Flex, Radio, Row, Space } from "antd";
+import { Col, Flex, Radio, Row, Space, message } from "antd";
 import PageTitle from "../../components/pagetitle";
 
 import { initialTaskState } from "@/empty-state-objects/empty";
@@ -45,6 +45,7 @@ export const CreateTask = () => {
         ...initialTaskState,
         categoryId: categories.at(0)?.value,
       }));
+      message.success("Task Created");
     } catch (error) {}
   };
 
@@ -188,54 +189,58 @@ export const CreateTask = () => {
                         })
                       }
                     />
+
+                    <div className="form-group">
+                      <Row style={{ display: "flex", alignItems: "center" }}>
+                        <label htmlFor="type" style={{ marginRight: "30px" }}>
+                          Frequency
+                        </label>
+                        <Radio.Group
+                          onChange={onFrequencyChange}
+                          value={frequency}
+                        >
+                          <Space direction="horizontal">
+                            {frequencyArray.map((e) => (
+                              <Radio value={e}>{e}</Radio>
+                            ))}
+                          </Space>
+                        </Radio.Group>
+                      </Row>
+                    </div>
+                    {createTaskFormData.frequency === "bi-weekly" && (
+                      <Row gutter={24}>
+                        <Col span={12}>
+                          <FormInput
+                            label="First day of the Week"
+                            type="text"
+                            value={createTaskFormData.firstDayOfTheWeek}
+                            onChange={(e) =>
+                              setCreateTaskFormData({
+                                ...createTaskFormData,
+                                firstDayOfTheWeek: e.target.value,
+                              })
+                            }
+                          />
+                        </Col>
+                        <Col span={12}>
+                          <FormInput
+                            label="Second day of the Week"
+                            type="text"
+                            value={createTaskFormData.secondDayOfTheWeek}
+                            onChange={(e) =>
+                              setCreateTaskFormData({
+                                ...createTaskFormData,
+                                secondDayOfTheWeek: e.target.value,
+                              })
+                            }
+                          />
+                        </Col>
+                      </Row>
+                    )}
                   </>
                 )}
-
-                <div className="form-group">
-                  <Row style={{ display: "flex", alignItems: "center" }}>
-                    <label htmlFor="type" style={{ marginRight: "30px" }}>
-                      Frequency
-                    </label>
-                    <Radio.Group onChange={onFrequencyChange} value={frequency}>
-                      <Space direction="horizontal">
-                        {frequencyArray.map((e) => (
-                          <Radio value={e}>{e}</Radio>
-                        ))}
-                      </Space>
-                    </Radio.Group>
-                  </Row>
-                </div>
-                {createTaskFormData.frequency === "bi-weekly" && (
-                  <Row gutter={24}>
-                    <Col span={12}>
-                      <FormInput
-                        label="First day of the Week"
-                        type="text"
-                        value={createTaskFormData.firstDayOfTheWeek}
-                        onChange={(e) =>
-                          setCreateTaskFormData({
-                            ...createTaskFormData,
-                            firstDayOfTheWeek: e.target.value,
-                          })
-                        }
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <FormInput
-                        label="Second day of the Week"
-                        type="text"
-                        value={createTaskFormData.secondDayOfTheWeek}
-                        onChange={(e) =>
-                          setCreateTaskFormData({
-                            ...createTaskFormData,
-                            secondDayOfTheWeek: e.target.value,
-                          })
-                        }
-                      />
-                    </Col>
-                  </Row>
-                )}
               </div>
+
               <Flex gap={"middle"} justify="end">
                 <PrimaryButton text="Cancel" variant="secondary" />
                 <PrimaryButton

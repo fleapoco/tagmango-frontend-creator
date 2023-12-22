@@ -28,7 +28,7 @@ const Task = () => {
   const counts = useAppSelector(getTasksCounts);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
-  const debouncedQuery = useDebounce<string>(searchQuery, 500);
+  const debouncedQuery = useDebounce<string>(searchQuery, 300);
   const { getTasks, taskCounts, deleteTask } = useAPI();
 
   const storedTasks: GetTask[] = useAppSelector(getTaskStored);
@@ -120,10 +120,10 @@ const Task = () => {
                 taskName: "Total Tasks Pending",
                 count: counts.pending,
               },
-              {
-                taskName: "Total Tasks In Progress",
-                count: counts.inProgress,
-              },
+              // {
+              //   taskName: "Total Tasks In Progress",
+              //   count: counts.inProgress,
+              // },
             ].map((ele, i) => (
               <Col key={i} span={6}>
                 <PrimaryCard title={ele.taskName}>

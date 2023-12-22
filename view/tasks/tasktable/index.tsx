@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { CategoryType, GetTask } from "@/types";
+import { CategoryType, GetTask, TaskType } from "@/types";
 import { Popconfirm, Popover, Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import dayjs from "dayjs";
@@ -11,7 +11,10 @@ interface DataType {
   title: string | null;
   category: CategoryType | null;
   endDate?: string | null;
+  startDate?: string | null;
   status: string;
+  groupId?: string;
+  type?: TaskType;
 }
 
 interface PropTypeForTable {
@@ -61,10 +64,23 @@ export const TaskTable = ({
       },
     },
     {
+      title: "Type",
+      dataIndex: "type",
+      render: (value, record) => {
+        return value;
+      },
+    },
+    {
       title: "Deadline",
       dataIndex: "startDate",
       render: (value, record) => {
-        return dayjs(value).format("MM/DD/YYYY");
+        if (record.type === TaskType.ONE_TIME) {
+          return dayjs(record.startDate).format("MM/DD/YYYY");
+        } else {
+          return `${dayjs(record.startDate).format("MM/DD/YYYY")}-${dayjs(
+            record.endDate
+          ).format("MM/DD/YYYY")}`;
+        }
       },
     },
     {
@@ -86,7 +102,7 @@ export const TaskTable = ({
                 Edit
               </span>
               <Popconfirm
-                onConfirm={() => handleDelete(record?.id ?? "")}
+                onConfirm={() => handleDelete(record?.groupId ?? "")}
                 title="Are you sure to delete?"
                 okText="Yes"
                 cancelText="No"
