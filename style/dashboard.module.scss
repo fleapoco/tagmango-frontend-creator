@@ -54,6 +54,37 @@
         height: 100%;
         overflow-y: auto;
 
+        ul.ant-menu {
+          .ant-menu-submenu-open {
+            background: #f0f2f5;
+          }
+          .ant-menu-inline {
+            background: transparent;
+            li {
+              padding-left: 48px !important;
+              position: relative;
+              &:not(:last-child) {
+                margin-bottom: 0;
+              }
+              &::before {
+                background-color: #4a4a59;
+                height: 5px;
+                width: 5px;
+                border-radius: 50%;
+                content: '';
+                position: absolute;
+                top: calc(50% - 2.5px);
+                left: 33px;
+              }
+              &:hover {
+                &::before {
+                  background: #f18926;
+                }
+              }
+            }
+          }
+        }
+
         ul {
           li {
             border-radius: 6px;
@@ -73,6 +104,7 @@
               font-weight: 500;
               color: #65676b;
             }
+
             .ant-menu-submenu-title {
               padding-left: 0px !important;
               width: 100% !important;

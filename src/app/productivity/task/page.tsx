@@ -111,8 +111,8 @@ const Task = () => {
           </Col>
         </Row>
         {/* Task Total Count Section */}
-        <div className='task-count-wrapper p-r-b-l-15'>
-          <Row gutter={12} className=' '>
+        <div className='gray-box task-count-wrapper p-15'>
+          <Row gutter={[12, 0]} className=' '>
             {[
               {
                 taskName: 'Total Tasks completed',
@@ -129,14 +129,14 @@ const Task = () => {
             ].map((ele, i) => (
               <Col key={i} span={6}>
                 <PrimaryCard title={ele.taskName}>
-                  <h3 style={{ margin: 0 }}>{ele.count}</h3>
+                  <span style={{ margin: 0 }}>{ele.count}</span>
                 </PrimaryCard>
               </Col>
             ))}
           </Row>
         </div>
         {/* Calendar And My Task Tab Changing */}
-        <div className='gray-box p-15'>
+        <div>
           <Row>
             <Col span={24}>
               <Tabs defaultActiveKey='1' onChange={() => onChange}>

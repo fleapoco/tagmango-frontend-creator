@@ -1,14 +1,15 @@
 'use client';
 import useApi from '@/hooks/useApi';
-
 import type { MenuProps } from 'antd';
 import { Flex, Layout, Menu, Space, Typography } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { MdDashboard, MdDatasetLinked, MdOutlineQuiz } from 'react-icons/md';
 import { Analytics } from '../../../components/common/icons';
 import style from '../../../style/dashboard.module.scss';
+
 const { Sider, Content } = Layout;
 
 const { Title } = Typography;
@@ -28,7 +29,7 @@ const items: ItemType[] = [
     key: '1',
     label: 'Dashboard',
     link: '/',
-    icon: <Analytics />,
+    icon: <MdDashboard size={20} />,
   },
   {
     key: 'sub1',
@@ -39,20 +40,18 @@ const items: ItemType[] = [
         key: '3',
         label: 'Habits',
         link: '/productivity/habit',
-        icon: <Analytics />,
       },
       {
         key: '4',
         label: 'Tasks',
         link: '/productivity/task',
-        icon: <Analytics />,
       },
     ],
   },
   {
     key: '2',
     label: 'Data',
-    icon: <Analytics />,
+    icon: <MdDatasetLinked size={20} />,
     link: '/data',
   },
   {
@@ -64,7 +63,7 @@ const items: ItemType[] = [
   {
     key: '6',
     label: 'Quizzes',
-    icon: <Analytics />,
+    icon: <MdOutlineQuiz size={20} />,
     link: '/quizzes',
   },
 ];

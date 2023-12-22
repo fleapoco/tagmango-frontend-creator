@@ -1,3 +1,9 @@
+:root {
+  --primary-color: #f18926;
+  --accent-color: hsl(29, 87.9%, 90%);
+  --secondary-color: #0f2137;
+}
+
 body {
   max-width: 100%;
   margin: 0;
@@ -101,7 +107,7 @@ p {
   background: #ffff;
   border: 1px solid #f0f0f0;
   border-radius: 6px;
-  padding: 15px;
+  padding: 12px;
 
   .ant-card-head {
     padding: 0;
