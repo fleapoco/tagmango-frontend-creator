@@ -46,7 +46,11 @@ const CharityPage = () => {
             <div style={{ background: "#fff", padding: "15px" }}>
               <Row gutter={[24, 0]} className="filter-wrapper">
                 <Col span={6}>
-                  <FormInput type="search" placeholder="Search" />
+                  <FormInput
+                    type="search"
+                    placeholder="Search"
+                    label="Search"
+                  />
                 </Col>
                 <Col span={10}>
                   <div className="form-group filter-by">
@@ -63,6 +67,7 @@ const CharityPage = () => {
                 <Col span={8}>
                   <FormInput
                     type="date"
+                    label="Select Date"
                     placeholder="Select date"
                     onDateChange={(date, dateString) => {
                       setFilterDate(dateString);

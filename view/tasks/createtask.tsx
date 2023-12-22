@@ -9,6 +9,7 @@ import useAPI from "@/hooks/useApi";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { setTasks } from "@/redux/reducers/task.reducer";
 import { GetTask, TaskFrequency, TaskType, TypeCategory } from "@/types";
+import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
 import { FormSelect } from "../../components/form/select";
@@ -69,8 +70,19 @@ export const CreateTask = () => {
     fetchCategories();
   }, []);
 
+  const breadCrumbItems = [
+    {
+      title: "Task",
+      link: "/productivity/task",
+    },
+    {
+      title: "Create Task",
+    },
+  ];
+
   return (
     <>
+      <BreadCrumbNav item={breadCrumbItems} />
       <div className={`common-panel-wrapper`}>
         {/* Page Title */}
         <Row
@@ -243,10 +255,58 @@ export const CreateTask = () => {
 
               <Flex gap={"middle"} justify="end">
                 <PrimaryButton text="Cancel" variant="secondary" />
+
+                <div className="form-group">
+                  <Row style={{ display: "flex", alignItems: "center" }}>
+                    <label htmlFor="type" style={{ marginRight: "30px" }}>
+                      Frequency
+                    </label>
+                    <Radio.Group onChange={onFrequencyChange} value={frequency}>
+                      <Space direction="horizontal">
+                        {frequencyArray.map((e) => (
+                          <Radio value={e}>{e}</Radio>
+                        ))}
+                      </Space>
+                    </Radio.Group>
+                  </Row>
+                </div>
+                {createTaskFormData.frequency === "bi-weekly" && (
+                  <Row gutter={24}>
+                    <Col span={12}>
+                      <FormInput
+                        label="First day of the Week"
+                        type="text"
+                        value={createTaskFormData.firstDayOfTheWeek}
+                        onChange={(e) =>
+                          setCreateTaskFormData({
+                            ...createTaskFormData,
+                            firstDayOfTheWeek: e.target.value,
+                          })
+                        }
+                      />
+                    </Col>
+                    <Col span={12}>
+                      <FormInput
+                        label="Second day of the Week"
+                        type="text"
+                        value={createTaskFormData.secondDayOfTheWeek}
+                        onChange={(e) =>
+                          setCreateTaskFormData({
+                            ...createTaskFormData,
+                            secondDayOfTheWeek: e.target.value,
+                          })
+                        }
+                      />
+                    </Col>
+                  </Row>
+                )}
+              </Flex>
+              <Flex gap={"middle"} justify="end">
+                <PrimaryButton text="Cancel" variant="secondary" />
                 <PrimaryButton
                   onClick={() => handleSave()}
                   text="Save"
-                  variant="dark"
+                  variant="primary"
                 />
               </Flex>
             </Col>

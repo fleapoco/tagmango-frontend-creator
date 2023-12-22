@@ -3,6 +3,7 @@ import useAPI from "@/hooks/useApi";
 import { CharitiesType, TypeCategory } from "@/types";
 import { Col, Flex, Row, message } from "antd";
 import { useEffect, useState } from "react";
+import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
 import { FormSelect } from "../../components/form/select";
@@ -48,8 +49,19 @@ export const AddCharity = () => {
     fetchCategories();
   }, []);
 
+  const breadCrumbItems = [
+    {
+      title: "Charity",
+      link: "/charity",
+    },
+    {
+      title: "Add Charity",
+    },
+  ];
+
   return (
     <>
+      <BreadCrumbNav item={breadCrumbItems} />
       <div className={`common-panel-wrapper`}>
         {/* Page Title */}
         <Row
@@ -106,7 +118,7 @@ export const AddCharity = () => {
               <Flex gap="middle" justify="end">
                 <PrimaryButton variant="secondary" text="Cancel" />
                 <PrimaryButton
-                  variant="dark"
+                  variant="primary"
                   text="Save"
                   onClick={handleCreateCharity}
                 />

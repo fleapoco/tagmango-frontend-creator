@@ -3,7 +3,7 @@ import type { RadioChangeEvent } from "antd";
 import { Col, Row, Tabs } from "antd";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import style from "../../../style/task.module.scss";
+import style from "../../../../style/task.module.scss";
 
 import useAPI from "@/hooks/useApi";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -14,12 +14,13 @@ import {
 } from "@/redux/reducers/task-counts.reducer";
 import { getTaskStored, setTasks } from "@/redux/reducers/task.reducer";
 import { GetTask } from "@/types";
-import { PrimaryButton } from "../../../components/common/button";
-import { PrimaryCard } from "../../../components/common/card";
-import { FormInput } from "../../../components/form/input";
-import PageTitle from "../../../components/pagetitle";
-import { CalendarTask } from "../../../view/tasks/calendar";
-import { TaskTable } from "../../../view/tasks/tasktable";
+import { PrimaryButton } from "../../../../components/common/button";
+import { PrimaryCard } from "../../../../components/common/card";
+import { AddIcon } from "../../../../components/common/icons";
+import { FormInput } from "../../../../components/form/input";
+import PageTitle from "../../../../components/pagetitle";
+import { CalendarTask } from "../../../../view/tasks/calendar";
+import { TaskTable } from "../../../../view/tasks/tasktable";
 
 const { TabPane } = Tabs;
 
@@ -28,7 +29,7 @@ const Task = () => {
   const counts = useAppSelector(getTasksCounts);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
-  const debouncedQuery = useDebounce<string>(searchQuery, 300);
+  const debouncedQuery = useDebounce<string>(searchQuery, 500);
   const { getTasks, taskCounts, deleteTask } = useAPI();
 
   const storedTasks: GetTask[] = useAppSelector(getTaskStored);
@@ -73,7 +74,7 @@ const Task = () => {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push("/task/addtask");
+    router.push("/productivity/task/addtask");
   };
 
   const search = (e: ChangeEvent<HTMLInputElement>) => {
@@ -103,14 +104,15 @@ const Task = () => {
           <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
             <PrimaryButton
               text="New Task"
+              icon={<AddIcon />}
               variant="dark"
               onClick={handleButtonClick}
             />
           </Col>
         </Row>
         {/* Task Total Count Section */}
-        <div className="task-count-wrapper p-r-b-l-15">
-          <Row gutter={12} className=" ">
+        <div className="gray-box task-count-wrapper p-15">
+          <Row gutter={[12, 0]} className=" ">
             {[
               {
                 taskName: "Total Tasks completed",
@@ -127,14 +129,14 @@ const Task = () => {
             ].map((ele, i) => (
               <Col key={i} span={6}>
                 <PrimaryCard title={ele.taskName}>
-                  <h3 style={{ margin: 0 }}>{ele.count}</h3>
+                  <span style={{ margin: 0 }}>{ele.count}</span>
                 </PrimaryCard>
               </Col>
             ))}
           </Row>
         </div>
         {/* Calendar And My Task Tab Changing */}
-        <div className="gray-box p-15">
+        <div>
           <Row>
             <Col span={24}>
               <Tabs defaultActiveKey="1" onChange={() => onChange}>

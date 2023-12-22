@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { CategoryType, GetTask, TaskType } from "@/types";
-import { Popconfirm, Popover, Table } from "antd";
+import { Button, Popconfirm, Popover, Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import dayjs from "dayjs";
 import { PrimaryButton } from "../../../components/common/button";
@@ -93,23 +93,35 @@ export const TaskTable = ({
       key: "x",
       render: (text, record, index) => (
         <Popover
+          placement="top"
           content={
-            <div style={{ width: "130px", padding: "5px" }}>
-              <span
+            <>
+              <Button
+                type="text"
                 onClick={() => handlePopoverOpen(index)}
-                style={{ display: "block", marginBottom: "12px" }}
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                  marginBottom: "8px",
+                }}
               >
                 Edit
-              </span>
+              </Button>
+
               <Popconfirm
                 onConfirm={() => handleDelete(record?.groupId ?? "")}
                 title="Are you sure to delete?"
                 okText="Yes"
                 cancelText="No"
               >
-                Delete
+                <Button
+                  style={{ width: "100%", textAlign: "left" }}
+                  type="text"
+                >
+                  Delete
+                </Button>
               </Popconfirm>
-            </div>
+            </>
           }
           trigger="click"
           open={openPopoverIndex === index}

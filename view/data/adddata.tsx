@@ -4,11 +4,12 @@ import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
 import useApi from "@/hooks/useApi";
 import { DataAnalyticsTypes } from "@/types";
 import { Col, Flex, Row } from "antd";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
 import PageTitle from "../../components/pagetitle";
+import { useRouter } from "next/router";
 
 export const AddData = () => {
   const router = useRouter();
@@ -25,8 +26,19 @@ export const AddData = () => {
     } catch (error) {}
   };
 
+  const breadCrumbItems = [
+    {
+      title: "Data",
+      link: "/productivity/task",
+    },
+    {
+      title: "Add Data",
+    },
+  ];
+
   return (
     <>
+      <BreadCrumbNav item={breadCrumbItems} />
       <div className={`common-panel-wrapper`}>
         {/* Page Title */}
         <Row
@@ -137,7 +149,7 @@ export const AddData = () => {
               <Flex gap="middle" justify="end">
                 <PrimaryButton variant="secondary" text="Cancel" />
                 <PrimaryButton
-                  variant="dark"
+                  variant="primary"
                   text="Save"
                   onClick={handleCreateAnalytics}
                 />

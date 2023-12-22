@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import type { RadioChangeEvent } from "antd";
-import { Col, Row, Tabs, Typography } from "antd";
-import { useRouter } from "next/navigation";
-import style from "../../style/task.module.scss";
+import type { RadioChangeEvent } from 'antd';
+import { Col, Row, Tabs, Typography } from 'antd';
+import { useRouter } from 'next/navigation';
+import style from '../../style/task.module.scss';
 
-import useAPI from "@/hooks/useApi";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import useAPI from '@/hooks/useApi';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import {
   getDataAnalyticsStored,
   setDataAnalytics,
-} from "@/redux/reducers/data-analytic.reducer";
-import { PrimaryButton } from "../../components/common/button";
-import PageTitle from "../../components/pagetitle";
-import { BusinessData } from "./businessdata";
-import { BusinessStatistics } from "./businessstatistics";
+} from '@/redux/reducers/data-analytic.reducer';
+import { PrimaryButton } from '../../components/common/button';
+import { AddIcon } from '../../components/common/icons';
+import PageTitle from '../../components/pagetitle';
+import { BusinessData } from './businessdata';
+import { BusinessStatistics } from './businessstatistics';
 
 const { TabPane } = Tabs;
 
@@ -27,7 +28,7 @@ export const Data = () => {
   const [value, setValue] = useState(1);
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
+    console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
 
@@ -45,7 +46,7 @@ export const Data = () => {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push("/data/adddata");
+    router.push('/data/adddata');
   };
 
   const handleDeleteAnalytics = async (id: string) => {
@@ -57,34 +58,35 @@ export const Data = () => {
 
   return (
     <>
-      <div className={`${style["task-page"]} common-panel-wrapper`}>
+      <div className={`${style['task-page']} common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
+          justify={'space-between'}
+          style={{ alignItems: 'center' }}
+          className='p-15'
         >
           <Col span={12}>
-            <PageTitle title="Data" />
+            <PageTitle title='Data' />
           </Col>
-          <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
+          <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
             <PrimaryButton
-              text="Add Data"
-              variant="dark"
+              text='Add Data'
+              icon={<AddIcon />}
+              variant='dark'
               onClick={handleButtonClick}
             />
           </Col>
         </Row>
 
         {/* Calendar And My Task Tab Changing */}
-        <div className="gray-box p-15">
+        <div className='gray-box p-15'>
           <Row>
             <Col span={24}>
-              <Tabs defaultActiveKey="1" onChange={() => onChange}>
-                <TabPane tab="Business Statistics" key="1">
+              <Tabs defaultActiveKey='1' onChange={() => onChange}>
+                <TabPane tab='Business Statistics' key='1'>
                   <BusinessStatistics />
                 </TabPane>
-                <TabPane tab="Business Data" key="2">
+                <TabPane tab='Business Data' key='2'>
                   <BusinessData
                     data={storedAnalytics || []}
                     handleDelete={(id) => handleDeleteAnalytics(id)}
@@ -92,7 +94,7 @@ export const Data = () => {
                       page: number,
                       pageSize: number
                     ): void {
-                      throw new Error("Function not implemented.");
+                      throw new Error('Function not implemented.');
                     }}
                     CountData={0}
                     dataPerPage={0}
