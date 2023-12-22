@@ -7,8 +7,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdDashboard, MdDatasetLinked, MdOutlineQuiz } from "react-icons/md";
-import { Analytics } from "../../../components/common/icons";
-import style from "../../../style/dashboard.module.scss";
+
+import { Analytics } from "./common/icons";
+import style from "/style/dashboard.module.scss";
 
 const { Sider, Content } = Layout;
 

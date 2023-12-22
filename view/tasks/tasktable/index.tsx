@@ -56,13 +56,15 @@ export const TaskTable = ({
       title: "Task",
       dataIndex: "title",
     },
+
     {
       title: "Category",
       dataIndex: "category",
       render: (value, record) => {
-        return record.category?.title;
+        return record.category?.title ?? "";
       },
     },
+
     {
       title: "Type",
       dataIndex: "type",
@@ -70,6 +72,7 @@ export const TaskTable = ({
         return value;
       },
     },
+
     {
       title: "Deadline",
       dataIndex: "startDate",
@@ -83,6 +86,7 @@ export const TaskTable = ({
         }
       },
     },
+
     {
       title: "Status",
       dataIndex: "status",
