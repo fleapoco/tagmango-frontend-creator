@@ -14,9 +14,9 @@ export const initialTaskState: GetTask = {
 
   endDate: null,
   endTime: null,
-  firstDayOfTheWeek: "",
+  firstDayOfTheWeek: null,
   frequency: TaskFrequency.DAILY,
-  secondDayOfTheWeek: "",
+  secondDayOfTheWeek: null,
   points: 0,
   startDate: null,
   startTime: null,

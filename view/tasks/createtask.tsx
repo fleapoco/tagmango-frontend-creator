@@ -39,15 +39,33 @@ export const CreateTask = () => {
 
   const handleSave = async () => {
     try {
-      await createTask(createTaskFormData);
+      await createTask({
+        ...createTaskFormData,
+        firstDayOfTheWeek:
+          createTaskFormData.frequency === TaskFrequency.BI_WEEKLY
+            ? createTaskFormData.firstDayOfTheWeek
+            : null,
+        secondDayOfTheWeek:
+          createTaskFormData.frequency === TaskFrequency.BI_WEEKLY
+            ? createTaskFormData.secondDayOfTheWeek
+            : null,
+
+        endDate:
+          createTaskFormData.type === TaskType.RECURRING
+            ? createTaskFormData.endDate
+            : null,
+      });
       const tasks = await getTasks({});
       dispatch(setTasks(tasks));
       setCreateTaskFormData((initialTaskState) => ({
         ...initialTaskState,
         categoryId: categories.at(0)?.value,
       }));
-      message.success("Task Created");
-    } catch (error) {}
+      if (tasks) message.success("Task Created");
+    } catch (error: any) {
+      console.log(error);
+      message.error(error.response?.data?.message ?? error.message);
+    }
   };
 
   const fetchCategories = async () => {
@@ -127,8 +145,10 @@ export const CreateTask = () => {
                   </label>
                   <Radio.Group onChange={onChange} value={value}>
                     <Space direction="horizontal">
-                      {typeArray.map((e) => (
-                        <Radio value={e}>{e}</Radio>
+                      {typeArray.map((e, i) => (
+                        <Radio key={i} value={e}>
+                          {e}
+                        </Radio>
                       ))}
                     </Space>
                   </Radio.Group>
@@ -212,8 +232,10 @@ export const CreateTask = () => {
                           value={frequency}
                         >
                           <Space direction="horizontal">
-                            {frequencyArray.map((e) => (
-                              <Radio value={e}>{e}</Radio>
+                            {frequencyArray.map((e, i) => (
+                              <Radio key={i} value={e}>
+                                {e}
+                              </Radio>
                             ))}
                           </Space>
                         </Radio.Group>
@@ -225,7 +247,7 @@ export const CreateTask = () => {
                           <FormInput
                             label="First day of the Week"
                             type="text"
-                            value={createTaskFormData.firstDayOfTheWeek}
+                            value={createTaskFormData.firstDayOfTheWeek ?? ""}
                             onChange={(e) =>
                               setCreateTaskFormData({
                                 ...createTaskFormData,
@@ -238,7 +260,7 @@ export const CreateTask = () => {
                           <FormInput
                             label="Second day of the Week"
                             type="text"
-                            value={createTaskFormData.secondDayOfTheWeek}
+                            value={createTaskFormData.secondDayOfTheWeek ?? ""}
                             onChange={(e) =>
                               setCreateTaskFormData({
                                 ...createTaskFormData,
@@ -253,54 +275,6 @@ export const CreateTask = () => {
                 )}
               </div>
 
-              <Flex gap={"middle"} justify="end">
-                <PrimaryButton text="Cancel" variant="secondary" />
-
-                <div className="form-group">
-                  <Row style={{ display: "flex", alignItems: "center" }}>
-                    <label htmlFor="type" style={{ marginRight: "30px" }}>
-                      Frequency
-                    </label>
-                    <Radio.Group onChange={onFrequencyChange} value={frequency}>
-                      <Space direction="horizontal">
-                        {frequencyArray.map((e) => (
-                          <Radio value={e}>{e}</Radio>
-                        ))}
-                      </Space>
-                    </Radio.Group>
-                  </Row>
-                </div>
-                {createTaskFormData.frequency === "bi-weekly" && (
-                  <Row gutter={24}>
-                    <Col span={12}>
-                      <FormInput
-                        label="First day of the Week"
-                        type="text"
-                        value={createTaskFormData.firstDayOfTheWeek}
-                        onChange={(e) =>
-                          setCreateTaskFormData({
-                            ...createTaskFormData,
-                            firstDayOfTheWeek: e.target.value,
-                          })
-                        }
-                      />
-                    </Col>
-                    <Col span={12}>
-                      <FormInput
-                        label="Second day of the Week"
-                        type="text"
-                        value={createTaskFormData.secondDayOfTheWeek}
-                        onChange={(e) =>
-                          setCreateTaskFormData({
-                            ...createTaskFormData,
-                            secondDayOfTheWeek: e.target.value,
-                          })
-                        }
-                      />
-                    </Col>
-                  </Row>
-                )}
-              </Flex>
               <Flex gap={"middle"} justify="end">
                 <PrimaryButton text="Cancel" variant="secondary" />
                 <PrimaryButton

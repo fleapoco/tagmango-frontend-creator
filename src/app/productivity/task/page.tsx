@@ -86,6 +86,7 @@ const Task = () => {
     try {
       await deleteTask(id);
       _getTasks();
+      getTaskCounts();
     } catch (error) {}
   };
 

@@ -44,9 +44,9 @@ export interface GetTask {
   categoryId?: string | null;
   endDate: string | null;
   endTime: string | null;
-  firstDayOfTheWeek: string;
+  firstDayOfTheWeek: string | null;
   frequency: TaskFrequency;
-  secondDayOfTheWeek: string;
+  secondDayOfTheWeek: string | null;
   points: number;
   startDate: string | null;
   startTime: string | null;

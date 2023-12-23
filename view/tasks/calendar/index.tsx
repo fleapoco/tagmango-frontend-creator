@@ -25,8 +25,10 @@ export const CalendarTask = () => {
   const dispatch = useAppDispatch();
   const { getTodaysTasks, updateTask, taskCounts } = useAPI();
   const [task, setTasks] = useState<GetTask[]>();
-  const [checkedStatus, setCheckedStatus] = useState<boolean>(false);
-
+  const [debouncedChecked, setDebouncedChecked] = useState<{
+    taskId: string;
+    status: TaskStatus;
+  } | null>(null);
   const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
     console.log(value.format("YYYY-MM-DD"), mode);
   };
@@ -38,19 +40,33 @@ export const CalendarTask = () => {
     } catch (error) {}
   };
 
-  console.log(task);
-
-  const onChange = async (e: CheckboxChangeEvent, task: GetTask) => {
-    setCheckedStatus(!checkedStatus);
+  const debouncedUpdateTask = async (taskId: string, status: TaskStatus) => {
     try {
-      await updateTask(task.id ?? "", {
-        status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
-      });
+      await updateTask(taskId, { status });
       _getTodayTasks();
       const counts = await taskCounts();
       dispatch(setTaskCounts({ ...counts }));
     } catch (error) {}
   };
+
+  const onChange = (e: CheckboxChangeEvent, task: GetTask) => {
+    setDebouncedChecked({
+      taskId: task.id ?? "",
+      status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
+    });
+  };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (debouncedChecked !== null) {
+      timer = setTimeout(() => {
+        debouncedUpdateTask(debouncedChecked.taskId, debouncedChecked.status);
+        setDebouncedChecked(null);
+      }, 600);
+    }
+
+    return () => clearTimeout(timer);
+  }, [debouncedChecked]);
 
   useEffect(() => {
     _getTodayTasks();
@@ -88,7 +104,9 @@ export const CalendarTask = () => {
                           >
                             <Space className="strike-check-box">
                               <Checkbox
-                                checked={e.status === TaskStatus.COMPLETED}
+                                defaultChecked={
+                                  e.status === TaskStatus.COMPLETED
+                                }
                                 onChange={(event) => onChange(event, e)}
                               >
                                 {e.title}
