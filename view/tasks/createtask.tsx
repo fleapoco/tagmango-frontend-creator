@@ -9,6 +9,7 @@ import useAPI from "@/hooks/useApi";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { setTasks } from "@/redux/reducers/task.reducer";
 import { GetTask, TaskFrequency, TaskType, TypeCategory } from "@/types";
+import dayjs from "dayjs";
 import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
@@ -38,6 +39,11 @@ export const CreateTask = () => {
   };
 
   const handleSave = async () => {
+    if (
+      dayjs(createTaskFormData.startDate).format("YYYY-MM-DD") <
+      dayjs(new Date()).format("YYYY-MM-DD")
+    )
+      return message.error("Invalid start date");
     try {
       await createTask({
         ...createTaskFormData,
@@ -57,13 +63,15 @@ export const CreateTask = () => {
       });
       const tasks = await getTasks({});
       dispatch(setTasks(tasks));
-      setCreateTaskFormData((initialTaskState) => ({
+      setCreateTaskFormData({
         ...initialTaskState,
         categoryId: categories.at(0)?.value,
-      }));
-      if (tasks) message.success("Task Created");
+      });
+
+      message.success("Task Created");
     } catch (error: any) {
       console.log(error);
+      message.error(error.message);
       message.error(error.response?.data?.message ?? error.message);
     }
   };
@@ -160,6 +168,7 @@ export const CreateTask = () => {
                   <FormInput
                     label="Date"
                     type="date"
+                    value={createTaskFormData.startDate ?? ""}
                     onDateChange={(date, dateString) =>
                       setCreateTaskFormData({
                         ...createTaskFormData,
@@ -189,6 +198,7 @@ export const CreateTask = () => {
                       <Col span={12}>
                         <FormInput
                           label="Start Date"
+                          value={createTaskFormData.startDate ?? ""}
                           type="date"
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
@@ -202,6 +212,7 @@ export const CreateTask = () => {
                         <FormInput
                           label="End Date"
                           type="date"
+                          value={createTaskFormData.endDate ?? ""}
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
                               ...createTaskFormData,

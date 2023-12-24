@@ -1,4 +1,4 @@
-import { Breadcrumb } from 'antd';
+import { Breadcrumb } from "antd";
 
 export type BreadCrumbItems = {
   title: string;
@@ -14,8 +14,12 @@ export const BreadCrumbNav = ({ item }: BreadCrumbProps) => {
     <>
       <Breadcrumb>
         {item.map((item, i) => (
-          <Breadcrumb.Item>
-            {item.link ? <a href={item.link}>{item.title}</a> : item.title}
+          <Breadcrumb.Item key={i}>
+            {item.link ? (
+              <a href={item.link as string}>{item.title}</a>
+            ) : (
+              item.title
+            )}
           </Breadcrumb.Item>
         ))}
       </Breadcrumb>

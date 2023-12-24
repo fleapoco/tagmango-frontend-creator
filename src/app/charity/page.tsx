@@ -1,5 +1,6 @@
 "use client";
 
+import { initialCharitiesState } from "@/empty-state-objects/empty";
 import useAPI from "@/hooks/useApi";
 import { CharitiesType } from "@/types";
 import { Col, Row, message } from "antd";
@@ -8,10 +9,13 @@ import { DisplayGraph } from "../../../components/common/graph";
 import { FormInput } from "../../../components/form/input";
 import { FormSelect } from "../../../components/form/select";
 import { Charity } from "../../../view/charity";
+import UpdateCharityModal from "../../../view/charity/update-charity-modal";
 
 const CharityPage = () => {
   const { getCharities, deleteCharity } = useAPI();
   const [charities, setCharities] = useState<CharitiesType[]>([]);
+  const [charity, setCharity] = useState<CharitiesType>(initialCharitiesState);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [filterDate, setFilterDate] = useState<string>("");
 
   console.log({ filterDate });
@@ -35,6 +39,11 @@ const CharityPage = () => {
     } catch (error) {}
   };
 
+  const handleUpdateCharityButton = (record: CharitiesType) => {
+    setCharity(record);
+    setOpenModal(true);
+  };
+
   return (
     <>
       <div className="gray-box p-15 charity-table">
@@ -47,7 +56,7 @@ const CharityPage = () => {
               <Row gutter={[24, 0]} className="filter-wrapper">
                 <Col span={6}>
                   <FormInput
-                    type="search"
+                    type={"search"}
                     placeholder="Search"
                     label="Search"
                   />
@@ -87,9 +96,15 @@ const CharityPage = () => {
                 CountData={0}
                 dataPerPage={0}
                 currentPage={0}
+                handleUpdate={(record) => handleUpdateCharityButton(record)}
               />
             </div>
           </Col>
+          <UpdateCharityModal
+            charityData={charity}
+            open={openModal}
+            onCancel={() => setOpenModal(false)}
+          />
         </Row>
       </div>
     </>

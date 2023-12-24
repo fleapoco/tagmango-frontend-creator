@@ -24,6 +24,17 @@ export enum TypeCategory {
   TASK = "task",
   CHARITY = "charity",
 }
+export enum FormInputType {
+  SEARCH = "search",
+  TEXT = "text",
+  PASSWORD = "password",
+  EMAIL = "email",
+  DATE = "date",
+  TIME = "time",
+  MONTH = "month",
+  WEEK = "week",
+  NUMBER = "number",
+}
 
 export interface TaskAnalytics {
   total: number;
@@ -57,7 +68,7 @@ export interface GetTask {
 }
 
 export interface DataAnalyticsTypes {
-  id?: string;
+  id: string;
   revenueEarned?: number;
   adSpends?: number;
   costPerLead?: number;
@@ -78,8 +89,11 @@ export interface CategoryType {
 export interface CharitiesType {
   id?: string;
   organizationName: string;
-  amount?: number;
-  category: CategoryType | null;
+  amount: number;
+  category?: CategoryType | null;
   categoryId?: string | null;
-  createdAt: string;
+}
+
+export interface UpdateCharityType extends CharitiesType {
+  id: string;
 }

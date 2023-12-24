@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import type { DatePickerProps } from "antd";
 import { DatePicker, Input, TimePicker } from "antd";
@@ -33,7 +33,6 @@ interface Props {
 }
 
 export const FormInput = (props: Props) => {
-  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
   return (
     <>
       <div className="form-group">
@@ -41,14 +40,15 @@ export const FormInput = (props: Props) => {
 
         {props.type === "date" ? (
           <DatePicker
+            value={dayjs(props.value) || dayjs()}
             onChange={(date, dateString) => {
               props.onDateChange?.(date, dateString);
-              setStartDate(date);
             }}
             style={{ width: "100%", padding: "7.5px 12px" }}
           />
         ) : props.type === "time" ? (
           <TimePicker
+            // value={dayjs(props.value)}
             style={{ width: "100%", padding: "7.5px 12px" }}
             defaultValue={dayjs("00:00:00", "HH:mm:ss")}
             onChange={(time, timeString) => {
@@ -58,6 +58,7 @@ export const FormInput = (props: Props) => {
         ) : props.type === "month" ? (
           <DatePicker
             picker="month"
+            value={dayjs(props.value) || dayjs()}
             style={{ width: "100%", padding: "7.5px 12px" }}
             onChange={(date, dateString) => {
               props.onDateChange?.(date, dateString);
@@ -65,6 +66,7 @@ export const FormInput = (props: Props) => {
           />
         ) : props.type === "week" ? (
           <DatePicker
+            // value={dayjs(props.value)}
             picker="week"
             style={{ width: "100%", padding: "7.5px 12px" }}
           />

@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { CharitiesType } from '@/types';
-import { Button, Col, Popconfirm, Popover, Row, Table } from 'antd';
-import type { ColumnsType, TableProps } from 'antd/es/table';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/navigation';
-import { PrimaryButton } from '../../components/common/button';
-import { AddIcon } from '../../components/common/icons';
-import PageTitle from '../../components/pagetitle';
-import style from '../../style/task.module.scss';
+import { CharitiesType } from "@/types";
+import { Button, Col, Popconfirm, Popover, Row, Table } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { PrimaryButton } from "../../components/common/button";
+import { AddIcon } from "../../components/common/icons";
+import PageTitle from "../../components/pagetitle";
+import style from "../../style/task.module.scss";
 
 // interface DataType {
 //   createdAt: string;
@@ -21,24 +21,26 @@ import style from '../../style/task.module.scss';
 interface PropTypeForTable {
   data: CharitiesType[];
   handleDelete: (id: string) => void;
+  handleUpdate: (record: CharitiesType) => void;
   handlePagination: (page: number, pageSize: number) => void;
   CountData: number;
   dataPerPage: number;
   currentPage: number;
 }
 
-const onChange: TableProps<Partial<CharitiesType>>['onChange'] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log('params', pagination, filters, sorter, extra);
-};
+// const onChange: TableProps<Partial<CharitiesType>>["onChange"] = (
+//   pagination,
+//   filters,
+//   sorter,
+//   extra
+// ) => {
+//   console.log("params", pagination, filters, sorter, extra);
+// };
 
 export const Charity = ({
   data,
   handleDelete,
+  handleUpdate,
   handlePagination,
   dataPerPage,
   CountData,
@@ -53,72 +55,75 @@ export const Charity = ({
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push('/charity/addcharity');
+    router.push("/charity/addcharity");
   };
 
-  const columns: ColumnsType<Partial<CharitiesType>> = [
+  const columns: ColumnsType<CharitiesType> = [
     {
-      title: 'Date',
-      dataIndex: 'createdAt',
+      title: "Date",
+      dataIndex: "createdAt",
       render: (value, record) => {
-        return dayjs(value).format('DD-MM-YYYY');
+        return dayjs(value).format("DD-MM-YYYY");
       },
     },
     {
-      title: 'Category',
-      dataIndex: 'category',
+      title: "Category",
+      dataIndex: "category",
+      render: (value, record) => {
+        return record.category?.title;
+      },
     },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
+      title: "Amount",
+      dataIndex: "amount",
     },
     {
-      title: 'Organization Name',
-      dataIndex: 'organizationName',
+      title: "Organization Name",
+      dataIndex: "organizationName",
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
+      title: "Status",
+      dataIndex: "status",
       render: () => {
-        return 'completed';
+        return "completed";
       },
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'x',
+      title: "",
+      dataIndex: "",
+      key: "x",
       render: (text, record, index) => (
         <Popover
-          placement='top'
+          placement="top"
           content={
             <>
               <Button
-                type='text'
-                onClick={() => handlePopoverOpen(index)}
+                type="text"
+                onClick={() => handleUpdate(record)}
                 style={{
-                  width: '100%',
-                  textAlign: 'left',
-                  marginBottom: '8px',
+                  width: "100%",
+                  textAlign: "left",
+                  marginBottom: "8px",
                 }}
               >
                 Edit
               </Button>
               <Popconfirm
-                onConfirm={() => handleDelete(record?.id ?? '')}
-                title='Are you sure to delete?'
-                okText='Yes'
-                cancelText='No'
+                onConfirm={() => handleDelete(record?.id ?? "")}
+                title="Are you sure to delete?"
+                okText="Yes"
+                cancelText="No"
               >
                 <Button
-                  style={{ width: '100%', textAlign: 'left' }}
-                  type='text'
+                  style={{ width: "100%", textAlign: "left" }}
+                  type="text"
                 >
                   Delete
                 </Button>
               </Popconfirm>
             </>
           }
-          trigger='click'
+          trigger="click"
           open={openPopoverIndex === index}
           onOpenChange={(visible) => {
             if (!visible) {
@@ -127,8 +132,8 @@ export const Charity = ({
           }}
         >
           <PrimaryButton
-            text=''
-            variant='info'
+            text=""
+            variant="info"
             onClick={() => handlePopoverOpen(index)}
           />
         </Popover>
@@ -138,26 +143,30 @@ export const Charity = ({
 
   return (
     <>
-      <div className={`${style['charity-page']} common-panel-wrapper`}>
+      <div className={`${style["charity-page"]} common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={'space-between'}
-          style={{ alignItems: 'center' }}
-          className='p-15'
+          justify={"space-between"}
+          style={{ alignItems: "center" }}
+          className="p-15"
         >
           <Col span={12}>
-            <PageTitle title='Charity' />
+            <PageTitle title="Charity" />
           </Col>
-          <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
+          <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
             <PrimaryButton
-              text='Add Data'
+              text="Add Data"
               icon={<AddIcon />}
-              variant='dark'
+              variant="dark"
               onClick={handleButtonClick}
             />
           </Col>
         </Row>
-        <Table columns={columns} dataSource={data} onChange={onChange} />
+        <Table
+          columns={columns}
+          dataSource={data}
+          // onChange={onChange}
+        />
       </div>
     </>
   );

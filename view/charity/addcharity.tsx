@@ -2,6 +2,7 @@ import { initialCharitiesState } from "@/empty-state-objects/empty";
 import useAPI from "@/hooks/useApi";
 import { CharitiesType, TypeCategory } from "@/types";
 import { Col, Flex, Row, message } from "antd";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
@@ -10,25 +11,30 @@ import { FormSelect } from "../../components/form/select";
 import PageTitle from "../../components/pagetitle";
 
 export const AddCharity = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
   const { createCharities, getCategories } = useAPI();
   const [categories, setCategories] = useState<
     { value: string; label: string }[]
   >([]);
-  const [fromData, setFormData] = useState<Partial<CharitiesType>>(
+  const [formData, setFormData] = useState<CharitiesType>(
     initialCharitiesState
   );
 
   const handleCreateCharity = async () => {
+    setLoading(true);
     try {
-      await createCharities(fromData);
+      await createCharities(formData);
       setFormData((initialCharitiesState) => ({
         ...initialCharitiesState,
         categoryId: categories.at(0)?.value,
       }));
 
       message.success("charity added");
+      router.push("/charity");
     } catch (error) {
     } finally {
+      setLoading(false);
     }
   };
 
@@ -80,12 +86,12 @@ export const AddCharity = () => {
                 label="Category"
                 options={categories}
                 handleChange={(value) =>
-                  setFormData((fromData) => ({
-                    ...fromData,
+                  setFormData((formData) => ({
+                    ...formData,
                     categoryId: value,
                   }))
                 }
-                value={fromData.categoryId}
+                value={formData.categoryId}
               />
             </Col>
             <Col span={24}>
@@ -94,9 +100,9 @@ export const AddCharity = () => {
                 label="Amount Donated"
                 icon={"₹"}
                 type="number"
-                value={fromData.amount}
+                value={formData.amount}
                 onChange={(e) =>
-                  setFormData({ ...fromData, amount: Number(e.target.value) })
+                  setFormData({ ...formData, amount: Number(e.target.value) })
                 }
               />
             </Col>
@@ -105,10 +111,10 @@ export const AddCharity = () => {
                 placeholder=""
                 label="Organisation Name"
                 type="text"
-                value={fromData.organizationName}
+                value={formData.organizationName}
                 onChange={(e) =>
                   setFormData({
-                    ...fromData,
+                    ...formData,
                     organizationName: e.target.value,
                   })
                 }
@@ -116,10 +122,16 @@ export const AddCharity = () => {
             </Col>
             <Col span={24}>
               <Flex gap="middle" justify="end">
-                <PrimaryButton variant="secondary" text="Cancel" />
                 <PrimaryButton
+                  variant="secondary"
+                  text="Cancel"
+                  onClick={() => router.push("/charity")}
+                />
+                <PrimaryButton
+                  disabled={!formData.organizationName || !formData.amount}
                   variant="primary"
                   text="Save"
+                  loading={loading}
                   onClick={handleCreateCharity}
                 />
               </Flex>

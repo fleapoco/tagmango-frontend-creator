@@ -6,6 +6,7 @@ import {
   Row,
   Space,
   Typography,
+  message,
 } from "antd";
 import type { Dayjs } from "dayjs";
 import style from "../../../style/task.module.scss";
@@ -44,6 +45,7 @@ export const CalendarTask = () => {
     try {
       await updateTask(taskId, { status });
       _getTodayTasks();
+      message.success("status updated");
       const counts = await taskCounts();
       dispatch(setTaskCounts({ ...counts }));
     } catch (error) {}

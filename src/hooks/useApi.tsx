@@ -6,6 +6,7 @@ import {
   GetTasksQuery,
   IFetchAPICall,
   TaskAnalytics,
+  UpdateCharityType,
 } from "@/types";
 
 const useAPI = () => {
@@ -91,7 +92,7 @@ const useAPI = () => {
     return http(`/analytics/create`, { method: "POST", data });
   };
 
-  const createCharities = (data: Partial<CharitiesType>) => {
+  const createCharities = (data: CharitiesType) => {
     return http(`/charities/create`, { method: "POST", data });
   };
 
@@ -121,6 +122,20 @@ const useAPI = () => {
   //     return http(`/fire-number`, { method: "PUT", data });
   //   };
 
+  const updateDataAnalytic = (
+    id: string,
+    data: Partial<DataAnalyticsTypes>
+  ): Promise<DataAnalyticsTypes[]> => {
+    return http(`/analytics/${id}`, { method: "PATCH", data });
+  };
+
+  const updateCharity = (
+    id: string,
+    data: Partial<UpdateCharityType>
+  ): Promise<CharitiesType[]> => {
+    return http(`/charities/${id}`, { method: "PATCH", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -135,6 +150,8 @@ const useAPI = () => {
     getCharities,
     deleteCharity,
     getCategories,
+    updateDataAnalytic,
+    updateCharity,
   };
 };
 
