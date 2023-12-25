@@ -1,34 +1,34 @@
-"use client";
-import type { RadioChangeEvent } from "antd";
-import { Col, Row, Tabs } from "antd";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
-import style from "../../../../style/task.module.scss";
+'use client';
+import type { RadioChangeEvent } from 'antd';
+import { Col, Row, Tabs } from 'antd';
+import { useRouter } from 'next/navigation';
+import { ChangeEvent, useEffect, useState } from 'react';
+import style from '../../../../style/task.module.scss';
 
-import useAPI from "@/hooks/useApi";
-import { useDebounce } from "@/hooks/useDebounce";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import useAPI from '@/hooks/useApi';
+import { useDebounce } from '@/hooks/useDebounce';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import {
   getTasksCounts,
   setTaskCounts,
-} from "@/redux/reducers/task-counts.reducer";
-import { getTaskStored, setTasks } from "@/redux/reducers/task.reducer";
-import { GetTask } from "@/types";
-import { PrimaryButton } from "../../../../components/common/button";
-import { PrimaryCard } from "../../../../components/common/card";
-import { AddIcon } from "../../../../components/common/icons";
-import { FormInput } from "../../../../components/form/input";
-import PageTitle from "../../../../components/pagetitle";
-import { CalendarTask } from "../../../../view/tasks/calendar";
-import { TaskTable } from "../../../../view/tasks/tasktable";
+} from '@/redux/reducers/task-counts.reducer';
+import { getTaskStored, setTasks } from '@/redux/reducers/task.reducer';
+import { GetTask } from '@/types';
+import { PrimaryButton } from '../../../../components/common/button';
+import { PrimaryCard } from '../../../../components/common/card';
+import { AddIcon } from '../../../../components/common/icons';
+import { FormInput } from '../../../../components/form/input';
+import PageTitle from '../../../../components/pagetitle';
+import { CalendarTask } from '../../../../view/tasks/calendar';
+import { TaskTable } from '../../../../view/tasks/tasktable';
 
 const { TabPane } = Tabs;
 
 const Task = () => {
   const dispatch = useAppDispatch();
   const counts = useAppSelector(getTasksCounts);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('');
   const debouncedQuery = useDebounce<string>(searchQuery, 500);
   const { getTasks, taskCounts, deleteTask } = useAPI();
 
@@ -68,13 +68,13 @@ const Task = () => {
   const [value, setValue] = useState(1);
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
+    console.log('radio checked', e.target.value);
     setValue(e.target.value);
   };
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push("/productivity/task/addtask");
+    router.push('/productivity/task/addtask');
   };
 
   const search = (e: ChangeEvent<HTMLInputElement>) => {
@@ -92,35 +92,35 @@ const Task = () => {
 
   return (
     <>
-      <div className={`${style["task-page"]} common-panel-wrapper`}>
+      <div className={`${style['task-page']} common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
+          justify={'space-between'}
+          style={{ alignItems: 'center' }}
+          className='p-15'
         >
           <Col span={12}>
-            <PageTitle title="Tasks" />
+            <PageTitle title='Tasks' />
           </Col>
-          <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
+          <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
             <PrimaryButton
-              text="New Task"
+              text='New Task'
               icon={<AddIcon />}
-              variant="dark"
+              variant='dark'
               onClick={handleButtonClick}
             />
           </Col>
         </Row>
         {/* Task Total Count Section */}
-        <div className="gray-box task-count-wrapper p-15">
-          <Row gutter={[12, 0]} className=" ">
+        <div className='gray-box task-count-wrapper p-15'>
+          <Row gutter={[12, 0]} className=' '>
             {[
               {
-                taskName: "Total Tasks completed",
+                taskName: 'Total Tasks completed',
                 count: counts.completed,
               },
               {
-                taskName: "Total Tasks Pending",
+                taskName: 'Total Tasks Pending',
                 count: counts.pending,
               },
               // {
@@ -137,43 +137,41 @@ const Task = () => {
           </Row>
         </div>
         {/* Calendar And My Task Tab Changing */}
-        <div>
-          <Row>
-            <Col span={24}>
-              <Tabs defaultActiveKey="1" onChange={() => onChange}>
-                <TabPane tab="Calendar" key="1">
-                  <CalendarTask />
-                </TabPane>
-                <TabPane tab="My Tasks" key="2">
-                  <div className="my-tasks-wrapper">
-                    <div className="table-wrapper">
-                      <FormInput
-                        type="search"
-                        placeholder="Search"
-                        onChange={(e) => search(e)}
-                        value={searchQuery}
-                      />
+        <Row>
+          <Col span={24}>
+            <Tabs defaultActiveKey='1' onChange={() => onChange}>
+              <TabPane tab='Calendar' key='1'>
+                <CalendarTask />
+              </TabPane>
+              <TabPane tab='My Tasks' key='2'>
+                <div className='my-tasks-wrapper'>
+                  <div className='table-wrapper'>
+                    <FormInput
+                      type='search'
+                      placeholder='Search'
+                      onChange={(e) => search(e)}
+                      value={searchQuery}
+                    />
 
-                      <TaskTable
-                        data={storedTasks}
-                        handleDelete={(id) => handleDeleteTask(id)}
-                        handlePagination={function (
-                          page: number,
-                          pageSize: number
-                        ): void {
-                          throw new Error("Function not implemented.");
-                        }}
-                        CountData={0}
-                        dataPerPage={0}
-                        currentPage={0}
-                      />
-                    </div>
+                    <TaskTable
+                      data={storedTasks}
+                      handleDelete={(id) => handleDeleteTask(id)}
+                      handlePagination={function (
+                        page: number,
+                        pageSize: number
+                      ): void {
+                        throw new Error('Function not implemented.');
+                      }}
+                      CountData={0}
+                      dataPerPage={0}
+                      currentPage={0}
+                    />
                   </div>
-                </TabPane>
-              </Tabs>
-            </Col>
-          </Row>
-        </div>
+                </div>
+              </TabPane>
+            </Tabs>
+          </Col>
+        </Row>
       </div>
     </>
   );
