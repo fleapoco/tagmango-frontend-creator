@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Card } from 'antd';
 import { PrimaryButton } from './button';
 const { Meta } = Card;
@@ -12,7 +10,6 @@ export const EventsCard = () => {
   return (
     <>
       <Card
-        hoverable
         className='events-card'
         style={{ width: '100%' }}
         cover={

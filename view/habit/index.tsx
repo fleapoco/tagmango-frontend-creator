@@ -35,7 +35,7 @@ export const Habit = () => {
           </Col>
           {/* Habits Cards Wrapper Start */}
           <Col span={8}>
-            <div className='complete-you-tasks-cards border-box'>
+            <div className='border-box habit-cards'>
               <Title level={5} className='sub-title' style={{ marginTop: '0' }}>
                 Complete today's Habits
               </Title>

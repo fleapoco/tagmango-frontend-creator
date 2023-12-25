@@ -87,7 +87,7 @@ export const CalendarTask = () => {
             </div>
           </Col>
           <Col span={8}>
-            <div className='complete-you-tasks-cards border-box'>
+            <div className='complete-you-tasks-cards border-box tasks-card'>
               <Row>
                 <Title
                   level={5}

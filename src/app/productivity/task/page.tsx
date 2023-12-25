@@ -124,7 +124,7 @@ const Task = () => {
                 count: counts.pending,
               },
             ].map((ele, i) => (
-              <Col key={i} span={6}>
+              <Col key={i} span={6} className='count-card'>
                 <PrimaryCard title={ele.taskName}>
                   <span style={{ margin: 0 }}>{ele.count}</span>
                 </PrimaryCard>
