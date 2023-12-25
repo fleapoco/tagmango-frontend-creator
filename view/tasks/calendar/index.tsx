@@ -76,7 +76,7 @@ export const CalendarTask = () => {
 
   return (
     <>
-      <div className={`${style['charity-page']}`}>
+      <div className={`${style['task-page-calendar']}`}>
         <Row gutter={[16, 0]}>
           <Col span={16}>
             <div className='border-box'>
@@ -89,7 +89,11 @@ export const CalendarTask = () => {
           <Col span={8}>
             <div className='complete-you-tasks-cards border-box'>
               <Row>
-                <Title level={4} className='sub-title'>
+                <Title
+                  level={5}
+                  className='sub-title'
+                  style={{ marginTop: '0' }}
+                >
                   Complete today's Tasks (5)
                 </Title>
                 {task && (

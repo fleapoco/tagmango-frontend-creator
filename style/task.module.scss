@@ -16,6 +16,21 @@
     }
   }
 }
+.task-page-calendar :global {
+  .complete-you-tasks-cards {
+    h5 {
+      margin-bottom: 18px;
+    }
+    .ant-card {
+      padding: 16px;
+      background-color: #f8f9fc;
+      border-radius: 6px;
+      width: -webkit-max-content;
+      width: max-content;
+      border: 0;
+    }
+  }
+}
 
 .charity-page :global {
   .charity-table {
@@ -174,6 +189,9 @@
 
 .habit-page :global {
   .complete-you-tasks-cards {
+    h5 {
+      margin-bottom: 18px;
+    }
     .ant-card {
       padding: 16px;
       background-color: #f8f9fc;
@@ -181,17 +199,22 @@
       width: -webkit-max-content;
       width: max-content;
       border: 0;
-    }
-    .ant-card-extra {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      cursor: pointer;
-    }
-    h5 {
-      font-size: 14px;
-      font-weight: 600;
-      margin: 10px 0px 16px;
+
+      .ant-tag {
+        font-size: 10px;
+        line-height: 16px;
+      }
+      .ant-card-extra {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+      }
+      h5 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 8px 0px 10px;
+      }
     }
   }
 }
