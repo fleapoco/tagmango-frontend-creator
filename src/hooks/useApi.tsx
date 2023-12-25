@@ -17,7 +17,7 @@ const useAPI = () => {
     dispatch(setLoading(true));
     const token =
       localStorage.getItem('token') ??
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZmMyZTYzODQzMDUxZGFkMTAyZjdiMyIsInJvbGVzIjpbImNyZWF0b3JfY29tcGxldGVkIl0sImJhZGdlSWRzIjpbIjEyMmUzNWQ5LWQ5YzctNDkwOS1hMWFhLTZkMzAyNTM4YjU4NSIsIjg0Mjg5ODdlLWUzNGYtNDZkNy04ODg2LTJjYjRmODUyYTEwMyIsIjMzNDM4MmQ2LWUwOTktNGM0My1iNTU5LWYwOTMxMDkzNGQ4NCJdLCJpYXQiOjE3MDMxNDIwNTYsImV4cCI6MTcwMzIyODQ1Nn0.w2DtJ-d1QqcgDA73a58PKTS4lVpV3R3wU_OsQjLJVTQ';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODQyZTY3ZTk4NjY2ODA0YzZmYzc5MCIsInJvbGVzIjpbImZhbl9jb21wbGV0ZWQiXSwiaXNDcmVhdG9yIjpmYWxzZSwidXNlckNyZWF0b3JJZCI6IjMzNDM4MmQ2LWUwOTktNGM0My1iNTU5LWYwOTMxMDkzNGQ4OSIsImlhdCI6MTcwMzI0OTc2NiwiZXhwIjoxNzAzMzM2MTY2fQ.EvIIztDwxQddTVQp8btV45_MsR96yjQhMcDGqhKRuMA';
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path.replace(
       /^\/+/,
       ''

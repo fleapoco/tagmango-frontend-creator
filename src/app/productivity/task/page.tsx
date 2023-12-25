@@ -136,43 +136,41 @@ const Task = () => {
           </Row>
         </div>
         {/* Calendar And My Task Tab Changing */}
-        <div>
-          <Row>
-            <Col span={24}>
-              <Tabs defaultActiveKey='1' onChange={() => onChange}>
-                <TabPane tab='Calendar' key='1'>
-                  <CalendarTask />
-                </TabPane>
-                <TabPane tab='My Tasks' key='2'>
-                  <div className='my-tasks-wrapper'>
-                    <div className='table-wrapper'>
-                      <FormInput
-                        type='search'
-                        placeholder='Search'
-                        onChange={(e) => search(e)}
-                        value={searchQuery}
-                      />
+        <Row>
+          <Col span={24}>
+            <Tabs defaultActiveKey='1' onChange={() => onChange}>
+              <TabPane tab='Calendar' key='1'>
+                <CalendarTask />
+              </TabPane>
+              <TabPane tab='My Tasks' key='2'>
+                <div className='my-tasks-wrapper'>
+                  <div className='table-wrapper'>
+                    <FormInput
+                      type='search'
+                      placeholder='Search'
+                      onChange={(e) => search(e)}
+                      value={searchQuery}
+                    />
 
-                      <TaskTable
-                        data={storedTasks}
-                        handleDelete={(id) => handleDeleteTask(id)}
-                        handlePagination={function (
-                          page: number,
-                          pageSize: number
-                        ): void {
-                          throw new Error('Function not implemented.');
-                        }}
-                        CountData={0}
-                        dataPerPage={0}
-                        currentPage={0}
-                      />
-                    </div>
+                    <TaskTable
+                      data={storedTasks}
+                      handleDelete={(id) => handleDeleteTask(id)}
+                      handlePagination={function (
+                        page: number,
+                        pageSize: number
+                      ): void {
+                        throw new Error('Function not implemented.');
+                      }}
+                      CountData={0}
+                      dataPerPage={0}
+                      currentPage={0}
+                    />
                   </div>
-                </TabPane>
-              </Tabs>
-            </Col>
-          </Row>
-        </div>
+                </div>
+              </TabPane>
+            </Tabs>
+          </Col>
+        </Row>
       </div>
     </>
   );

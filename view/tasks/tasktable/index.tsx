@@ -127,31 +127,12 @@ export const TaskTable = ({
 
   return (
     <>
-      <div style={{ background: '#fff', padding: '15px' }}>
-        {/* <FormInput type="search" placeholder="Search" value={""} /> */}
-        <Table columns={columns} dataSource={data} onChange={onChange} />
-      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        onChange={onChange}
+        className='table-main'
+      />
     </>
   );
 };
-
-{
-  /* <DatePicker
-                style={{ width: "100%", padding: "7.5px 12px" }}
-                onChange={(date, dateString) =>
-                  setCreateTaskFormData({
-                    ...createTaskFormData,
-                    startDate: dateString,
-                  })
-                }
-              />
-              <TimePicker
-                style={{ width: "100%", padding: "7.5px 12px" }}
-                defaultOpenValue={dayjs("00:00:00", "HH:mm:ss")}
-                onChange={(time, timeString) =>
-                  setCreateTaskFormData({
-                    ...createTaskFormData,
-                    startTime: timeString,
-                  })
-                } */
-}

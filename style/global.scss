@@ -73,6 +73,9 @@ p {
 .p-r-b-l-15 {
   padding: 0 15px 15px 15px;
 }
+.ant-tabs-nav-list {
+  margin-left: 15px;
+}
 .vertical-content {
   position: absolute;
   left: 0;
@@ -101,6 +104,19 @@ p {
   align-items: stretch;
   margin: 15px auto;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1019607843);
+}
+
+.table-main {
+  .ant-table {
+    border-radius: 0 !important;
+    thead {
+      tr {
+        th {
+          padding: 16px;
+        }
+      }
+    }
+  }
 }
 
 .card {
