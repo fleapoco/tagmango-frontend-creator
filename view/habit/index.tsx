@@ -15,8 +15,9 @@ export const Habit = () => {
   };
   return (
     <>
-      <div className={`${style['habit-page']} common-panel-wrapper`}>
+      <div className={`${style['habit-page']}`}>
         {/* Page Title */}
+
         <Row
           justify={'space-between'}
           style={{ alignItems: 'center' }}
@@ -27,21 +28,17 @@ export const Habit = () => {
           </Col>
         </Row>
         {/* Calendar And Complete habits Cards */}
-        <div className='gray-box p-15'>
+        <div className='p-15'>
           <Row gutter={[16, 0]}>
             {/* Calendar Start */}
             <Col span={16}>
-              <div style={{ background: '#fff', padding: '15px' }}>
+              <div className='border-box'>
                 <Calendar onPanelChange={onPanelChange} />
               </div>
             </Col>
             {/* Habits Cards Wrapper Start */}
             <Col span={8}>
-              <div
-                className='complete-you-tasks-cards'
-                style={{ background: '#fff', padding: '15px' }}
-              >
-                {' '}
+              <div className='complete-you-tasks-cards border-box'>
                 <Title
                   level={5}
                   className='sub-title'

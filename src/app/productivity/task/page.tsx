@@ -16,7 +16,7 @@ import { getTaskStored, setTasks } from '@/redux/reducers/task.reducer';
 import { GetTask } from '@/types';
 import { PrimaryButton } from '../../../../components/common/button';
 import { PrimaryCard } from '../../../../components/common/card';
-import { AddIcon } from '../../../../components/common/icons';
+import { AddIcon, SearchIcon } from '../../../../components/common/icons';
 import { FormInput } from '../../../../components/form/input';
 import PageTitle from '../../../../components/pagetitle';
 import { CalendarTask } from '../../../../view/tasks/calendar';
@@ -106,7 +106,7 @@ const Task = () => {
             <PrimaryButton
               text='New Task'
               icon={<AddIcon />}
-              variant='dark'
+              variant='secondary'
               onClick={handleButtonClick}
             />
           </Col>
@@ -123,10 +123,6 @@ const Task = () => {
                 taskName: 'Total Tasks Pending',
                 count: counts.pending,
               },
-              // {
-              //   taskName: "Total Tasks In Progress",
-              //   count: counts.inProgress,
-              // },
             ].map((ele, i) => (
               <Col key={i} span={6}>
                 <PrimaryCard title={ele.taskName}>
@@ -141,32 +137,39 @@ const Task = () => {
           <Col span={24}>
             <Tabs defaultActiveKey='1' onChange={() => onChange}>
               <TabPane tab='Calendar' key='1'>
-                <CalendarTask />
+                <div className='p-15'>
+                  <CalendarTask />
+                </div>
               </TabPane>
               <TabPane tab='My Tasks' key='2'>
                 <div className='my-tasks-wrapper'>
-                  <div className='table-wrapper'>
-                    <FormInput
-                      type='search'
-                      placeholder='Search'
-                      onChange={(e) => search(e)}
-                      value={searchQuery}
-                    />
+                  <Row className='p-15 table-searching-functionality'>
+                    <Col span={10}>
+                      <FormInput
+                        type='search'
+                        variant='dark'
+                        placeholder='Search'
+                        icon={<SearchIcon />}
+                        onChange={(e) => search(e)}
+                        value={searchQuery}
+                      />
+                    </Col>
+                  </Row>
 
-                    <TaskTable
-                      data={storedTasks}
-                      handleDelete={(id) => handleDeleteTask(id)}
-                      handlePagination={function (
-                        page: number,
-                        pageSize: number
-                      ): void {
-                        throw new Error('Function not implemented.');
-                      }}
-                      CountData={0}
-                      dataPerPage={0}
-                      currentPage={0}
-                    />
-                  </div>
+                  <TaskTable
+                    data={storedTasks}
+                    handleDelete={(id) => handleDeleteTask(id)}
+                    handlePagination={function (
+                      page: number,
+                      pageSize: number
+                    ): void {
+                      throw new Error('Function not implemented.');
+                    }}
+                    CountData={0}
+                    dataPerPage={0}
+                    currentPage={0}
+                    p
+                  />
                 </div>
               </TabPane>
             </Tabs>

@@ -28,6 +28,14 @@ body {
     padding: 8px 0;
   }
 }
+.dark-variant-input {
+  background: rgb(228, 230, 235);
+  border: 0;
+  & input {
+    padding-left: 10px !important;
+    background: transparent;
+  }
+}
 h2.ant-typography.page-title {
   font-weight: 600;
   font-size: 20px;
@@ -64,6 +72,13 @@ p {
   font-weight: 400;
   margin-bottom: 20px;
 }
+.border-box {
+  border: 1px solid #dedee3;
+  border-radius: 6px;
+  background-color: #fff;
+  overflow: hidden;
+  padding: 24px;
+}
 .gray-box {
   background: #fafafa;
 }
@@ -73,8 +88,16 @@ p {
 .p-r-b-l-15 {
   padding: 0 15px 15px 15px;
 }
+.ant-tabs-nav {
+  margin-bottom: 0 !important;
+}
 .ant-tabs-nav-list {
   margin-left: 15px;
+}
+.ant-breadcrumb-link {
+  a {
+    color: #f18926;
+  }
 }
 .vertical-content {
   position: absolute;
@@ -117,6 +140,15 @@ p {
       }
     }
   }
+}
+.ant-pagination {
+  padding: 15px;
+  margin: 0 !important;
+}
+.ant-pagination-prev,
+.ant-pagination-next {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #4a4a59;
 }
 
 .card {
@@ -174,7 +206,7 @@ p {
 .site-btn {
   height: auto !important;
   border-radius: 4px !important;
-  padding: 10px 25px !important;
+  padding: 0 15px !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,10 +228,15 @@ p {
   }
 
   &.secondary-btn {
+    height: 36px !important;
     background-color: #e4e6eb !important;
 
     span {
       color: #424242;
+    }
+    svg {
+      width: 20px;
+      height: 20px;
     }
   }
   &.sdark-btn {
@@ -226,6 +263,28 @@ p {
     svg {
       width: 18px !important;
       height: 18px !important;
+    }
+  }
+}
+.table-no-data-design {
+  padding: 48px 32px;
+  .content-wrapper {
+    width: 60%;
+    margin: 0 auto;
+    h4 {
+      font-weight: 500;
+      color: #424242;
+      font-size: 1.125rem;
+      margin: 15px 0 10px 0;
+    }
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #616161;
+      font-weight: 500;
+      line-height: 1.45;
+      display: block;
+      overflow-wrap: break-word;
     }
   }
 }

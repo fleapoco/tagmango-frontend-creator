@@ -5,6 +5,7 @@ import { Button, Popconfirm, Popover, Table } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { PrimaryButton } from '../../../components/common/button';
+import { TableNoData } from '../../../components/common/tablenodata';
 
 interface DataType {
   id?: string;
@@ -152,6 +153,9 @@ export const TaskTable = ({
         dataSource={data}
         onChange={onChange}
         className='table-main'
+        pagination={{ pageSize: 20 }}
+        scroll={{ y: 400, x: 900 }}
+        locale={{ emptyText: <TableNoData /> }}
       />
     </>
   );
