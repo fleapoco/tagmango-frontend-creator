@@ -1,72 +1,81 @@
-import React, { useState } from "react";
+import React from 'react';
 
-import type { DatePickerProps } from "antd";
-import { DatePicker, Input, TimePicker } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+import type { DatePickerProps } from 'antd';
+import { DatePicker, Input, TimePicker } from 'antd';
+import dayjs, { Dayjs } from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
-const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+const onChange: DatePickerProps['onChange'] = (date, dateString) => {
   console.log(date, dateString);
 };
 
 interface Props {
   label?: string;
   type?:
-    | "search"
-    | "text"
-    | "password"
-    | "email"
-    | "date"
-    | "time"
-    | "month"
-    | "week"
-    | "number";
+    | 'search'
+    | 'text'
+    | 'password'
+    | 'email'
+    | 'date'
+    | 'time'
+    | 'month'
+    | 'week'
+    | 'number';
   placeholder?: string;
+  variant?: 'dark';
   value?: string | number;
   icon?: React.ReactNode;
   required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => unknown;
   onTimeChange?: (time: any, timeString: string) => unknown;
   onDateChange?: (date: any, dateString: string) => unknown;
+  defaultDate?: Dayjs;
 }
 
 export const FormInput = (props: Props) => {
-  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
+  let _className = '';
+
+  if (props.variant === 'dark') _className += 'dark-variant-input ';
+  else _className += '';
+
   return (
     <>
-      <div className="form-group">
-        {props.label ? <label htmlFor="label">{props.label}</label> : ""}
+      <div className='form-group'>
+        {props.label ? <label htmlFor='label'>{props.label}</label> : ''}
 
-        {props.type === "date" ? (
+        {props.type === 'date' ? (
           <DatePicker
+            allowClear={false}
+            value={dayjs(props.value)}
             onChange={(date, dateString) => {
               props.onDateChange?.(date, dateString);
-              setStartDate(date);
             }}
-            style={{ width: "100%", padding: "7.5px 12px" }}
+            style={{ width: '100%', padding: '7.5px 12px' }}
           />
-        ) : props.type === "time" ? (
+        ) : props.type === 'time' ? (
           <TimePicker
-            style={{ width: "100%", padding: "7.5px 12px" }}
-            defaultValue={dayjs("00:00:00", "HH:mm:ss")}
+            style={{ width: '100%', padding: '7.5px 12px' }}
+            defaultValue={dayjs('00:00:00', 'HH:mm:ss')}
             onChange={(time, timeString) => {
               props.onTimeChange?.(time, timeString);
             }}
           />
-        ) : props.type === "month" ? (
+        ) : props.type === 'month' ? (
           <DatePicker
-            picker="month"
-            style={{ width: "100%", padding: "7.5px 12px" }}
+            allowClear={false}
+            picker='month'
+            value={dayjs(props.value)}
+            style={{ width: '100%', padding: '7.5px 12px' }}
             onChange={(date, dateString) => {
               props.onDateChange?.(date, dateString);
             }}
           />
-        ) : props.type === "week" ? (
+        ) : props.type === 'week' ? (
           <DatePicker
-            picker="week"
-            style={{ width: "100%", padding: "7.5px 12px" }}
+            picker='week'
+            style={{ width: '100%', padding: '7.5px 12px' }}
           />
         ) : (
           <Input
@@ -75,9 +84,10 @@ export const FormInput = (props: Props) => {
             prefix={props.icon}
             required={props.required ? props.required : false}
             type={props.type}
-            id="label"
+            className={_className}
+            id='label'
             value={props.value}
-            style={{ padding: "7.5px 12px" }}
+            style={{ padding: '7.5px 12px' }}
           />
         )}
       </div>

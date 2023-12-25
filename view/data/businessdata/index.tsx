@@ -5,23 +5,23 @@ import { Button, Popconfirm, Popover, Table } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { PrimaryButton } from '../../../components/common/button';
-import { FormInput } from '../../../components/form/input';
 
 interface DataType {
-  id?: string;
+  id: string;
   month: string;
-  revenueEarned: string;
-  adSpends: string;
-  costPerLead: string;
-  totalLeadsGenerated: string;
-  totalPaidCustomers: string;
-  vipGroupSize: string;
-  adSpendsReturn: string;
+  revenueEarned: number;
+  adSpends: number;
+  costPerLead: number;
+  totalLeadsGenerated: number;
+  totalPaidCustomers: number;
+  vipGroupSize: number;
+  adSpendsReturn: number;
 }
 
 interface PropTypeForTable {
   data: Partial<DataAnalyticsTypes[]>;
   handleDelete: (id: string) => void;
+  handleUpdate: (record: DataAnalyticsTypes) => void;
   handlePagination: (page: number, pageSize: number) => void;
   CountData: number;
   dataPerPage: number;
@@ -40,6 +40,8 @@ const onChange: TableProps<DataType>['onChange'] = (
 export const BusinessData = ({
   data,
   handleDelete,
+  handleUpdate,
+
   handlePagination,
   dataPerPage,
   CountData,
@@ -62,14 +64,17 @@ export const BusinessData = ({
     {
       title: 'Total Revenue Earned',
       dataIndex: 'revenueEarned',
+      width: 150,
     },
     {
       title: 'Total Ad Spends',
       dataIndex: 'adSpends',
+      width: 150,
     },
     {
       title: 'Average Cost/Lead',
       dataIndex: 'costPerLead',
+      width: 150,
     },
     {
       title: 'Total Leads Generated',
@@ -87,10 +92,13 @@ export const BusinessData = ({
       title: 'ROAS',
       dataIndex: 'adSpendsReturn',
     },
+
     {
       title: '',
       dataIndex: '',
       key: 'x',
+      fixed: 'right',
+      width: 100,
       render: (text, record, index) => (
         <Popover
           placement='top'
@@ -98,7 +106,7 @@ export const BusinessData = ({
             <>
               <Button
                 type='text'
-                onClick={() => handlePopoverOpen(index)}
+                onClick={() => handleUpdate(record)}
                 style={{
                   width: '100%',
                   textAlign: 'left',
@@ -142,9 +150,14 @@ export const BusinessData = ({
 
   return (
     <>
-      <div style={{ background: '#fff', padding: '15px' }}>
-        <FormInput type='search' placeholder='Search' />
-        <Table columns={columns} dataSource={data as any} onChange={onChange} />
+      <div style={{ paddingTop: '15px' }}>
+        <Table
+          columns={columns}
+          dataSource={data as any}
+          onChange={onChange}
+          pagination={{ pageSize: 20 }}
+          scroll={{ x: 1180, y: 200 }}
+        />
       </div>
     </>
   );

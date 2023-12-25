@@ -7,18 +7,19 @@ import {
   TaskStatus,
   TaskType,
 } from "@/types";
+import dayjs from "dayjs";
 
 export const initialTaskState: GetTask = {
   category: null,
   categoryId: null,
 
-  endDate: null,
+  endDate: dayjs().toString(),
   endTime: null,
-  firstDayOfTheWeek: "",
+  firstDayOfTheWeek: null,
   frequency: TaskFrequency.DAILY,
-  secondDayOfTheWeek: "",
+  secondDayOfTheWeek: null,
   points: 0,
-  startDate: null,
+  startDate: dayjs().toString(),
   startTime: null,
   status: TaskStatus.PENDING,
   title: "",
@@ -41,12 +42,12 @@ export const initialDataAnalyticsState: DataAnalyticsTypes = {
   totalPaidCustomers: 0,
   totalLeadsGenerated: 0,
   month: null,
+  id: "",
 };
 
 export const initialCharitiesState: CharitiesType = {
-  createdAt: "",
   organizationName: "",
   amount: 0,
-  category: null,
+
   categoryId: null,
 };

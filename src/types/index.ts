@@ -22,6 +22,18 @@ export enum TaskFrequency {
 }
 export enum TypeCategory {
   TASK = "task",
+  CHARITY = "charity",
+}
+export enum FormInputType {
+  SEARCH = "search",
+  TEXT = "text",
+  PASSWORD = "password",
+  EMAIL = "email",
+  DATE = "date",
+  TIME = "time",
+  MONTH = "month",
+  WEEK = "week",
+  NUMBER = "number",
 }
 
 export interface TaskAnalytics {
@@ -43,19 +55,20 @@ export interface GetTask {
   categoryId?: string | null;
   endDate: string | null;
   endTime: string | null;
-  firstDayOfTheWeek: string;
+  firstDayOfTheWeek: string | null;
   frequency: TaskFrequency;
-  secondDayOfTheWeek: string;
+  secondDayOfTheWeek: string | null;
   points: number;
   startDate: string | null;
   startTime: string | null;
   status: TaskStatus;
   title: string;
   type: TaskType;
+  groupId?: string;
 }
 
 export interface DataAnalyticsTypes {
-  id?: string;
+  id: string;
   revenueEarned?: number;
   adSpends?: number;
   costPerLead?: number;
@@ -67,7 +80,7 @@ export interface DataAnalyticsTypes {
 }
 
 export interface CategoryType {
-  id?: string;
+  id: string;
   creatorId: string;
   title: string;
   type: TypeCategory;
@@ -76,8 +89,12 @@ export interface CategoryType {
 export interface CharitiesType {
   id?: string;
   organizationName: string;
-  amount?: number;
-  category: CategoryType | null;
+  amount: number;
+  category?: CategoryType | null;
   categoryId?: string | null;
-  createdAt: string;
+  createdAt?: string | null;
+}
+
+export interface UpdateCharityType extends CharitiesType {
+  id: string;
 }

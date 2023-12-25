@@ -6,9 +6,16 @@ import SubMenu from 'antd/es/menu/SubMenu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { MdDashboard, MdDatasetLinked, MdOutlineQuiz } from 'react-icons/md';
-import { Analytics } from '../../../components/common/icons';
-import style from '../../../style/dashboard.module.scss';
+import {
+  MdDashboard,
+  MdDatasetLinked,
+  MdEmojiEvents,
+  MdOutlineQuiz,
+} from 'react-icons/md';
+
+import { Analytics } from './common/icons';
+import { Header } from './header';
+import style from '/style/dashboard.module.scss';
 
 const { Sider, Content } = Layout;
 
@@ -56,12 +63,18 @@ const items: ItemType[] = [
   },
   {
     key: '5',
+    label: 'Events',
+    icon: <MdEmojiEvents size={20} />,
+    link: '/events',
+  },
+  {
+    key: '6',
     label: 'Charity',
     icon: <Analytics />,
     link: '/charity',
   },
   {
-    key: '6',
+    key: '7',
     label: 'Quizzes',
     icon: <MdOutlineQuiz size={20} />,
     link: '/quizzes',
@@ -88,6 +101,7 @@ export default function PageLayout(props: Props) {
   return (
     <>
       <div className={`${style['dashboard-wrapper']}`}>
+        <Header />
         <Space direction='vertical' style={{ width: '100%' }}>
           <Layout className='main-layout'>
             <Sider className='sidebar-main'>

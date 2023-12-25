@@ -2,7 +2,7 @@
 
 import { Events } from "../../../view/events";
 
-export const EventsPage = () => {
+const EventsPage = () => {
   return (
     <>
       <Events />

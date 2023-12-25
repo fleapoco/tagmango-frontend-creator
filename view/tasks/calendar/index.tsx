@@ -6,27 +6,32 @@ import {
   Row,
   Space,
   Typography,
-} from "antd";
-import type { Dayjs } from "dayjs";
-import style from "../../../style/task.module.scss";
+  message,
+} from 'antd';
+import type { Dayjs } from 'dayjs';
+import style from '../../../style/task.module.scss';
 const { Title } = Typography;
 
-import useAPI from "@/hooks/useApi";
-import { useAppDispatch } from "@/hooks/useRedux";
-import { setTaskCounts } from "@/redux/reducers/task-counts.reducer";
-import { GetTask, TaskStatus } from "@/types";
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import { useEffect, useState } from "react";
-import { PrimaryCard } from "../../../components/common/card";
-import { CustomTag } from "../../../components/common/tag";
+import useAPI from '@/hooks/useApi';
+import { useAppDispatch } from '@/hooks/useRedux';
+import { setTaskCounts } from '@/redux/reducers/task-counts.reducer';
+import { GetTask, TaskStatus } from '@/types';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { PrimaryCard } from '../../../components/common/card';
+import { CustomTag } from '../../../components/common/tag';
 
 export const CalendarTask = () => {
   const dispatch = useAppDispatch();
   const { getTodaysTasks, updateTask, taskCounts } = useAPI();
   const [task, setTasks] = useState<GetTask[]>();
-
-  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
-    console.log(value.format("YYYY-MM-DD"), mode);
+  const [debouncedChecked, setDebouncedChecked] = useState<{
+    taskId: string;
+    status: TaskStatus;
+  } | null>(null);
+  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
+    console.log(value.format('YYYY-MM-DD'), mode);
   };
 
   const _getTodayTasks = async () => {
@@ -36,16 +41,34 @@ export const CalendarTask = () => {
     } catch (error) {}
   };
 
-  const onChange = async (e: CheckboxChangeEvent, task: GetTask) => {
+  const debouncedUpdateTask = async (taskId: string, status: TaskStatus) => {
     try {
-      await updateTask(task.id ?? "", {
-        status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
-      });
+      await updateTask(taskId, { status });
       _getTodayTasks();
+      message.success('status updated');
       const counts = await taskCounts();
       dispatch(setTaskCounts({ ...counts }));
     } catch (error) {}
   };
+
+  const onChange = (e: CheckboxChangeEvent, task: GetTask) => {
+    setDebouncedChecked({
+      taskId: task.id ?? '',
+      status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
+    });
+  };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (debouncedChecked !== null) {
+      timer = setTimeout(() => {
+        debouncedUpdateTask(debouncedChecked.taskId, debouncedChecked.status);
+        setDebouncedChecked(null);
+      }, 600);
+    }
+
+    return () => clearTimeout(timer);
+  }, [debouncedChecked]);
 
   useEffect(() => {
     _getTodayTasks();
@@ -53,48 +76,53 @@ export const CalendarTask = () => {
 
   return (
     <>
-      <div className={`${style["charity-page"]}`}>
+      <div className={`${style['task-page-calendar']}`}>
         <Row gutter={[16, 0]}>
           <Col span={16}>
-            <div style={{ background: "#fff", padding: "15px" }}>
-              <Calendar onPanelChange={onPanelChange} />
+            <div className='border-box'>
+              <Calendar
+                value={dayjs('2017-01-25')}
+                onPanelChange={onPanelChange}
+              />
             </div>
           </Col>
           <Col span={8}>
-            <div
-              className="complete-you-tasks-cards"
-              style={{ background: "#fff", padding: "15px" }}
-            >
+            <div className='complete-you-tasks-cards border-box tasks-card'>
               <Row>
-                <Title level={4} className="sub-title">
+                <Title
+                  level={5}
+                  className='sub-title'
+                  style={{ marginTop: '0' }}
+                >
                   Complete today's Tasks (5)
                 </Title>
                 {task && (
-                  <Row gutter={[0, 12]}>
-                    {task.map((e, i) => (
+                  <Row gutter={[0, 12]} style={{ width: '100%' }}>
+                    {task.map((e) => (
                       <Col span={24} key={e.id}>
                         <PrimaryCard>
                           <Space
                             style={{
-                              width: "100%",
-                              alignItems: "start",
-                              justifyContent: "space-between",
+                              width: '100%',
+                              alignItems: 'start',
+                              justifyContent: 'space-between',
                             }}
                           >
-                            <Space className="strike-check-box">
+                            <Space className='strike-check-box'>
                               <Checkbox
-                                checked={
+                                defaultChecked={
                                   e.status === TaskStatus.COMPLETED
-                                    ? true
-                                    : false
                                 }
                                 onChange={(event) => onChange(event, e)}
                               >
                                 {e.title}
                               </Checkbox>
                             </Space>
-                            <span className="mock-block">
-                              <CustomTag variant="gray" title="10:00PM" />
+                            <span className='mock-block'>
+                              <CustomTag
+                                variant='gray'
+                                title={dayjs(e.startTime).format('hh:mm')}
+                              />
                             </span>
                           </Space>
                         </PrimaryCard>

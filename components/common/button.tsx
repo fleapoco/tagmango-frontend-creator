@@ -8,6 +8,7 @@ interface ButtonProps {
   icon?: React.ReactNode;
   onClick?: () => void;
   loading?: boolean;
+  disabled?: boolean;
 }
 
 export const PrimaryButton = ({
@@ -15,6 +16,7 @@ export const PrimaryButton = ({
   variant,
   onClick,
   loading = false,
+  disabled = false,
   size,
   icon,
 }: ButtonProps) => {
@@ -61,6 +63,7 @@ export const PrimaryButton = ({
     <>
       <Button
         loading={loading}
+        disabled={disabled}
         type={ChangeType}
         className={_className}
         onClick={onClick}

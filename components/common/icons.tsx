@@ -36,3 +36,46 @@ export const AddIcon = () => {
     </svg>
   );
 };
+export const SearchIcon = () => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='16.402'
+      height='16.402'
+      viewBox='0 0 16.402 16.402'
+    >
+      <g id='loupe' transform='translate(0.25 0.25)' opacity='0.9'>
+        <g id='Group_4190' data-name='Group 4190' transform='translate(0 0)'>
+          <g id='Group_4189' data-name='Group 4189'>
+            <path
+              id='Path_707'
+              data-name='Path 707'
+              d='M7,0a7,7,0,1,0,7,7A7.011,7.011,0,0,0,7,0ZM7,12.713A5.71,5.71,0,1,1,12.713,7,5.717,5.717,0,0,1,7,12.713Z'
+              transform='translate(0 0)'
+              fill='#616161'
+              stroke='#616161'
+              stroke-width='0.5'
+            />
+          </g>
+        </g>
+        <g
+          id='Group_4192'
+          data-name='Group 4192'
+          transform='translate(10.903 10.903)'
+        >
+          <g id='Group_4191' data-name='Group 4191'>
+            <path
+              id='Path_708'
+              data-name='Path 708'
+              d='M355.855,354.941l-3.706-3.706a.646.646,0,0,0-.914.914l3.706,3.706a.646.646,0,0,0,.914-.914Z'
+              transform='translate(-351.046 -351.046)'
+              fill='#616161'
+              stroke='#616161'
+              stroke-width='0.5'
+            />
+          </g>
+        </g>
+      </g>
+    </svg>
+  );
+};

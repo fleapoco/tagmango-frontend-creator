@@ -1,44 +1,26 @@
 import { useState } from 'react';
 
 import { CharitiesType } from '@/types';
-import { Button, Col, Popconfirm, Popover, Row, Table } from 'antd';
-import type { ColumnsType, TableProps } from 'antd/es/table';
+import { Button, Popconfirm, Popover, Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { PrimaryButton } from '../../components/common/button';
-import { AddIcon } from '../../components/common/icons';
-import PageTitle from '../../components/pagetitle';
-import style from '../../style/task.module.scss';
-
-// interface DataType {
-//   createdAt: string;
-//   category?: string | null;
-//   amount: number;
-//   organizationName: string;
-//   status?: any;
-// }
 
 interface PropTypeForTable {
   data: CharitiesType[];
   handleDelete: (id: string) => void;
+  handleUpdate: (record: CharitiesType) => void;
   handlePagination: (page: number, pageSize: number) => void;
   CountData: number;
   dataPerPage: number;
   currentPage: number;
 }
 
-const onChange: TableProps<Partial<CharitiesType>>['onChange'] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log('params', pagination, filters, sorter, extra);
-};
-
 export const Charity = ({
   data,
   handleDelete,
+  handleUpdate,
   handlePagination,
   dataPerPage,
   CountData,
@@ -56,7 +38,7 @@ export const Charity = ({
     router.push('/charity/addcharity');
   };
 
-  const columns: ColumnsType<Partial<CharitiesType>> = [
+  const columns: ColumnsType<CharitiesType> = [
     {
       title: 'Date',
       dataIndex: 'createdAt',
@@ -67,6 +49,9 @@ export const Charity = ({
     {
       title: 'Category',
       dataIndex: 'category',
+      render: (value, record) => {
+        return record.category?.title;
+      },
     },
     {
       title: 'Amount',
@@ -94,7 +79,7 @@ export const Charity = ({
             <>
               <Button
                 type='text'
-                onClick={() => handlePopoverOpen(index)}
+                onClick={() => handleUpdate(record)}
                 style={{
                   width: '100%',
                   textAlign: 'left',
@@ -138,27 +123,11 @@ export const Charity = ({
 
   return (
     <>
-      <div className={`${style['charity-page']} common-panel-wrapper`}>
-        {/* Page Title */}
-        <Row
-          justify={'space-between'}
-          style={{ alignItems: 'center' }}
-          className='p-15'
-        >
-          <Col span={12}>
-            <PageTitle title='Charity' />
-          </Col>
-          <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
-            <PrimaryButton
-              text='Add Data'
-              icon={<AddIcon />}
-              variant='dark'
-              onClick={handleButtonClick}
-            />
-          </Col>
-        </Row>
-        <Table columns={columns} dataSource={data} onChange={onChange} />
-      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        // onChange={onChange}
+      />
     </>
   );
 };
