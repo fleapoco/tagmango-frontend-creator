@@ -77,7 +77,7 @@ const CharityPage = () => {
         </Row>
 
         <div className='p-r-b-l-15'>
-          <Row gutter={[0, 12]} className='border-box'>
+          <Row gutter={[0, 12]}>
             <Col span={24}>
               <DisplayGraph />
             </Col>

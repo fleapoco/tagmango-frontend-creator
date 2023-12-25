@@ -64,14 +64,17 @@ export const BusinessData = ({
     {
       title: 'Total Revenue Earned',
       dataIndex: 'revenueEarned',
+      width: 150,
     },
     {
       title: 'Total Ad Spends',
       dataIndex: 'adSpends',
+      width: 150,
     },
     {
       title: 'Average Cost/Lead',
       dataIndex: 'costPerLead',
+      width: 150,
     },
     {
       title: 'Total Leads Generated',
@@ -89,10 +92,13 @@ export const BusinessData = ({
       title: 'ROAS',
       dataIndex: 'adSpendsReturn',
     },
+
     {
       title: '',
       dataIndex: '',
       key: 'x',
+      fixed: 'right',
+      width: 100,
       render: (text, record, index) => (
         <Popover
           placement='top'
@@ -144,13 +150,15 @@ export const BusinessData = ({
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={data as any}
-        onChange={onChange}
-        pagination={{ pageSize: 20 }}
-        scroll={{ x: 300 }}
-      />
+      <div style={{ paddingTop: '15px' }}>
+        <Table
+          columns={columns}
+          dataSource={data as any}
+          onChange={onChange}
+          pagination={{ pageSize: 20 }}
+          scroll={{ x: 1180, y: 200 }}
+        />
+      </div>
     </>
   );
 };
