@@ -2,7 +2,7 @@ import React from "react";
 
 import type { DatePickerProps } from "antd";
 import { DatePicker, Input, TimePicker } from "antd";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
@@ -30,6 +30,7 @@ interface Props {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => unknown;
   onTimeChange?: (time: any, timeString: string) => unknown;
   onDateChange?: (date: any, dateString: string) => unknown;
+  defaultDate?: Dayjs;
 }
 
 export const FormInput = (props: Props) => {
@@ -40,7 +41,8 @@ export const FormInput = (props: Props) => {
 
         {props.type === "date" ? (
           <DatePicker
-            value={dayjs(props.value) || dayjs()}
+            allowClear={false}
+            value={dayjs(props.value)}
             onChange={(date, dateString) => {
               props.onDateChange?.(date, dateString);
             }}
@@ -57,8 +59,9 @@ export const FormInput = (props: Props) => {
           />
         ) : props.type === "month" ? (
           <DatePicker
+            allowClear={false}
             picker="month"
-            value={dayjs(props.value) || dayjs()}
+            value={dayjs(props.value)}
             style={{ width: "100%", padding: "7.5px 12px" }}
             onChange={(date, dateString) => {
               props.onDateChange?.(date, dateString);

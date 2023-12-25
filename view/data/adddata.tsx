@@ -57,6 +57,7 @@ export const AddData = () => {
                 placeholder="Select Month"
                 label="Month"
                 type="month"
+                value={data.month ?? ""}
                 onDateChange={(date, dateString) =>
                   setData({ ...data, month: dateString })
                 }

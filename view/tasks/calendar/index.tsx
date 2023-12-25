@@ -80,7 +80,10 @@ export const CalendarTask = () => {
         <Row gutter={[16, 0]}>
           <Col span={16}>
             <div style={{ background: "#fff", padding: "15px" }}>
-              <Calendar onPanelChange={onPanelChange} />
+              <Calendar
+                value={dayjs("2017-01-25")}
+                onPanelChange={onPanelChange}
+              />
             </div>
           </Col>
           <Col span={8}>
@@ -117,9 +120,7 @@ export const CalendarTask = () => {
                             <span className="mock-block">
                               <CustomTag
                                 variant="gray"
-                                title={dayjs(
-                                  e.endTime !== null ? e.endTime : e.startTime
-                                ).format("hh:mm")}
+                                title={dayjs(e.startTime).format("hh:mm")}
                               />
                             </span>
                           </Space>

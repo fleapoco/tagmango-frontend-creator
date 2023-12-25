@@ -32,6 +32,7 @@ const UpdateCharityModal: React.FC<Props> = ({
       setLoading(true);
       await updateCharity(charityData.id!, data);
       message.success("charity updated");
+      onCancel();
     } catch (error) {
     } finally {
       setLoading(false);
@@ -47,6 +48,7 @@ const UpdateCharityModal: React.FC<Props> = ({
           value: category.id,
         }))
       );
+      console.log({ charityData });
     } catch (error) {}
   };
 
@@ -55,7 +57,7 @@ const UpdateCharityModal: React.FC<Props> = ({
       setData({
         organizationName: charityData.organizationName,
         amount: charityData.amount,
-        categoryId: charityData.categoryId,
+        categoryId: charityData.category?.id,
       });
       fetchCategories();
     }
@@ -64,6 +66,9 @@ const UpdateCharityModal: React.FC<Props> = ({
   return (
     <Modal
       open={open}
+      okButtonProps={{
+        disabled: !data.amount || !data.organizationName || !data.categoryId,
+      }}
       confirmLoading={loading}
       onOk={handleUpdateAnalytic}
       okText={"save"}

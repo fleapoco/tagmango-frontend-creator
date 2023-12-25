@@ -54,9 +54,10 @@ const UpdateDataAnalyticModal: React.FC<Props> = ({
           label="Month"
           type="month"
           value={data.month ?? ""}
-          onDateChange={(date, dateString) =>
-            setData({ ...data, month: dateString })
-          }
+          onDateChange={(date, dateString) => {
+            console.log(dateString);
+            setData({ ...data, month: dateString });
+          }}
         />
       </Col>
       <Col span={24}>

@@ -92,6 +92,7 @@ export interface CharitiesType {
   amount: number;
   category?: CategoryType | null;
   categoryId?: string | null;
+  createdAt?: string | null;
 }
 
 export interface UpdateCharityType extends CharitiesType {

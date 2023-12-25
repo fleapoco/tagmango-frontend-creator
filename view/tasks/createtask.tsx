@@ -10,6 +10,7 @@ import { useAppDispatch } from "@/hooks/useRedux";
 import { setTasks } from "@/redux/reducers/task.reducer";
 import { GetTask, TaskFrequency, TaskType, TypeCategory } from "@/types";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
@@ -18,7 +19,9 @@ const frequencyArray = ["daily", "bi-weekly", "weekly", "monthly"];
 const typeArray = ["one-time", "recurring"];
 
 export const CreateTask = () => {
+  const router = useRouter();
   const { createTask, getTasks, getCategories } = useAPI();
+  const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<
     { value: string; label: string }[]
   >([]);
@@ -45,6 +48,7 @@ export const CreateTask = () => {
     )
       return message.error("Invalid start date");
     try {
+      setLoading(true);
       await createTask({
         ...createTaskFormData,
         firstDayOfTheWeek:
@@ -67,12 +71,15 @@ export const CreateTask = () => {
         ...initialTaskState,
         categoryId: categories.at(0)?.value,
       });
+      router.push("/productivity/task");
 
       message.success("Task Created");
     } catch (error: any) {
       console.log(error);
       message.error(error.message);
       message.error(error.response?.data?.message ?? error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -289,6 +296,12 @@ export const CreateTask = () => {
               <Flex gap={"middle"} justify="end">
                 <PrimaryButton text="Cancel" variant="secondary" />
                 <PrimaryButton
+                  loading={loading}
+                  disabled={
+                    !createTaskFormData.title ||
+                    !createTaskFormData.startDate ||
+                    !createTaskFormData.startTime
+                  }
                   onClick={() => handleSave()}
                   text="Save"
                   variant="primary"
