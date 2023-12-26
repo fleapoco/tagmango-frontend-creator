@@ -13,3 +13,10 @@ export const daysArray = [
   { label: "Saturday", value: "Saturday" },
   { label: "Sunday", value: "Sunday" },
 ];
+
+const daysOfMonthArray = Array.from({ length: 31 }, (_, index) => index + 1);
+
+export const daysOfMonthDropdown = daysOfMonthArray.map((day) => ({
+  label: day.toString(),
+  value: day.toString(),
+}));

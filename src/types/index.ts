@@ -51,7 +51,7 @@ export interface GetTasksQuery {
 
 export interface GetTask {
   id?: string;
-  category: CategoryType | null;
+  category?: CategoryType | null;
   categoryId?: string | null;
   endDate: string | null;
   endTime: string | null;
@@ -64,6 +64,7 @@ export interface GetTask {
   status: TaskStatus;
   title: string;
   type: TaskType;
+  dayOfTheMonth: string | null;
   groupId?: string;
 }
 

@@ -7,6 +7,7 @@ import {
   GetTasksQuery,
   IFetchAPICall,
   TaskAnalytics,
+  TaskStatus,
   UpdateCharityType,
 } from "@/types";
 import { getCookie } from "cookies-next";
@@ -72,11 +73,11 @@ const useAPI = () => {
     return http(endPoint);
   };
 
-  const updateTask = (
+  const updateTaskStatus = (
     id: string,
-    data: Partial<GetTask>
+    data: { status: TaskStatus }
   ): Promise<GetTask[]> => {
-    return http(`/tasks/update/${id}`, { method: "PUT", data });
+    return http(`/tasks/status/${id}`, { method: "PUT", data });
   };
 
   const deleteTask = (id?: string) => {
@@ -155,7 +156,7 @@ const useAPI = () => {
     createTask,
     taskCounts,
     getTodaysTasks,
-    updateTask,
+    updateTaskStatus,
     deleteTask,
     getDataAnalytics,
     deleteAnalytic,

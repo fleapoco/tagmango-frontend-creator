@@ -1,3 +1,4 @@
+"use-client";
 window;
 import { useEffect, useState } from "react";
 
@@ -6,11 +7,16 @@ import { Col, Flex, Radio, Row, Space, message } from "antd";
 import PageTitle from "../../components/pagetitle";
 
 import { initialTaskState } from "@/empty-state-objects/empty";
-import { dateToISOString, daysArray } from "@/empty-state-objects/helpers";
+import {
+  dateToISOString,
+  daysArray,
+  daysOfMonthDropdown,
+} from "@/empty-state-objects/helpers";
 import useAPI from "@/hooks/useApi";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { setTasks } from "@/redux/reducers/task.reducer";
 import { GetTask, TaskFrequency, TaskType, TypeCategory } from "@/types";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
@@ -23,7 +29,7 @@ export const CreateTask = () => {
   const router = useRouter();
   const groupId =
     new URLSearchParams(window.location.search).get("groupId") ?? "";
-  const [validation, setValidation] = useState<{ [key: string]: string }>({});
+
   const {
     createTask,
     getTasks,
@@ -31,8 +37,9 @@ export const CreateTask = () => {
     getTaskByGroupId,
     updateTaskByGroupId,
   } = useAPI();
-  const [task, setTask] = useState<GetTask>(initialTaskState);
+
   const [loading, setLoading] = useState<boolean>(false);
+  const [groupIdLoading, setGroupIdLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<
     { value: string; label: string }[]
   >([]);
@@ -53,15 +60,31 @@ export const CreateTask = () => {
   };
 
   const fetchTasksByGroupId = async () => {
+    setGroupIdLoading(true);
     try {
       const task = await getTaskByGroupId(groupId);
       setCreateTaskFormData({
-        ...task,
+        startDate: task.startDate,
+        endDate:
+          task.endDate ?? dayjs(task.startDate).add(1, "day").toISOString(),
+        startTime: task.startTime,
+        frequency: task.frequency,
+        title: task.title,
+        type: task.type,
+        firstDayOfTheWeek: task.firstDayOfTheWeek,
+        secondDayOfTheWeek: task.secondDayOfTheWeek,
         categoryId: task.category?.id,
+        status: task.status,
+        points: task.points,
+        endTime: task.endTime,
+        dayOfTheMonth: task.dayOfTheMonth,
       });
       setValue(task.type);
       setFrequency(task.frequency);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setGroupIdLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -70,8 +93,19 @@ export const CreateTask = () => {
   }, [groupId, window]);
 
   const handleSave = async () => {
+    if (
+      createTaskFormData.type === TaskType.RECURRING &&
+      createTaskFormData.startDate &&
+      createTaskFormData.endDate &&
+      dayjs(createTaskFormData.startDate) >= dayjs(createTaskFormData.endDate)
+    ) {
+      message.error("Start date must be before the end date");
+      return;
+    }
+
     const payLoad = {
       ...createTaskFormData,
+
       firstDayOfTheWeek:
         createTaskFormData.frequency === TaskFrequency.BI_WEEKLY ||
         createTaskFormData.frequency === TaskFrequency.WEEKLY
@@ -86,7 +120,13 @@ export const CreateTask = () => {
         createTaskFormData.type === TaskType.RECURRING
           ? createTaskFormData.endDate
           : null,
+
+      dayOfTheMonth:
+        createTaskFormData.frequency === TaskFrequency.MONTHLY
+          ? createTaskFormData.dayOfTheMonth
+          : null,
     };
+
     try {
       setLoading(true);
       if (groupId) {
@@ -178,9 +218,7 @@ export const CreateTask = () => {
                   })
                 }
               />
-              {validation.title && (
-                <div style={{ color: "red" }}>{validation.title}</div>
-              )}
+
               <div className="form-group">
                 <Row style={{ display: "flex", alignItems: "center" }}>
                   <label htmlFor="type" style={{ marginRight: "30px" }}>
@@ -316,17 +354,34 @@ export const CreateTask = () => {
                         </Col>
                       </Row>
                     )}
+                    {createTaskFormData.frequency === TaskFrequency.MONTHLY && (
+                      <Row gutter={24}>
+                        <Col span={12}>
+                          <FormSelect
+                            label="Days of the Month"
+                            options={daysOfMonthDropdown}
+                            value={createTaskFormData.dayOfTheMonth ?? ""}
+                            handleChange={(value) =>
+                              setCreateTaskFormData((createTaskFormData) => ({
+                                ...createTaskFormData,
+                                dayOfTheMonth: value,
+                              }))
+                            }
+                          />
+                        </Col>
+                      </Row>
+                    )}
                     {createTaskFormData.frequency === TaskFrequency.WEEKLY && (
                       <Row gutter={24}>
                         <Col span={12}>
                           <FormSelect
                             label="Day of the Week"
                             options={daysArray}
-                            value={createTaskFormData.firstDayOfTheWeek ?? ""}
+                            value={createTaskFormData.dayOfTheMonth ?? ""}
                             handleChange={(value) =>
                               setCreateTaskFormData((createTaskFormData) => ({
                                 ...createTaskFormData,
-                                firstDayOfTheWeek: value,
+                                dayOfTheMonth: value,
                               }))
                             }
                           />

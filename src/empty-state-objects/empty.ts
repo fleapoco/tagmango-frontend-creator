@@ -10,9 +10,6 @@ import {
 import dayjs from "dayjs";
 
 export const initialTaskState: GetTask = {
-  category: null,
-  categoryId: null,
-
   endDate: dayjs().toString(),
   endTime: null,
   firstDayOfTheWeek: null,
@@ -23,6 +20,7 @@ export const initialTaskState: GetTask = {
   startTime: null,
   status: TaskStatus.PENDING,
   title: "",
+  dayOfTheMonth: null,
   type: TaskType.ONE_TIME,
 };
 

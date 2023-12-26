@@ -68,7 +68,7 @@ export const FormInput = (props: Props) => {
         ) : props.type === "month" ? (
           <DatePicker
             allowClear={false}
-            picker="month"
+            picker="date"
             value={dayjs(props.value)}
             style={{ width: "100%", padding: "7.5px 12px" }}
             onChange={(date, dateString) => {
