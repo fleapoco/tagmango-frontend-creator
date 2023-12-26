@@ -5,6 +5,7 @@ import { Button, Popconfirm, Popover, Table } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { PrimaryButton } from '../../../components/common/button';
+import { TableNoData } from '../../../components/common/tablenodata';
 
 interface DataType {
   id: string;
@@ -156,6 +157,7 @@ export const BusinessData = ({
           onChange={onChange}
           pagination={{ pageSize: 20 }}
           scroll={{ x: 1200, y: 200 }}
+          locale={{ emptyText: <TableNoData /> }}
         />
       </div>
     </>

@@ -209,7 +209,7 @@ export const TableNoData = () => {
           </svg>
         </div>
         <div className='content-wrapper'>
-          <h4>No orders found between</h4>
+          <h4>No Data found between</h4>
           <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has b
