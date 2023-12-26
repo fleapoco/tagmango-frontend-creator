@@ -1,26 +1,45 @@
-import { Col, Row } from 'antd';
-import { EventsCard } from '../../components/common/eventscard';
-import PageTitle from '../../components/pagetitle';
+import useApi from "@/hooks/useApi";
+import { GetEventType } from "@/types";
+import { Col, Row } from "antd";
+import { useEffect, useState } from "react";
+import { EventsCard } from "../../components/common/eventscard";
+import PageTitle from "../../components/pagetitle";
 
 export const Events = () => {
+  const { getUserEvents } = useApi();
+  const [events, setEvents] = useState<GetEventType[]>([]);
+
+  const fetUserEvents = async () => {
+    try {
+      const events = await getUserEvents();
+      setEvents(events);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetUserEvents();
+  }, []);
+
   return (
     <>
       {/* Page Title */}
       <Row
-        justify={'space-between'}
-        style={{ alignItems: 'center' }}
-        className='p-15'
+        justify={"space-between"}
+        style={{ alignItems: "center" }}
+        className="p-15"
       >
         <Col span={24}>
-          <PageTitle title='Events' />
+          <PageTitle title="Events" />
         </Col>
       </Row>
       {/* Events Cards */}
-      <div className='p-r-b-l-15'>
+      <div className="p-r-b-l-15">
         <Row gutter={[16, 16]}>
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Col span={6} key={i}>
-              <EventsCard />
+          {events.map((event) => (
+            <Col span={6} key={event.id}>
+              <EventsCard event={event} />
             </Col>
           ))}
         </Row>

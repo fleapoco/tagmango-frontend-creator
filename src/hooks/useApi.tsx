@@ -2,6 +2,7 @@ import {
   CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
+  GetEventType,
   GetTask,
   GetTasksQuery,
   IFetchAPICall,
@@ -134,6 +135,10 @@ const useAPI = () => {
     return http(`/charities/${id}`, { method: "PATCH", data });
   };
 
+  const getUserEvents = (): Promise<GetEventType[]> => {
+    return http(`/events/user`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -150,6 +155,7 @@ const useAPI = () => {
     getCategories,
     updateDataAnalytic,
     updateCharity,
+    getUserEvents,
   };
 };
 

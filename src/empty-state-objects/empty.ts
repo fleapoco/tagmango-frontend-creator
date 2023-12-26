@@ -42,7 +42,6 @@ export const initialDataAnalyticsState: DataAnalyticsTypes = {
   totalPaidCustomers: 0,
   totalLeadsGenerated: 0,
   month: null,
-  id: "",
 };
 
 export const initialCharitiesState: CharitiesType = {
@@ -50,4 +49,5 @@ export const initialCharitiesState: CharitiesType = {
   amount: 0,
 
   categoryId: null,
+  date: dayjs().toISOString(),
 };

@@ -90,7 +90,6 @@ interface Props {
 }
 
 export default function PageLayout(props: Props) {
-  console.log(props.userDetails);
   // const userDetails = useAppSelector(getUserStored);
   const dispatch = useAppDispatch();
 
