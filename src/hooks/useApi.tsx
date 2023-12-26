@@ -8,12 +8,10 @@ import {
   TaskAnalytics,
   UpdateCharityType,
 } from "@/types";
+import { getCookie } from "cookies-next";
 
 const useAPI = () => {
   const http = async (path: string, options?: IFetchAPICall) => {
-    const token =
-      localStorage.getItem("token") ??
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODQyZTY3ZTk4NjY2ODA0YzZmYzc5MCIsInJvbGVzIjpbImZhbl9jb21wbGV0ZWQiXSwiaXNDcmVhdG9yIjpmYWxzZSwidXNlckNyZWF0b3JJZCI6IjMzNDM4MmQ2LWUwOTktNGM0My1iNTU5LWYwOTMxMDkzNGQ4OSIsImlhdCI6MTcwMzQ4MTYyNSwiZXhwIjoxNzAzNTY4MDI1fQ.rQZtbZZPt-k2VmgqzPDKR4_QQEeQJmSG4sizKNjKsr4";
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path.replace(
       /^\/+/,
       ""
@@ -21,7 +19,7 @@ const useAPI = () => {
 
     const raw = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${token ?? ""} `,
+        Authorization: `Bearer  ${getCookie("token")} `,
         "Content-Type": "application/json",
       },
       method: options?.method ?? "GET",
