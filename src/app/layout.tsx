@@ -33,7 +33,7 @@ const getUserProfile = async (token: string): Promise<UserDetails> => {
 
   const data = await res.json();
   if (!res.ok) throw new Error(res.statusText);
-  return data;
+  return data ?? {};
 };
 
 export default async function RootLayout({
