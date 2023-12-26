@@ -4,6 +4,7 @@ import charityReduce from "./reducers/charity.reduce";
 import dataAnalyticReducer from "./reducers/data-analytic.reducer";
 import taskCountsReducer from "./reducers/task-counts.reducer";
 import taskReducer from "./reducers/task.reducer";
+import userReducer from "./reducers/user.reducer";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     dataAnalytics: dataAnalyticReducer,
     categories: categoryReducer,
     charities: charityReduce,
+    user: userReducer,
   },
 });
 

@@ -1,27 +1,30 @@
-'use client';
-import useApi from '@/hooks/useApi';
-import type { MenuProps } from 'antd';
-import { Flex, Layout, Menu, Space, Typography } from 'antd';
-import SubMenu from 'antd/es/menu/SubMenu';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+"use client";
+import useApi from "@/hooks/useApi";
+import type { MenuProps } from "antd";
+import { Flex, Layout, Menu, Space, Typography } from "antd";
+import SubMenu from "antd/es/menu/SubMenu";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   MdDashboard,
   MdDatasetLinked,
   MdEmojiEvents,
   MdOutlineQuiz,
-} from 'react-icons/md';
+} from "react-icons/md";
 
-import { Analytics } from './common/icons';
-import { Header } from './header';
-import style from '/style/dashboard.module.scss';
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { getUserStored, setUser } from "@/redux/reducers/user.reducer";
+import { UserDetails } from "@/types";
+import { Analytics } from "./common/icons";
+import { Header } from "./header";
+import style from "/style/dashboard.module.scss";
 
 const { Sider, Content } = Layout;
 
 const { Title } = Typography;
 
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>["items"][number];
 
 type ItemType = {
   key: string;
@@ -33,62 +36,71 @@ type ItemType = {
 
 const items: ItemType[] = [
   {
-    key: '1',
-    label: 'Dashboard',
-    link: '/',
+    key: "1",
+    label: "Dashboard",
+    link: "/",
     icon: <MdDashboard size={20} />,
   },
   {
-    key: 'sub1',
-    label: 'Productivity',
+    key: "sub1",
+    label: "Productivity",
     icon: <Analytics />,
     children: [
       {
-        key: '3',
-        label: 'Habits',
-        link: '/productivity/habit',
+        key: "3",
+        label: "Habits",
+        link: "/productivity/habit",
       },
       {
-        key: '4',
-        label: 'Tasks',
-        link: '/productivity/task',
+        key: "4",
+        label: "Tasks",
+        link: "/productivity/task",
       },
     ],
   },
   {
-    key: '2',
-    label: 'Data',
+    key: "2",
+    label: "Data",
     icon: <MdDatasetLinked size={20} />,
-    link: '/data',
+    link: "/data",
   },
   {
-    key: '5',
-    label: 'Events',
+    key: "5",
+    label: "Events",
     icon: <MdEmojiEvents size={20} />,
-    link: '/events',
+    link: "/events",
   },
   {
-    key: '6',
-    label: 'Charity',
+    key: "6",
+    label: "Charity",
     icon: <Analytics />,
-    link: '/charity',
+    link: "/charity",
   },
   {
-    key: '7',
-    label: 'Quizzes',
+    key: "7",
+    label: "Quizzes",
     icon: <MdOutlineQuiz size={20} />,
-    link: '/quizzes',
+    link: "/quizzes",
   },
 ];
 
 interface Props {
   children: React.ReactNode;
+  userDetails?: UserDetails;
 }
 
 export default function PageLayout(props: Props) {
+  console.log(props.userDetails);
+  const userDetails = useAppSelector(getUserStored);
+  const dispatch = useAppDispatch();
+
   const { getCharities } = useApi();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const currentPathname = usePathname();
+
+  useEffect(() => {
+    if (props.userDetails) dispatch(setUser(props.userDetails));
+  }, [dispatch, props.userDetails]);
 
   useEffect(() => {
     // Update selected key based on the current pathname
@@ -100,27 +112,30 @@ export default function PageLayout(props: Props) {
 
   return (
     <>
-      <div className={`${style['dashboard-wrapper']}`}>
+      <div className={`${style["dashboard-wrapper"]}`}>
         <Header />
-        <Space direction='vertical' style={{ width: '100%' }}>
-          <Layout className='main-layout'>
-            <Sider className='sidebar-main'>
-              <Flex gap='middle' className='user-name-display' align='center'>
-                <div className='avatar-circle'>
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <Layout className="main-layout">
+            <Sider className="sidebar-main">
+              <Flex gap="middle" className="user-name-display" align="center">
+                <div className="avatar-circle">
                   <img
-                    src='https://tagmango.com/staticassets/avatar-placeholder.png-1612857612139.png'
-                    alt='Avatar'
+                    src={
+                      props.userDetails?.profilePicUrl ??
+                      "https://tagmango.com/staticassets/avatar-placeholder.png-1612857612139.png"
+                    }
+                    alt="Avatar"
                   />
                 </div>
-                <h1>Welcome, Fleapo</h1>
+                <h1>Welcome, {props.userDetails?.name}</h1>
               </Flex>
-              <div className='inner-sidebar'>
+              <div className="inner-sidebar">
                 <Menu
-                  defaultSelectedKeys={['1']}
+                  defaultSelectedKeys={["1"]}
                   selectedKeys={selectedKeys}
-                  mode='inline'
-                  className='sidebar'
-                  style={{ padding: '0 8px', width: '100%', marginLeft: 0 }}
+                  mode="inline"
+                  className="sidebar"
+                  style={{ padding: "0 8px", width: "100%", marginLeft: 0 }}
                 >
                   {items.map((item) =>
                     item.children ? (
@@ -152,7 +167,7 @@ export default function PageLayout(props: Props) {
                 </Menu>
               </div>
             </Sider>
-            <Layout className='main-contain-layout'>
+            <Layout className="main-contain-layout">
               <Content>{props.children}</Content>
             </Layout>
           </Layout>

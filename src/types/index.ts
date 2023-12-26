@@ -95,6 +95,14 @@ export interface CharitiesType {
   createdAt?: string | null;
 }
 
+export interface UserDetails {
+  id: string;
+  roles: string[];
+  name: string;
+  email: string;
+  profilePicUrl: string;
+}
+
 export interface UpdateCharityType extends CharitiesType {
   id: string;
 }
