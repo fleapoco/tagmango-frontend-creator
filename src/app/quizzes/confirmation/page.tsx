@@ -37,6 +37,7 @@ const QuizzesConfirmation = () => {
                     You're about to submit your quiz. Once you click Submit Quiz
                     button you can not return to your quiz.
                   </p>
+
                   <Flex gap='middle' justify='center'>
                     <PrimaryButton
                       text='Back To Questions'
