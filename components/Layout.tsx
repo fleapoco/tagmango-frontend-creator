@@ -13,8 +13,8 @@ import {
   MdOutlineQuiz,
 } from "react-icons/md";
 
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { getUserStored, setUser } from "@/redux/reducers/user.reducer";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { setUser } from "@/redux/reducers/user.reducer";
 import { UserDetails } from "@/types";
 import { Analytics } from "./common/icons";
 import { Header } from "./header";
@@ -91,7 +91,7 @@ interface Props {
 
 export default function PageLayout(props: Props) {
   console.log(props.userDetails);
-  const userDetails = useAppSelector(getUserStored);
+  // const userDetails = useAppSelector(getUserStored);
   const dispatch = useAppDispatch();
 
   const { getCharities } = useApi();
@@ -121,13 +121,12 @@ export default function PageLayout(props: Props) {
                 <div className="avatar-circle">
                   <img
                     src={
-                      props.userDetails?.profilePicUrl ??
                       "https://tagmango.com/staticassets/avatar-placeholder.png-1612857612139.png"
                     }
                     alt="Avatar"
                   />
                 </div>
-                <h1>Welcome, {props.userDetails?.name}</h1>
+                <h1>Welcome, {"jhwvefhj"}</h1>
               </Flex>
               <div className="inner-sidebar">
                 <Menu
