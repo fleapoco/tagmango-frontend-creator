@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { CategoryType, GetTask, TaskType } from "@/types";
-import { Button, Popconfirm, Popover, Table } from "antd";
-import type { ColumnsType, TableProps } from "antd/es/table";
-import dayjs from "dayjs";
-import { PrimaryButton } from "../../../components/common/button";
-import { TableNoData } from "../../../components/common/tablenodata";
+import { CategoryType, GetTask, TaskType } from '@/types';
+import { Button, Popconfirm, Popover, Table } from 'antd';
+import type { ColumnsType, TableProps } from 'antd/es/table';
+import dayjs from 'dayjs';
+import { PrimaryButton } from '../../../components/common/button';
+import { TableNoData } from '../../../components/common/tablenodata';
 
 interface DataType {
   id?: string;
@@ -29,13 +29,13 @@ interface PropTypeForTable {
   setSearchQuery?: (searchQuery: string) => void;
 }
 
-const onChange: TableProps<DataType>["onChange"] = (
+const onChange: TableProps<DataType>['onChange'] = (
   pagination,
   filters,
   sorter,
   extra
 ) => {
-  console.log("params", pagination, filters, sorter, extra);
+  console.log('params', pagination, filters, sorter, extra);
 };
 
 export const TaskTable = ({
@@ -54,81 +54,83 @@ export const TaskTable = ({
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "Task",
-      dataIndex: "title",
+      title: 'Task',
+      dataIndex: 'title',
     },
 
     {
-      title: "Category",
-      dataIndex: "category",
+      title: 'Category',
+      dataIndex: 'category',
       render: (value, record) => {
-        return record.category?.title ?? "";
+        return record.category?.title ?? '';
       },
     },
 
     {
-      title: "Type",
-      dataIndex: "type",
+      title: 'Type',
+      dataIndex: 'type',
       render: (value, record) => {
         return value;
       },
     },
 
     {
-      title: "Deadline",
-      dataIndex: "startDate",
+      title: 'Deadline',
+      dataIndex: 'startDate',
       render: (value, record) => {
         if (record.type === TaskType.ONE_TIME) {
-          return dayjs(record.startDate).format("MM/DD/YYYY");
+          return dayjs(record.startDate).format('MM/DD/YYYY');
         } else {
-          return `${dayjs(record.startDate).format("MM/DD/YYYY")}-${dayjs(
+          return `${dayjs(record.startDate).format('MM/DD/YYYY')}-${dayjs(
             record.endDate
-          ).format("MM/DD/YYYY")}`;
+          ).format('MM/DD/YYYY')}`;
         }
       },
     },
 
     {
-      title: "Status",
-      dataIndex: "status",
+      title: 'Status',
+      dataIndex: 'status',
     },
     {
-      title: "",
-      dataIndex: "",
-      key: "x",
+      title: '',
+      dataIndex: '',
+      key: 'x',
+      align: 'right',
       render: (text, record, index) => (
         <Popover
-          placement="top"
+          placement='top'
+          className='action-btn'
           content={
             <>
               <Button
-                type="text"
+                type='text'
                 onClick={() => handlePopoverOpen(index)}
                 style={{
-                  width: "100%",
-                  textAlign: "left",
-                  marginBottom: "8px",
+                  width: '100%',
+                  textAlign: 'left',
+                  marginBottom: '8px',
                 }}
               >
                 Edit
               </Button>
 
               <Popconfirm
-                onConfirm={() => handleDelete(record?.groupId ?? "")}
-                title="Are you sure to delete?"
-                okText="Yes"
-                cancelText="No"
+                onConfirm={() => handleDelete(record?.groupId ?? '')}
+                title='Are you sure to delete?'
+                okText='Yes'
+                cancelText='No'
               >
                 <Button
-                  style={{ width: "100%", textAlign: "left" }}
-                  type="text"
+                  style={{ width: '100%', textAlign: 'left' }}
+                  type='text'
                 >
                   Delete
                 </Button>
               </Popconfirm>
             </>
           }
-          trigger="click"
+          trigger='click'
           open={openPopoverIndex === index}
           onOpenChange={(visible) => {
             if (!visible) {
@@ -137,8 +139,8 @@ export const TaskTable = ({
           }}
         >
           <PrimaryButton
-            text=""
-            variant="info"
+            text=''
+            variant='info'
             onClick={() => handlePopoverOpen(index)}
           />
         </Popover>
@@ -152,7 +154,7 @@ export const TaskTable = ({
         columns={columns}
         dataSource={data}
         onChange={onChange}
-        className="table-main"
+        className='table-main'
         pagination={{ pageSize: 20 }}
         scroll={{ y: 400, x: 900 }}
         locale={{ emptyText: <TableNoData /> }}

@@ -35,7 +35,7 @@ export const AddData = () => {
 
   return (
     <>
-      <Row>
+      <Row style={{ paddingTop: '16px' }}>
         <Col span={16} className='border-box'>
           <BreadCrumbNav item={breadCrumbItems} />
 

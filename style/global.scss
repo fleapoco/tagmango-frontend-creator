@@ -96,7 +96,10 @@ p {
 }
 .ant-breadcrumb-link {
   a {
-    color: #f18926;
+    color: #65676b;
+    &:hover {
+      background: transparent;
+    }
   }
 }
 
@@ -142,6 +145,11 @@ p {
     }
   }
 }
+.ant-table {
+  .ant-btn {
+    margin-left: auto;
+  }
+}
 .ant-pagination {
   padding: 15px;
   margin: 0 !important;
@@ -178,29 +186,57 @@ p {
   border: 1px solid #dedee3;
   padding: 0px;
 
+  .ant-card-cover {
+    img {
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+  }
+
   .ant-card-body {
     padding: 16px;
-  }
-  h3.ant-typography {
-    margin-top: 6px;
-    margin-bottom: 0;
-    color: #1c2024;
-    font-weight: 500;
-    font-size: 14px;
-    white-space: wrap;
-  }
-  h5.ant-typography {
-    font-weight: 400;
-    font-size: 12px;
-    color: #000;
-  }
-  a {
-    font-size: 12px;
-    margin-bottom: 15px;
-    display: block;
-  }
-  .site-btn {
-    padding: 6px 15px !important;
+
+    .date-time-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      & > div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        &:first-child {
+          padding-right: 10px;
+          border-right: 1px solid rgba(0, 7, 19, 0.6235294118);
+        }
+        span {
+          font-size: 12px;
+          line-height: 12px;
+          color: rgba(0, 7, 19, 0.6235294118);
+          font-weight: 400;
+        }
+      }
+    }
+    h3.ant-typography {
+      margin-top: 10px;
+      margin-bottom: 0;
+      color: #1c2024;
+      font-weight: 500;
+      font-size: 14px;
+      white-space: wrap;
+    }
+    h5.ant-typography {
+      font-weight: 400;
+      font-size: 12px;
+      color: #000;
+    }
+    a {
+      font-size: 12px;
+      margin-bottom: 15px;
+      display: block;
+    }
+    .site-btn {
+      padding: 6px 15px !important;
+    }
   }
 }
 

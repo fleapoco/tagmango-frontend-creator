@@ -70,7 +70,7 @@ const CharityPage = () => {
             <PrimaryButton
               text='Add Data'
               icon={<AddIcon />}
-              variant='secondary'
+              variant='primary'
               onClick={handleButtonClick}
             />
           </Col>

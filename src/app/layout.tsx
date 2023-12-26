@@ -6,6 +6,7 @@ import { Poppins } from 'next/font/google';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 import PageLayout from '../../components/Layout';
+import '../../style/common.scss';
 import '../../style/global.scss';
 
 const poppins = Poppins({

@@ -51,7 +51,7 @@ export const PrimaryButton = ({
 
   let _className = 'site-btn';
 
-  if (variant === 'dark') _className += ' sdark-btn';
+  if (variant === 'dark') _className += ' dark-btn';
   else if (variant === 'info') _className += ' into-btn';
   else if (variant === 'secondary') _className += ' secondary-btn';
   else _className += ' site-btn';

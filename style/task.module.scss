@@ -82,11 +82,14 @@
     .ant-card {
       padding: 16px;
       .ant-card-cover {
-        height: 350px;
-
+        aspect-ratio: 16 / 9 auto;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        overflow: hidden;
         img {
           height: 100%;
           object-fit: cover;
+          aspect-ratio: 16 / 9 auto;
         }
       }
       .ant-card-body {
@@ -113,6 +116,29 @@
             border-radius: 6px;
             &:not(:last-child) {
               margin-bottom: 15px;
+            }
+            &.right-question {
+              border: 1px solid #ffa39e;
+              background: #fff1f0;
+              color: #cf1322;
+
+              .ant-radio-checked {
+                .ant-radio-inner {
+                  border-color: #cf1322;
+                  background: #cf1322;
+                }
+              }
+            }
+            &.wrong-answer {
+              border: 1px solid #b7eb8f;
+              background: #f6ffed;
+              color: #52c41a;
+              .ant-radio-checked {
+                .ant-radio-inner {
+                  border-color: #b7eb8f;
+                  background: #b7eb8f;
+                }
+              }
             }
           }
           margin-top: 20px;

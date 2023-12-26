@@ -41,7 +41,6 @@ export const BusinessData = ({
   data,
   handleDelete,
   handleUpdate,
-
   handlePagination,
   dataPerPage,
   CountData,
@@ -98,7 +97,7 @@ export const BusinessData = ({
       dataIndex: '',
       key: 'x',
       fixed: 'right',
-      width: 100,
+      width: 80,
       render: (text, record, index) => (
         <Popover
           placement='top'
@@ -156,7 +155,7 @@ export const BusinessData = ({
           dataSource={data as any}
           onChange={onChange}
           pagination={{ pageSize: 20 }}
-          scroll={{ x: 1180, y: 200 }}
+          scroll={{ x: 1200, y: 200 }}
         />
       </div>
     </>

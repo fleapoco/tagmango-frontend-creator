@@ -1,4 +1,5 @@
 import { Card } from 'antd';
+import { MdAvTimer, MdDateRange, MdInsertLink } from 'react-icons/md';
 import { PrimaryButton } from './button';
 const { Meta } = Card;
 
@@ -22,7 +23,18 @@ export const EventsCard = () => {
         <Meta
           title={
             <div className='event-card-heading'>
-              <Title level={5}>07 Dec 2023, 06:00 PM - 07:00PM</Title>
+              <div className='date-time-info'>
+                <div>
+                  <MdDateRange size={13} />
+
+                  <span>07 Dec 2023</span>
+                </div>
+                <div>
+                  <MdAvTimer size={13} />
+
+                  <span>2:00PM</span>
+                </div>
+              </div>
               <Title level={3}>
                 Lorem Ipsum is simply dummy text of the printing.
               </Title>
@@ -30,7 +42,13 @@ export const EventsCard = () => {
           }
           description={
             <div className='events-card-description'>
-              <a href='#'>meet.google.com/tesrtin-test</a>
+              <a
+                href='#'
+                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+              >
+                {' '}
+                <MdInsertLink size={16} /> meet.google.com/tesrtin-test
+              </a>
               <PrimaryButton text='Join Event' variant='primary' />
             </div>
           }

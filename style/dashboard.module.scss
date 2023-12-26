@@ -113,6 +113,10 @@
               &:hover {
                 background: transparent !important;
               }
+
+              .ant-menu-submenu-arrow {
+                right: 7px;
+              }
             }
 
             .ant-menu-item {

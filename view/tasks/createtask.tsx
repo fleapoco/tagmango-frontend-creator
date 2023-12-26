@@ -154,7 +154,11 @@ export const CreateTask = () => {
                   <Radio.Group onChange={onChange} value={value}>
                     <Space direction='horizontal'>
                       {typeArray.map((e, i) => (
-                        <Radio key={i} value={e}>
+                        <Radio
+                          key={i}
+                          value={e}
+                          style={{ textTransform: 'capitalize' }}
+                        >
                           {e}
                         </Radio>
                       ))}
@@ -242,7 +246,11 @@ export const CreateTask = () => {
                         >
                           <Space direction='horizontal'>
                             {frequencyArray.map((e, i) => (
-                              <Radio key={i} value={e}>
+                              <Radio
+                                key={i}
+                                value={e}
+                                style={{ textTransform: 'capitalize' }}
+                              >
                                 {e}
                               </Radio>
                             ))}

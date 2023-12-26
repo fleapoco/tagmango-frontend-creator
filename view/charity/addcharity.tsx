@@ -114,7 +114,7 @@ export const AddCharity = () => {
               }
             />
 
-            <FormInput placeholder='date' label='Date' type='date' />
+            <FormInput label='Donation Date' type='date' />
 
             <Flex gap='middle' justify='end'>
               <PrimaryButton
