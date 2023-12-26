@@ -1,30 +1,51 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-import { Table, Popover, Button } from 'antd';
-import type { ColumnsType, TableProps } from 'antd/es/table';
-import { FormInput } from '../../../components/form/input';
-import { PrimaryButton } from '../../../components/common/button';
-import { CustomTag } from '../../../components/common/tag';
+import { CategoryType, GetTask, TaskType } from "@/types";
+import { Button, Popconfirm, Popover, Table } from "antd";
+import type { ColumnsType, TableProps } from "antd/es/table";
+import dayjs from "dayjs";
+import { PrimaryButton } from "../../../components/common/button";
+import { TableNoData } from "../../../components/common/tablenodata";
 
 interface DataType {
-  [x: string]: any;
-  key: React.Key;
-  task: string;
-  category: string;
-  deadline: any;
-  status: any;
+  id?: string;
+  title: string | null;
+  category: CategoryType | null;
+  endDate?: string | null;
+  startDate?: string | null;
+  status: string;
+  groupId?: string;
+  type?: TaskType;
 }
 
-const onChange: TableProps<DataType>['onChange'] = (
+interface PropTypeForTable {
+  data: GetTask[];
+  handleDelete: (id: string) => void;
+  handlePagination: (page: number, pageSize: number) => void;
+  CountData: number;
+  dataPerPage: number;
+  currentPage: number;
+  searchQuery?: string;
+  setSearchQuery?: (searchQuery: string) => void;
+}
+
+const onChange: TableProps<DataType>["onChange"] = (
   pagination,
   filters,
   sorter,
   extra
 ) => {
-  console.log('params', pagination, filters, sorter, extra);
+  console.log("params", pagination, filters, sorter, extra);
 };
 
-export const TaskTable = () => {
+export const TaskTable = ({
+  data,
+  handleDelete,
+  handlePagination,
+  dataPerPage,
+  CountData,
+  currentPage,
+}: PropTypeForTable) => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
 
   const handlePopoverOpen = (index: number) => {
@@ -33,58 +54,91 @@ export const TaskTable = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Task',
-      dataIndex: 'task',
+      title: "Task",
+      dataIndex: "title",
     },
+
     {
-      title: 'Category',
-      dataIndex: 'category',
-    },
-    {
-      title: 'Deadline',
-      dataIndex: 'deadline',
-      sorter: {
-        compare: (a, b) => a.math - b.math,
-        multiple: 2,
+      title: "Category",
+      dataIndex: "category",
+      render: (value, record) => {
+        return record.category?.title ?? "";
       },
     },
+
     {
-      title: 'Status',
-      dataIndex: 'status',
+      title: "Type",
+      dataIndex: "type",
+      render: (value, record) => {
+        return value;
+      },
+    },
+
+    {
+      title: "Deadline",
+      dataIndex: "startDate",
+      render: (value, record) => {
+        if (record.type === TaskType.ONE_TIME) {
+          return dayjs(record.startDate).format("MM/DD/YYYY");
+        } else {
+          return `${dayjs(record.startDate).format("MM/DD/YYYY")}-${dayjs(
+            record.endDate
+          ).format("MM/DD/YYYY")}`;
+        }
+      },
+    },
+
+    {
+      title: "Status",
+      dataIndex: "status",
     },
     {
-      title: '',
-      dataIndex: '',
-      key: 'x',
+      title: "",
+      dataIndex: "",
+      key: "x",
       render: (text, record, index) => (
         <Popover
+          placement="top"
           content={
-            <div style={{ width: '130px', padding: '5px' }}>
-              <span
+            <>
+              <Button
+                type="text"
                 onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block', marginBottom: '12px' }}
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                  marginBottom: "8px",
+                }}
               >
                 Edit
-              </span>
-              <span
-                onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block' }}
+              </Button>
+
+              <Popconfirm
+                onConfirm={() => handleDelete(record?.groupId ?? "")}
+                title="Are you sure to delete?"
+                okText="Yes"
+                cancelText="No"
               >
-                Delete
-              </span>
-            </div>
+                <Button
+                  style={{ width: "100%", textAlign: "left" }}
+                  type="text"
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
+            </>
           }
-          trigger='click'
-          visible={openPopoverIndex === index}
-          onVisibleChange={(visible) => {
+          trigger="click"
+          open={openPopoverIndex === index}
+          onOpenChange={(visible) => {
             if (!visible) {
               setOpenPopoverIndex(null);
             }
           }}
         >
           <PrimaryButton
-            text=''
-            variant='info'
+            text=""
+            variant="info"
             onClick={() => handlePopoverOpen(index)}
           />
         </Popover>
@@ -92,42 +146,17 @@ export const TaskTable = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: '1',
-      task: 'Task name here Task name here ',
-      category: 'Selling',
-      deadline: '08/12/2020 by 06:00PM',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '2',
-      task: 'Task name here',
-      category: 'Selling',
-      deadline: '08/12/2020 by 06:00PM',
-      status: <PrimaryButton text='Mark as complete' variant='secondary' />,
-    },
-    {
-      key: '3',
-      task: 'Task name here',
-      category: 'Selling',
-      deadline: '01/12/2020 by 06:00PM',
-      status: <CustomTag variant='success' title='Completed' />,
-    },
-    {
-      key: '4',
-      task: 'Task name here',
-      category: 'Selling',
-      deadline: '28/12/2020 by 06:00PM',
-      status: <CustomTag variant='success' title='Completed' />,
-    },
-  ];
   return (
     <>
-      <div style={{ background: '#fff', padding: '15px' }}>
-        <FormInput type='search' placeholder='Search' />
-        <Table columns={columns} dataSource={data} onChange={onChange} />
-      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        onChange={onChange}
+        className="table-main"
+        pagination={{ pageSize: 20 }}
+        scroll={{ y: 400, x: 900 }}
+        locale={{ emptyText: <TableNoData /> }}
+      />
     </>
   );
 };

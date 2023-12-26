@@ -1,15 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Events } from '../../../view/events';
-import { PageLayout } from '../../../view/page-layout';
+import { Events } from "../../../view/events";
 
 const EventsPage = () => {
   return (
     <>
-      <PageLayout>
-        <Events />
-      </PageLayout>
+      <Events />
     </>
   );
 };

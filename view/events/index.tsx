@@ -1,8 +1,6 @@
 import { Col, Row } from 'antd';
-import React from 'react';
-import PageTitle from '../../components/pagetitle';
-import { PrimaryButton } from '../../components/common/button';
 import { EventsCard } from '../../components/common/eventscard';
+import PageTitle from '../../components/pagetitle';
 
 export const Events = () => {
   return (
@@ -18,7 +16,7 @@ export const Events = () => {
         </Col>
       </Row>
       {/* Events Cards */}
-      <div className='p-15'>
+      <div className='p-r-b-l-15'>
         <Row gutter={[16, 16]}>
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <Col span={6} key={i}>

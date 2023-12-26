@@ -1,17 +1,12 @@
+import { FormInputType } from '@/types';
 import { Col, Row, Typography } from 'antd';
-import React from 'react';
 import { FormInput } from '../form/input';
 const { Title } = Typography;
 
 export const DisplayGraph = () => {
   return (
     <>
-      <div
-        style={{
-          background: '#fff',
-          padding: '15px',
-        }}
-      >
+      <div className='border-box'>
         <Row>
           <Col span={16}>
             <Title level={4} className='sub-title'>
@@ -19,7 +14,7 @@ export const DisplayGraph = () => {
             </Title>
           </Col>
           <Col span={8}>
-            <FormInput type='date' placeholder='Select Date' />
+            <FormInput type={FormInputType.DATE} placeholder='Select Date' />
           </Col>
         </Row>
         <Row>

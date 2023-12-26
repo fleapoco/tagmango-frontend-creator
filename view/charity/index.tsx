@@ -1,36 +1,31 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { Col, Row, Table, Popover } from 'antd';
-import style from '../../style/task.module.scss';
+import { CharitiesType } from '@/types';
+import { Button, Popconfirm, Popover, Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import PageTitle from '../../components/pagetitle';
 import { PrimaryButton } from '../../components/common/button';
-import { DisplayGraph } from '../../components/common/graph';
-import { FormInput } from '../../components/form/input';
-import { CustomTag } from '../../components/common/tag';
-import type { ColumnsType, TableProps } from 'antd/es/table';
-import { FormSelect } from '../../components/form/select';
 
-interface DataType {
-  [x: string]: any;
-  key: React.Key;
-  date: string;
-  category: string;
-  amount: number;
-  organisation: string;
-  status: any;
+interface PropTypeForTable {
+  data: CharitiesType[];
+  handleDelete: (id: string) => void;
+  handleUpdate: (record: CharitiesType) => void;
+  handlePagination: (page: number, pageSize: number) => void;
+  CountData: number;
+  dataPerPage: number;
+  currentPage: number;
 }
 
-const onChange: TableProps<DataType>['onChange'] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log('params', pagination, filters, sorter, extra);
-};
-
-export const Charity = () => {
+export const Charity = ({
+  data,
+  handleDelete,
+  handleUpdate,
+  handlePagination,
+  dataPerPage,
+  CountData,
+  currentPage,
+}: PropTypeForTable) => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
 
   const handlePopoverOpen = (index: number) => {
@@ -43,30 +38,35 @@ export const Charity = () => {
     router.push('/charity/addcharity');
   };
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<CharitiesType> = [
     {
       title: 'Date',
-      dataIndex: 'date',
+      dataIndex: 'createdAt',
+      render: (value, record) => {
+        return dayjs(value).format('DD-MM-YYYY');
+      },
     },
     {
       title: 'Category',
       dataIndex: 'category',
+      render: (value, record) => {
+        return record.category?.title;
+      },
     },
     {
       title: 'Amount',
       dataIndex: 'amount',
-      sorter: {
-        compare: (a, b) => a.math - b.math,
-        multiple: 2,
-      },
     },
     {
-      title: 'Organisation',
-      dataIndex: 'organisation',
+      title: 'Organization Name',
+      dataIndex: 'organizationName',
     },
     {
       title: 'Status',
       dataIndex: 'status',
+      render: () => {
+        return 'completed';
+      },
     },
     {
       title: '',
@@ -74,25 +74,38 @@ export const Charity = () => {
       key: 'x',
       render: (text, record, index) => (
         <Popover
+          placement='top'
           content={
-            <div style={{ width: '130px', padding: '5px' }}>
-              <span
-                onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block', marginBottom: '12px' }}
+            <>
+              <Button
+                type='text'
+                onClick={() => handleUpdate(record)}
+                style={{
+                  width: '100%',
+                  textAlign: 'left',
+                  marginBottom: '8px',
+                }}
               >
                 Edit
-              </span>
-              <span
-                onClick={() => handlePopoverOpen(index)}
-                style={{ display: 'block' }}
+              </Button>
+              <Popconfirm
+                onConfirm={() => handleDelete(record?.id ?? '')}
+                title='Are you sure to delete?'
+                okText='Yes'
+                cancelText='No'
               >
-                Delete
-              </span>
-            </div>
+                <Button
+                  style={{ width: '100%', textAlign: 'left' }}
+                  type='text'
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
+            </>
           }
           trigger='click'
-          visible={openPopoverIndex === index}
-          onVisibleChange={(visible) => {
+          open={openPopoverIndex === index}
+          onOpenChange={(visible) => {
             if (!visible) {
               setOpenPopoverIndex(null);
             }
@@ -108,77 +121,13 @@ export const Charity = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: '3',
-      date: '07/12/2023',
-      category: 'Food',
-      amount: 322332,
-      organisation: 'Keto India',
-      status: <CustomTag variant='success' title='Completed' />,
-    },
-    {
-      key: '4',
-      date: '03/11/2023',
-      category: 'Food',
-      amount: 2323,
-      organisation: 'Keto India',
-      status: <CustomTag variant='success' title='Completed' />,
-    },
-  ];
   return (
     <>
-      <div className={`${style['charity-page']} common-panel-wrapper`}>
-        {/* Page Title */}
-        <Row
-          justify={'space-between'}
-          style={{ alignItems: 'center' }}
-          className='p-15'
-        >
-          <Col span={12}>
-            <PageTitle title='Charity' />
-          </Col>
-          <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
-            <PrimaryButton
-              text='Add Data'
-              variant='dark'
-              onClick={handleButtonClick}
-            />
-          </Col>
-        </Row>
-        <div className='gray-box p-15 charity-table'>
-          <Row gutter={[0, 12]}>
-            <Col span={24}>
-              <DisplayGraph />
-            </Col>
-            <Col span={24}>
-              <div style={{ background: '#fff', padding: '15px' }}>
-                <Row gutter={[24, 0]} className='filter-wrapper'>
-                  <Col span={6}>
-                    <FormInput type='search' placeholder='Search' />
-                  </Col>
-                  <Col span={10}>
-                    <div className='form-group filter-by'>
-                      <label htmlFor='filter' style={{ marginBottom: 0 }}>
-                        Filter by
-                      </label>
-                      <FormSelect />
-                    </div>
-                  </Col>
-                  <Col span={8}>
-                    <FormInput type='date' placeholder='Select date' />
-                  </Col>
-                </Row>
-                <Table
-                  columns={columns}
-                  dataSource={data}
-                  onChange={onChange}
-                />
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        // onChange={onChange}
+      />
     </>
   );
 };

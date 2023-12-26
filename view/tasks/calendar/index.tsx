@@ -1,70 +1,135 @@
-import style from '../../../style/task.module.scss';
 import {
-  Col,
-  Row,
-  Typography,
   Calendar,
   CalendarProps,
-  Space,
   Checkbox,
+  Col,
+  Row,
+  Space,
+  Typography,
+  message,
 } from 'antd';
-const { Title } = Typography;
-import React from 'react';
 import type { Dayjs } from 'dayjs';
+import style from '../../../style/task.module.scss';
+const { Title } = Typography;
 
+import useAPI from '@/hooks/useApi';
+import { useAppDispatch } from '@/hooks/useRedux';
+import { setTaskCounts } from '@/redux/reducers/task-counts.reducer';
+import { GetTask, TaskStatus } from '@/types';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import { PrimaryCard } from '../../../components/common/card';
 import { CustomTag } from '../../../components/common/tag';
-const onChange = (e: CheckboxChangeEvent) => {
-  console.log(`checked = ${e.target.checked}`);
-};
 
 export const CalendarTask = () => {
+  const dispatch = useAppDispatch();
+  const { getTodaysTasks, updateTask, taskCounts } = useAPI();
+  const [task, setTasks] = useState<GetTask[]>();
+  const [debouncedChecked, setDebouncedChecked] = useState<{
+    taskId: string;
+    status: TaskStatus;
+  } | null>(null);
   const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
+
+  const _getTodayTasks = async () => {
+    try {
+      const tasks = await getTodaysTasks();
+      setTasks(tasks ?? []);
+    } catch (error) {}
+  };
+
+  const debouncedUpdateTask = async (taskId: string, status: TaskStatus) => {
+    try {
+      await updateTask(taskId, { status });
+      _getTodayTasks();
+      message.success('status updated');
+      const counts = await taskCounts();
+      dispatch(setTaskCounts({ ...counts }));
+    } catch (error) {}
+  };
+
+  const onChange = (e: CheckboxChangeEvent, task: GetTask) => {
+    setDebouncedChecked({
+      taskId: task.id ?? '',
+      status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
+    });
+  };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (debouncedChecked !== null) {
+      timer = setTimeout(() => {
+        debouncedUpdateTask(debouncedChecked.taskId, debouncedChecked.status);
+        setDebouncedChecked(null);
+      }, 600);
+    }
+
+    return () => clearTimeout(timer);
+  }, [debouncedChecked]);
+
+  useEffect(() => {
+    _getTodayTasks();
+  }, []);
+
   return (
     <>
-      <div className={`${style['charity-page']}`}>
+      <div className={`${style['task-page-calendar']}`}>
         <Row gutter={[16, 0]}>
           <Col span={16}>
-            <div style={{ background: '#fff', padding: '15px' }}>
-              <Calendar onPanelChange={onPanelChange} />
+            <div className='border-box'>
+              <Calendar
+                value={dayjs('2017-01-25')}
+                onPanelChange={onPanelChange}
+              />
             </div>
           </Col>
           <Col span={8}>
-            <div
-              className='complete-you-tasks-cards'
-              style={{ background: '#fff', padding: '15px' }}
-            >
+            <div className='complete-you-tasks-cards border-box tasks-card'>
               <Row>
-                <Title level={4} className='sub-title'>
+                <Title
+                  level={5}
+                  className='sub-title'
+                  style={{ marginTop: '0' }}
+                >
                   Complete today's Tasks (5)
                 </Title>
-                <Row gutter={[0, 12]}>
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <Col span={24} key={i}>
-                      <PrimaryCard>
-                        <Space
-                          style={{
-                            width: '100%',
-                            alignItems: 'start',
-                            justifyContent: 'space-between',
-                          }}
-                        >
-                          <Space className='strike-check-box'>
-                            <Checkbox onChange={onChange}>
-                              Learn - testing
-                            </Checkbox>
+                {task && (
+                  <Row gutter={[0, 12]} style={{ width: '100%' }}>
+                    {task.map((e) => (
+                      <Col span={24} key={e.id}>
+                        <PrimaryCard>
+                          <Space
+                            style={{
+                              width: '100%',
+                              alignItems: 'start',
+                              justifyContent: 'space-between',
+                            }}
+                          >
+                            <Space className='strike-check-box'>
+                              <Checkbox
+                                defaultChecked={
+                                  e.status === TaskStatus.COMPLETED
+                                }
+                                onChange={(event) => onChange(event, e)}
+                              >
+                                {e.title}
+                              </Checkbox>
+                            </Space>
+                            <span className='mock-block'>
+                              <CustomTag
+                                variant='gray'
+                                title={dayjs(e.startTime).format('hh:mm')}
+                              />
+                            </span>
                           </Space>
-                          <span className='mock-block'>
-                            <CustomTag variant='gray' title='10:00PM' />
-                          </span>
-                        </Space>
-                      </PrimaryCard>
-                    </Col>
-                  ))}
-                </Row>
+                        </PrimaryCard>
+                      </Col>
+                    ))}
+                  </Row>
+                )}
               </Row>
             </div>
           </Col>

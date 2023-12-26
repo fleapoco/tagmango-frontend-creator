@@ -1,16 +1,27 @@
-import React from 'react';
 import { Button } from 'antd';
+import React from 'react';
 
 interface ButtonProps {
   text: React.ReactNode;
   variant: 'primary' | 'secondary' | 'info' | 'dark';
+  size?: 'small';
+  icon?: React.ReactNode;
   onClick?: () => void;
+  loading?: boolean;
+  disabled?: boolean;
 }
 
-export const PrimaryButton = ({ text, variant, onClick }: ButtonProps) => {
+export const PrimaryButton = ({
+  text,
+  variant,
+  onClick,
+  loading = false,
+  disabled = false,
+  size,
+  icon,
+}: ButtonProps) => {
   const ChangeType = variant === 'primary' ? 'primary' : 'text';
 
-  let buttonClass = '';
   let InfoIcon = null;
 
   if (variant === 'info') {
@@ -38,26 +49,27 @@ export const PrimaryButton = ({ text, variant, onClick }: ButtonProps) => {
     );
   }
 
-  switch (variant) {
-    case 'dark':
-      buttonClass = 'site-btn dark-btn';
-      break;
+  let _className = 'site-btn';
 
-    case 'secondary':
-      buttonClass = 'site-btn gray-btn';
-      break;
+  if (variant === 'dark') _className += ' sdark-btn';
+  else if (variant === 'info') _className += ' into-btn';
+  else if (variant === 'secondary') _className += ' secondary-btn';
+  else _className += ' site-btn';
 
-    case 'info':
-      buttonClass = 'site-btn into-btn';
-      break;
-
-    default:
-      buttonClass = 'site-btn';
-  }
+  if (size == 'small') _className += ' small-btn';
+  else _className += '';
 
   return (
     <>
-      <Button type={ChangeType} className={buttonClass} onClick={onClick}>
+      <Button
+        loading={loading}
+        disabled={disabled}
+        type={ChangeType}
+        className={_className}
+        onClick={onClick}
+        size={size}
+        icon={icon}
+      >
         {InfoIcon}
         {text}
       </Button>

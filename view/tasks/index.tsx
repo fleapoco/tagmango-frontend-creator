@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import style from '../../style/task.module.scss';
-import { Row, Col } from 'antd';
 import type { RadioChangeEvent } from 'antd';
-import { Typography, Tabs } from 'antd';
+import { Col, Row, Tabs, Typography } from 'antd';
 import { useRouter } from 'next/router';
+import style from '../../style/task.module.scss';
 
+import { PrimaryButton } from '../../components/common/button';
+import { PrimaryCard } from '../../components/common/card';
+import { AddIcon } from '../../components/common/icons';
+import PageTitle from '../../components/pagetitle';
 import { CalendarTask } from './calendar';
 import { TaskTable } from './tasktable';
-import { PrimaryCard } from '../../components/common/card';
-import PageTitle from '../../components/pagetitle';
-import { PrimaryButton } from '../../components/common/button';
 
 const { TabPane } = Tabs;
 
@@ -26,7 +26,7 @@ export const Task = () => {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push('/task/addtask');
+    router.push('/productivity/task/addtask');
   };
   return (
     <>
@@ -43,6 +43,7 @@ export const Task = () => {
           <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
             <PrimaryButton
               text='New Task'
+              icon={<AddIcon />}
               variant='dark'
               onClick={handleButtonClick}
             />
@@ -84,7 +85,21 @@ export const Task = () => {
                 <TabPane tab='My Tasks' key='2'>
                   <div className='my-tasks-wrapper'>
                     <div className='table-wrapper'>
-                      <TaskTable />
+                      <TaskTable
+                        data={[]}
+                        handleDelete={function (id: string): void {
+                          throw new Error('Function not implemented.');
+                        }}
+                        handlePagination={function (
+                          page: number,
+                          pageSize: number
+                        ): void {
+                          throw new Error('Function not implemented.');
+                        }}
+                        CountData={0}
+                        dataPerPage={0}
+                        currentPage={0}
+                      />
                     </div>
                   </div>
                 </TabPane>

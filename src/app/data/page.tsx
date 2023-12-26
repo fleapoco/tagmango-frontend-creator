@@ -1,15 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Data } from '../../../view/data';
-import { PageLayout } from '../../../view/page-layout';
+import { Data } from "../../../view/data";
 
 const DataPage = () => {
   return (
     <>
-      <PageLayout>
-        <Data />
-      </PageLayout>
+      <Data />
     </>
   );
 };

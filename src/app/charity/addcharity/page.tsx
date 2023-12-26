@@ -1,15 +1,11 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { AddCharity } from '../../../../view/charity/addcharity';
-import { PageLayout } from '../../../../view/page-layout';
+import { AddCharity } from "../../../../view/charity/addcharity";
 
 const AddCharityPage = () => {
   return (
     <>
-      <PageLayout>
-        <AddCharity />
-      </PageLayout>
+      <AddCharity />
     </>
   );
 };
