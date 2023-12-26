@@ -139,6 +139,17 @@ const useAPI = () => {
     return http(`/events/user`);
   };
 
+  const getTaskByGroupId = (groupId: string): Promise<GetTask> => {
+    return http(`/tasks/${groupId}`);
+  };
+
+  const updateTaskByGroupId = (
+    groupId: string,
+    data: GetTask
+  ): Promise<GetTask[]> => {
+    return http(`/tasks/update/${groupId}`, { method: "PUT", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -156,6 +167,8 @@ const useAPI = () => {
     updateDataAnalytic,
     updateCharity,
     getUserEvents,
+    getTaskByGroupId,
+    updateTaskByGroupId,
   };
 };
 

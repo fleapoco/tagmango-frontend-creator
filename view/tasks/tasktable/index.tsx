@@ -21,6 +21,7 @@ interface DataType {
 interface PropTypeForTable {
   data: GetTask[];
   handleDelete: (id: string) => void;
+  handleUpdate: (groupId: string) => void;
   handlePagination: (page: number, pageSize: number) => void;
   CountData: number;
   dataPerPage: number;
@@ -41,6 +42,7 @@ const onChange: TableProps<DataType>["onChange"] = (
 export const TaskTable = ({
   data,
   handleDelete,
+  handleUpdate,
   handlePagination,
   dataPerPage,
   CountData,
@@ -103,7 +105,7 @@ export const TaskTable = ({
             <>
               <Button
                 type="text"
-                onClick={() => handlePopoverOpen(index)}
+                onClick={() => handleUpdate(record.groupId!)}
                 style={{
                   width: "100%",
                   textAlign: "left",
