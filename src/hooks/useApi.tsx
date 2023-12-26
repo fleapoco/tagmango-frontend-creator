@@ -7,22 +7,22 @@ import {
   IFetchAPICall,
   TaskAnalytics,
   UpdateCharityType,
-} from "@/types";
-import { getCookie } from "cookies-next";
+} from '@/types';
+import { getCookie } from 'cookies-next';
 
 const useAPI = () => {
   const http = async (path: string, options?: IFetchAPICall) => {
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path.replace(
       /^\/+/,
-      ""
+      ''
     )}`;
 
     const raw = await fetch(url, {
       headers: {
-        Authorization: `Bearer  ${getCookie("token")} `,
-        "Content-Type": "application/json",
+        Authorization: `Bearer  ${getCookie('token')} `,
+        'Content-Type': 'application/json',
       },
-      method: options?.method ?? "GET",
+      method: options?.method ?? 'GET',
       body: options?.data ? JSON.stringify(options?.data) : undefined,
     });
 
@@ -35,28 +35,28 @@ const useAPI = () => {
     type,
   }: Partial<GetTasksQuery>): Promise<GetTask[]> => {
     const params = new URLSearchParams();
-    if (query) params.append("query", query);
-    if (status) params.append("status", status);
-    if (type) params.append("type", type);
+    if (query) params.append('query', query);
+    if (status) params.append('status', status);
+    if (type) params.append('type', type);
     const queryString = params.toString();
-    const endPoint = `/tasks${queryString ? `?${queryString}` : ""}`;
-    return http(endPoint, { method: "GET" });
+    const endPoint = `/tasks${queryString ? `?${queryString}` : ''}`;
+    return http(endPoint, { method: 'GET' });
   };
 
   const createTask = (data: Partial<GetTask>) => {
-    return http("/tasks/create", { method: "POST", data });
+    return http('/tasks/create', { method: 'POST', data });
   };
 
   const taskCounts = (): Promise<TaskAnalytics> => {
-    return http("/tasks/count");
+    return http('/tasks/count');
   };
 
   const getTodaysTasks = (): Promise<GetTask[]> => {
-    return http("/tasks/today");
+    return http('/tasks/today');
   };
 
   const getDataAnalytics = (): Promise<DataAnalyticsTypes[]> => {
-    return http("/analytics");
+    return http('/analytics');
   };
 
   const getCategories = ({
@@ -65,9 +65,9 @@ const useAPI = () => {
     type: string;
   }): Promise<CategoryType[]> => {
     const params = new URLSearchParams();
-    if (type) params.append("type", type);
+    if (type) params.append('type', type);
     const queryString = params.toString();
-    const endPoint = `/categories${queryString ? `?${queryString}` : ""}`;
+    const endPoint = `/categories${queryString ? `?${queryString}` : ''}`;
     return http(endPoint);
   };
 
@@ -75,23 +75,23 @@ const useAPI = () => {
     id: string,
     data: Partial<GetTask>
   ): Promise<GetTask[]> => {
-    return http(`/tasks/update/${id}`, { method: "PUT", data });
+    return http(`/tasks/update/${id}`, { method: 'PUT', data });
   };
 
   const deleteTask = (id?: string) => {
-    return http(`/tasks/delete/${id}`, { method: "DELETE" });
+    return http(`/tasks/delete/${id}`, { method: 'DELETE' });
   };
 
   const deleteAnalytic = (id?: string) => {
-    return http(`/analytics/${id}`, { method: "DELETE" });
+    return http(`/analytics/${id}`, { method: 'DELETE' });
   };
 
   const createAnalytics = (data: Partial<DataAnalyticsTypes>) => {
-    return http(`/analytics/create`, { method: "POST", data });
+    return http(`/analytics/create`, { method: 'POST', data });
   };
 
   const createCharities = (data: CharitiesType) => {
-    return http(`/charities/create`, { method: "POST", data });
+    return http(`/charities/create`, { method: 'POST', data });
   };
 
   const getCharities = ({
@@ -102,15 +102,15 @@ const useAPI = () => {
     createdAt?: string;
   }): Promise<CharitiesType[]> => {
     const params = new URLSearchParams();
-    if (query) params.append("query", query);
-    if (createdAt) params.append("createdAt", createdAt);
+    if (query) params.append('query', query);
+    if (createdAt) params.append('createdAt', createdAt);
     const queryString = params.toString();
-    const endPoint = `/charities${queryString ? `?${queryString}` : ""}`;
-    return http(endPoint, { method: "GET" });
+    const endPoint = `/charities${queryString ? `?${queryString}` : ''}`;
+    return http(endPoint, { method: 'GET' });
   };
 
   const deleteCharity = (id: string) => {
-    return http(`/charities/${id}`, { method: "DELETE" });
+    return http(`/charities/${id}`, { method: 'DELETE' });
   };
 
   //   const postUserFireNumbers = (data: IFireNumber) => {
@@ -124,14 +124,14 @@ const useAPI = () => {
     id: string,
     data: Partial<DataAnalyticsTypes>
   ): Promise<DataAnalyticsTypes[]> => {
-    return http(`/analytics/${id}`, { method: "PATCH", data });
+    return http(`/analytics/${id}`, { method: 'PATCH', data });
   };
 
   const updateCharity = (
     id: string,
     data: Partial<UpdateCharityType>
   ): Promise<CharitiesType[]> => {
-    return http(`/charities/${id}`, { method: "PATCH", data });
+    return http(`/charities/${id}`, { method: 'PATCH', data });
   };
 
   return {

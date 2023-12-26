@@ -112,17 +112,15 @@ export const CreateTask = () => {
 
   return (
     <>
-      <Row>
+      <Row style={{ paddingTop: '15px' }}>
         <Col span={16} className='border-box'>
           <BreadCrumbNav item={breadCrumbItems} />
-
           {/* Page Title */}
           <Row justify={'space-between'} style={{ alignItems: 'center' }}>
             <Col span={24}>
               <PageTitle title='Create Task' />
             </Col>
           </Row>
-
           <Row style={{ paddingTop: '15px' }}>
             <Col span={24}>
               <FormSelect

@@ -143,20 +143,10 @@
     }
   }
 }
-
-.charity-page :global {
-  .complete-you-tasks-cards {
-    .strike-check-box {
-      .ant-checkbox-wrapper {
-        & > span:first-child {
-          align-self: flex-start;
-          margin-top: 3px;
-        }
-        & > span:last-child {
-          line-height: normal;
-          vertical-align: baseline;
-        }
-      }
+.dashboard-page :global {
+  .cards-wrapper {
+    h5 {
+      margin-bottom: 18px;
     }
   }
 }

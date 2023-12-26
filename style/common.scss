@@ -1,0 +1,168 @@
+.header-main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #fff;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1000;
+  border-bottom: 1px solid #eaeaec;
+
+  .logo-wrapper,
+  .header-user-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-user-wrapper {
+    padding-left: 20px;
+    border-left: 2px solid hsla(0, 0%, 62.4%, 0.15) !important;
+  }
+}
+
+.marks-as-complete-card,
+.complete-today-task-card {
+  .ant-card {
+    padding: 16px;
+    background-color: #f8f9fc;
+    border-radius: 6px;
+    width: -webkit-max-content;
+    width: max-content;
+    border: 0;
+  }
+  .ant-tag {
+    span {
+      font-size: 12px;
+    }
+  }
+}
+
+.marks-as-complete-card {
+  .ant-card {
+    .ant-tag {
+      font-size: 11px !important;
+      line-height: 15px !important;
+    }
+    .ant-card-extra {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+    }
+    .content {
+      width: calc(100% - 35px);
+
+      h5 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0px 0px 10px;
+      }
+    }
+  }
+  &.upcoming-cards-wrapper {
+    .ant-card {
+      h5 {
+        margin: 5px 0px 15px 0;
+      }
+    }
+  }
+}
+.complete-today-task-card {
+  .strike-check-box {
+    .ant-checkbox-wrapper {
+      & > span:first-child {
+        align-self: flex-start;
+        margin-top: 3px;
+      }
+      & > span:last-child {
+        line-height: normal;
+        vertical-align: baseline;
+      }
+    }
+  }
+}
+
+.site-btn {
+  height: auto !important;
+  border-radius: 4px !important;
+  padding: 0 15px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &.primary-btn {
+    background-color: #f18926 !important;
+  }
+
+  &.secondary-btn {
+    height: 36px !important;
+    background-color: #e4e6eb !important;
+
+    span {
+      color: #424242;
+    }
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+    &.small-btn {
+      padding: 0px 10px !important;
+      height: 32px !important;
+
+      span {
+        font-size: 12px;
+        line-height: 12px;
+      }
+    }
+  }
+  &.sdark-btn {
+    background-color: #0f2137 !important;
+
+    span {
+      color: #fff !important;
+    }
+  }
+  &.into-btn {
+    width: 35px !important;
+    height: 35px !important;
+    color: #65676b;
+    background: #f5f8fa;
+    padding: 0 !important;
+
+    & > span {
+      padding: 0;
+      margin: 0;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    svg {
+      width: 18px !important;
+      height: 18px !important;
+    }
+  }
+}
+.count-card {
+  .card {
+    span {
+      font-weight: 400;
+      font-size: 24px;
+      line-height: 1.5715;
+      color: var(--primary-color);
+      margin-bottom: 0;
+    }
+    .over-icon {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+  }
+}
