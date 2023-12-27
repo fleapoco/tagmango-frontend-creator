@@ -1,3 +1,4 @@
+"use client";
 import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
 import useApi from "@/hooks/useApi";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";

@@ -1,5 +1,9 @@
+import dynamic from "next/dynamic";
 import React from "react";
-import ReactApexChart from "react-apexcharts";
+
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
 interface ChartProps {
   chartData: {
