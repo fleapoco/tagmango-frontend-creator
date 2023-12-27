@@ -1,19 +1,19 @@
-import { Tag } from 'antd';
-import React from 'react';
+import { Tag } from "antd";
+import React from "react";
 
 interface TagProps {
   title: React.ReactNode;
-  variant: 'gray' | 'success';
+  variant: "gray" | "success" | "warning";
 }
 
 export const CustomTag = ({ title, variant }: TagProps) => {
-  const tagColors = variant === 'gray' ? '#e4e6eb' : '#87d068';
+  const tagColors = variant === "gray" ? "#e4e6eb" : "#87d068";
 
   return (
     <>
       <Tag
         color={tagColors}
-        style={{ margin: 0, color: variant === 'gray' ? '#424242' : '#fff' }}
+        style={{ margin: 0, color: variant === "gray" ? "#424242" : "#fff" }}
       >
         {title}
       </Tag>

@@ -59,8 +59,10 @@ export const FormInput = (props: Props) => {
           />
         ) : props.type === "time" ? (
           <TimePicker
+            defaultValue={dayjs(props.value)}
+            format="h:mm A"
+            allowClear={false}
             style={{ width: "100%", padding: "7.5px 12px" }}
-            // defaultValue={dayjs("00:00:00", "HH:mm:ss")}
             onChange={(time, timeString) => {
               props.onTimeChange?.(time, timeString);
             }}
@@ -68,7 +70,7 @@ export const FormInput = (props: Props) => {
         ) : props.type === "month" ? (
           <DatePicker
             allowClear={false}
-            picker="date"
+            picker="month"
             value={dayjs(props.value)}
             style={{ width: "100%", padding: "7.5px 12px" }}
             onChange={(date, dateString) => {

@@ -47,6 +47,10 @@ export const Charity = ({
       },
     },
     {
+      title: "Organization Name",
+      dataIndex: "organizationName",
+    },
+    {
       title: "Category",
       dataIndex: "category",
       render: (value, record) => {
@@ -57,17 +61,7 @@ export const Charity = ({
       title: "Amount",
       dataIndex: "amount",
     },
-    {
-      title: "Organization Name",
-      dataIndex: "organizationName",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      render: () => {
-        return "completed";
-      },
-    },
+
     {
       title: "",
       dataIndex: "",

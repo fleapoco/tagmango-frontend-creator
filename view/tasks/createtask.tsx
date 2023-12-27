@@ -106,6 +106,7 @@ export const CreateTask = () => {
 
     const payLoad = {
       ...createTaskFormData,
+      startTime: createTaskFormData.startTime ?? String(dayjs()),
 
       firstDayOfTheWeek:
         createTaskFormData.frequency === TaskFrequency.BI_WEEKLY ||
@@ -189,7 +190,7 @@ export const CreateTask = () => {
           {/* Page Title */}
           <Row justify={"space-between"} style={{ alignItems: "center" }}>
             <Col span={24}>
-              <PageTitle title="Create Task" />
+              <PageTitle title={groupId ? "Edit Task" : "Create Task"} />
             </Col>
           </Row>
           <Row style={{ paddingTop: "15px" }}>
@@ -248,7 +249,7 @@ export const CreateTask = () => {
                     onDateChange={(date, dateString) =>
                       setCreateTaskFormData({
                         ...createTaskFormData,
-                        startDate: dateToISOString(dateString),
+                        startDate: dateString,
                       })
                     }
                   />
@@ -291,7 +292,7 @@ export const CreateTask = () => {
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
                               ...createTaskFormData,
-                              endDate: dateToISOString(dateString),
+                              endDate: dateString,
                             })
                           }
                         />
@@ -300,11 +301,12 @@ export const CreateTask = () => {
                     <FormInput
                       label="Time"
                       type="time"
+                      value={createTaskFormData.startTime!}
                       onTimeChange={(time, timeString) =>
-                        setCreateTaskFormData({
+                        setCreateTaskFormData((createTaskFormData) => ({
                           ...createTaskFormData,
                           startTime: time,
-                        })
+                        }))
                       }
                     />
 
@@ -384,7 +386,7 @@ export const CreateTask = () => {
                           <FormSelect
                             label="Day of the Week"
                             options={daysArray}
-                            value={createTaskFormData.dayOfTheMonth ?? ""}
+                            value={createTaskFormData.firstDayOfTheWeek ?? ""}
                             handleChange={(value) =>
                               setCreateTaskFormData((createTaskFormData) => ({
                                 ...createTaskFormData,

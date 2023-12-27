@@ -17,7 +17,7 @@ export const initialTaskState: GetTask = {
   secondDayOfTheWeek: null,
   points: 0,
   startDate: dayjs().toString(),
-  startTime: null,
+  startTime: String(dayjs()),
   status: TaskStatus.PENDING,
   title: "",
   dayOfTheMonth: null,
@@ -29,6 +29,7 @@ export const initialTaskCounts: TaskAnalytics = {
   inProgress: 0,
   completed: 0,
   total: 0,
+  todaysTaskCount: 0,
 };
 
 export const initialDataAnalyticsState: DataAnalyticsTypes = {

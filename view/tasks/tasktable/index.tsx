@@ -100,10 +100,6 @@ export const TaskTable = ({
     },
 
     {
-      title: "Status",
-      dataIndex: "status",
-    },
-    {
       title: "",
       dataIndex: "",
       key: "x",

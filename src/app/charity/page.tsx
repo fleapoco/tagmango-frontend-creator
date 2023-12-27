@@ -10,18 +10,44 @@ import { PrimaryButton } from "../../../components/common/button";
 import { DisplayGraph } from "../../../components/common/graph";
 import { AddIcon } from "../../../components/common/icons";
 import { FormInput } from "../../../components/form/input";
-import { FormSelect } from "../../../components/form/select";
 import PageTitle from "../../../components/pagetitle";
 import style from "../../../style/task.module.scss";
 import { Charity } from "../../../view/charity";
 
+export interface ChartData {
+  series: number[];
+  labels: string[];
+}
+
 const CharityPage = () => {
   const dispatch = useAppDispatch();
-  const { getCharities, deleteCharity } = useAPI();
+  const { getCharities, deleteCharity, getCharitiesGraphData } = useAPI();
+  const [chartData, setChartData] = useState<ChartData>({
+    series: [],
+    labels: [],
+  });
   const [charities, setCharities] = useState<CharitiesType[]>([]);
   // const [charity, setCharity] = useState<CharitiesType>(initialCharitiesState);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [filterDate, setFilterDate] = useState<string>("");
+
+  const graphData = async () => {
+    try {
+      const data = await getCharitiesGraphData();
+      console.log(data);
+      setChartData({
+        series: data.amount.map((e) => Number(e)),
+        labels: data.months,
+      });
+    } catch (error) {}
+  };
+
+  console.log({ chartData });
+
+  // const chartData = {
+  //   series: [30, 40, 45, 50, 49, 60, 70, 91, 125],
+  //   labels: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  // };
 
   console.log({ filterDate });
 
@@ -34,6 +60,10 @@ const CharityPage = () => {
 
   useEffect(() => {
     _getCharities();
+  }, [filterDate]);
+
+  useEffect(() => {
+    graphData();
   }, [filterDate]);
 
   const handleDeleteCharity = async (id: string) => {
@@ -80,27 +110,12 @@ const CharityPage = () => {
         <div className="p-r-b-l-15">
           <Row gutter={[0, 12]}>
             <Col span={24}>
-              <DisplayGraph />
+              <DisplayGraph chartData={chartData} title="Charity Tracker" />
             </Col>
           </Row>
         </div>
 
         <Row gutter={[24, 0]} className="filter-wrapper p-15">
-          <Col span={6}>
-            <FormInput type={"search"} placeholder="Search" label="Search" />
-          </Col>
-          <Col span={10}>
-            <div className="form-group filter-by">
-              <label htmlFor="filter" style={{ marginBottom: 0 }}>
-                Filter by
-              </label>
-              <FormSelect
-                handleChange={function (value: string): void {
-                  throw new Error("Function not implemented.");
-                }}
-              />
-            </div>
-          </Col>
           <Col span={8}>
             <FormInput
               type="date"
@@ -110,6 +125,21 @@ const CharityPage = () => {
                 setFilterDate(dateString);
               }}
             />
+          </Col>
+          {/* <Col span={6}>
+            <FormInput type={"search"} placeholder="Search" label="Search" />
+          </Col> */}
+          <Col span={10}>
+            <div className="form-group filter-by">
+              {/* <label htmlFor="filter" style={{ marginBottom: 0 }}>
+                Filter by
+              </label> */}
+              {/* <FormSelect
+                handleChange={function (value: string): void {
+                  throw new Error("Function not implemented.");
+                }}
+              /> */}
+            </div>
           </Col>
         </Row>
         <Charity

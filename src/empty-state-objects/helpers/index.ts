@@ -20,3 +20,7 @@ export const daysOfMonthDropdown = daysOfMonthArray.map((day) => ({
   label: day.toString(),
   value: day.toString(),
 }));
+
+export const formatTimeWithAMPM = (time: string) => {
+  return dayjs(time).format("hh:mm A");
+};
