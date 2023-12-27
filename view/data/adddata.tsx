@@ -72,9 +72,7 @@ export const AddData = () => {
           {/* Page Title */}
           <Row justify={"space-between"} style={{ alignItems: "center" }}>
             <Col span={24}>
-              <PageTitle
-                title={type === "update" ? "Update Data" : "Add Data"}
-              />
+              <PageTitle title={type === "update" ? "Edit Data" : "Add Data"} />
             </Col>
           </Row>
 

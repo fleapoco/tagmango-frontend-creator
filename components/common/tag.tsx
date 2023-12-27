@@ -1,5 +1,5 @@
-import { Tag } from 'antd';
-import React from 'react';
+import { Tag } from "antd";
+import React from "react";
 
 interface TagProps {
   title: React.ReactNode;

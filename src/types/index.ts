@@ -41,6 +41,7 @@ export interface TaskAnalytics {
   completed: number;
   pending: number;
   inProgress: number;
+  todaysTaskCount: number;
 }
 
 export interface GetTasksQuery {

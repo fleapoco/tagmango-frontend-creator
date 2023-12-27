@@ -35,15 +35,24 @@ const useAPI = () => {
     query,
     status,
     type,
-  }: Partial<GetTasksQuery>): Promise<GetTask[]> => {
+    uniqueGroup,
+  }: Partial<GetTasksQuery> & { uniqueGroup?: boolean }): Promise<
+    GetTask[]
+  > => {
     const params = new URLSearchParams();
     if (query) params.append("query", query);
     if (status) params.append("status", status);
     if (type) params.append("type", type);
+    if (uniqueGroup !== undefined)
+      params.append("uniqueGroup", String(uniqueGroup));
     const queryString = params.toString();
     const endPoint = `/tasks${queryString ? `?${queryString}` : ""}`;
     return http(endPoint, { method: "GET" });
   };
+
+  // const getTodaysTasksWithUniqueGroupFalse = (): Promise<GetTask[]> => {
+  //   return http("/tasks?uniqueGroup=false");
+  // };
 
   const createTask = (data: Partial<GetTask>) => {
     return http("/tasks/create", { method: "POST", data });
@@ -59,6 +68,13 @@ const useAPI = () => {
 
   const getDataAnalytics = (): Promise<DataAnalyticsTypes[]> => {
     return http("/analytics");
+  };
+
+  const getCharitiesGraphData = (): Promise<{
+    months: string[];
+    amount: string[];
+  }> => {
+    return http("/charities/graph/track");
   };
 
   const getCategories = ({
@@ -170,6 +186,7 @@ const useAPI = () => {
     getUserEvents,
     getTaskByGroupId,
     updateTaskByGroupId,
+    getCharitiesGraphData,
   };
 };
 

@@ -98,7 +98,7 @@ export const AddCharity = () => {
           <Row justify={"space-between"} style={{ alignItems: "center" }}>
             <Col span={24}>
               <PageTitle
-                title={type === "update" ? "Update Charity" : "Add Charity"}
+                title={type === "update" ? "Edit Charity" : "Add Charity"}
               />
             </Col>
           </Row>

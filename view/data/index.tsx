@@ -40,6 +40,11 @@ export const Data = () => {
     setValue(e.target.value);
   };
 
+  const chartData = {
+    series: [30, 40, 45, 50, 49, 60, 70, 91, 125],
+    labels: ["1", " 2", " 3", "4", "5", "6", "7", "8", "9"],
+  };
+
   const _getAnalytics = async () => {
     try {
       const dataAnalytics = await getDataAnalytics();
@@ -112,7 +117,7 @@ export const Data = () => {
                 />
               </TabPane>
               <TabPane tab="Business Statistics" key="2">
-                <BusinessStatistics />
+                <BusinessStatistics chartData={chartData} />
               </TabPane>
             </Tabs>
           </Col>
