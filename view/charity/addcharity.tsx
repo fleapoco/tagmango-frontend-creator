@@ -1,19 +1,30 @@
-import { initialCharitiesState } from '@/empty-state-objects/empty';
-import useAPI from '@/hooks/useApi';
-import { CharitiesType, TypeCategory } from '@/types';
-import { Col, Flex, Row, message } from 'antd';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { BreadCrumbNav } from '../../components/common/breadcrumb';
-import { PrimaryButton } from '../../components/common/button';
-import { FormInput } from '../../components/form/input';
-import { FormSelect } from '../../components/form/select';
-import PageTitle from '../../components/pagetitle';
+"use client";
+window;
+import { initialCharitiesState } from "@/empty-state-objects/empty";
+import useAPI from "@/hooks/useApi";
+import { CharitiesType, TypeCategory } from "@/types";
+import { Col, Flex, Row, message } from "antd";
+
+import { useAppSelector } from "@/hooks/useRedux";
+import { getCharityStored } from "@/redux/reducers/charity.reducer";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { BreadCrumbNav } from "../../components/common/breadcrumb";
+import { PrimaryButton } from "../../components/common/button";
+import { FormInput } from "../../components/form/input";
+import { FormSelect } from "../../components/form/select";
+import PageTitle from "../../components/pagetitle";
 
 export const AddCharity = () => {
   const router = useRouter();
+
+  const charity = useAppSelector(getCharityStored);
+
+  const type = new URLSearchParams(window.location.search).get("type") ?? "";
+
   const [loading, setLoading] = useState<boolean>(false);
-  const { createCharities, getCategories } = useAPI();
+  const { createCharities, getCategories, updateCharity } = useAPI();
   const [categories, setCategories] = useState<
     { value: string; label: string }[]
   >([]);
@@ -24,14 +35,20 @@ export const AddCharity = () => {
   const handleCreateCharity = async () => {
     setLoading(true);
     try {
-      await createCharities(formData);
-      setFormData((initialCharitiesState) => ({
-        ...initialCharitiesState,
-        categoryId: categories.at(0)?.value,
-      }));
+      if (type && type === "update") {
+        await updateCharity(charity.id!, formData);
+        message.success("charity updated");
+      } else {
+        await createCharities(formData);
+        setFormData((initialCharitiesState) => ({
+          ...initialCharitiesState,
+          date: formData.date ?? dayjs().toISOString(),
+          categoryId: categories.at(0)?.value,
+        }));
+        message.success("charity added");
+      }
 
-      message.success('charity added');
-      router.push('/charity');
+      router.push("/charity");
     } catch (error) {
     } finally {
       setLoading(false);
@@ -55,28 +72,41 @@ export const AddCharity = () => {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    if (type && type === "update")
+      setFormData({
+        organizationName: charity.organizationName,
+        amount: charity.amount,
+        categoryId: charity.category?.id,
+      });
+  }, [type]);
+
   const breadCrumbItems = [
     {
-      title: 'Back to Charity',
-      link: '/charity',
+      title: "Back to Charity",
+      link: "/charity",
     },
   ];
 
+  console.log(formData);
+
   return (
     <>
-      <Row style={{ paddingTop: '16px' }}>
-        <Col span={16} className='border-box'>
+      <Row style={{ paddingTop: "16px" }}>
+        <Col span={16} className="border-box">
           <BreadCrumbNav item={breadCrumbItems} />
           {/* Page Title */}
-          <Row justify={'space-between'} style={{ alignItems: 'center' }}>
+          <Row justify={"space-between"} style={{ alignItems: "center" }}>
             <Col span={24}>
-              <PageTitle title='Add Charity' />
+              <PageTitle
+                title={type === "update" ? "Update Charity" : "Add Charity"}
+              />
             </Col>
           </Row>
           {/* Add Form Filed */}
-          <div style={{ paddingTop: '15px' }}>
+          <div style={{ paddingTop: "15px" }}>
             <FormSelect
-              label='Category'
+              label="Category"
               options={categories}
               handleChange={(value) =>
                 setFormData((formData) => ({
@@ -88,10 +118,10 @@ export const AddCharity = () => {
             />
 
             <FormInput
-              placeholder=''
-              label='Amount Donated'
-              icon={'₹'}
-              type='number'
+              placeholder=""
+              label="Amount Donated"
+              icon={"₹"}
+              type="number"
               value={formData.amount}
               onChange={(e) =>
                 setFormData({
@@ -102,9 +132,9 @@ export const AddCharity = () => {
             />
 
             <FormInput
-              placeholder=''
-              label='Organisation Name'
-              type='text'
+              placeholder=""
+              label="Organisation Name"
+              type="text"
               value={formData.organizationName}
               onChange={(e) =>
                 setFormData({
@@ -114,18 +144,26 @@ export const AddCharity = () => {
               }
             />
 
-            <FormInput placeholder='date' label='Date' type='date' />
+            <FormInput
+              placeholder="Charity date"
+              label="Date"
+              type="date"
+              value={formData.date ?? dayjs().toISOString()}
+              onDateChange={(date, dateString) =>
+                setFormData({ ...formData, date: dateString })
+              }
+            />
 
-            <Flex gap='middle' justify='end'>
+            <Flex gap="middle" justify="end">
               <PrimaryButton
-                variant='secondary'
-                text='Cancel'
-                onClick={() => router.push('/charity')}
+                variant="secondary"
+                text="Cancel"
+                onClick={() => router.push("/charity")}
               />
               <PrimaryButton
                 disabled={!formData.organizationName || !formData.amount}
-                variant='primary'
-                text='Save'
+                variant="primary"
+                text="Save"
                 loading={loading}
                 onClick={handleCreateCharity}
               />

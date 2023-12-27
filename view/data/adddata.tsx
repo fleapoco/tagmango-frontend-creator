@@ -1,66 +1,99 @@
-'use client';
+"use client";
+window;
+import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
+import useApi from "@/hooks/useApi";
+import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 
-import { initialDataAnalyticsState } from '@/empty-state-objects/empty';
-import useApi from '@/hooks/useApi';
-import { DataAnalyticsTypes } from '@/types';
-import { Col, Flex, Row } from 'antd';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { BreadCrumbNav } from '../../components/common/breadcrumb';
-import { PrimaryButton } from '../../components/common/button';
-import { FormInput } from '../../components/form/input';
-import PageTitle from '../../components/pagetitle';
+import { getUpdateDataAnalyticState } from "@/redux/reducers/update-analytic.reducer";
+import { DataAnalyticsTypes } from "@/types";
+import { Col, Flex, Row, message } from "antd";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { BreadCrumbNav } from "../../components/common/breadcrumb";
+import { PrimaryButton } from "../../components/common/button";
+import { FormInput } from "../../components/form/input";
+import PageTitle from "../../components/pagetitle";
 
 export const AddData = () => {
   const router = useRouter();
-  const { createAnalytics } = useApi();
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const { createAnalytics, updateDataAnalytic } = useApi();
+  const dataAnalytic = useAppSelector(getUpdateDataAnalyticState);
   const [data, setData] = useState<DataAnalyticsTypes>(
     initialDataAnalyticsState
   );
 
-  const handleCreateAnalytics = async () => {
+  const type = new URLSearchParams(window.location.search).get("type") ?? "";
+
+  const isButtonDisabled = Object.values(data)
+    .filter((key) => key !== "month")
+    .some((value) => value === undefined || value === 0 || value === "");
+
+  const handleSaveData = async () => {
     try {
-      await createAnalytics(data);
-      setData(initialDataAnalyticsState);
-      router.push('/data');
-    } catch (error) {}
+      setLoading(true);
+      if (type && type === "update") {
+        await updateDataAnalytic(dataAnalytic.id!, data);
+        message.success("data updated successfully");
+      } else {
+        await createAnalytics({
+          ...data,
+          month: data.month ?? dayjs().toISOString(),
+        });
+        setData(initialDataAnalyticsState);
+      }
+      router.push("/data");
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const breadCrumbItems = [
     {
-      title: 'Back to Data',
-      link: '/productivity/task',
+      title: "Back to Data",
+      link: "/productivity/task",
     },
   ];
 
+  useEffect(() => {
+    setData(dataAnalytic);
+  }, [type]);
+
+  console.log(data);
+
   return (
     <>
-      <Row>
-        <Col span={16} className='border-box'>
+      <Row style={{ paddingTop: "16px" }}>
+        <Col span={16} className="border-box">
           <BreadCrumbNav item={breadCrumbItems} />
 
           {/* Page Title */}
-          <Row justify={'space-between'} style={{ alignItems: 'center' }}>
+          <Row justify={"space-between"} style={{ alignItems: "center" }}>
             <Col span={24}>
-              <PageTitle title='Add Data' />
+              <PageTitle
+                title={type === "update" ? "Update Data" : "Add Data"}
+              />
             </Col>
           </Row>
 
-          <div style={{ paddingTop: '15px' }}>
+          <div style={{ paddingTop: "15px" }}>
             <FormInput
-              placeholder='Select Month'
-              label='Month'
-              type='month'
-              value={data.month ?? ''}
+              placeholder="Select Month"
+              label="Month"
+              type="month"
+              value={data.month ?? undefined}
               onDateChange={(date, dateString) =>
                 setData({ ...data, month: dateString })
               }
             />
 
             <FormInput
-              placeholder=''
-              label='Revenue Earned'
-              icon={'₹'}
+              placeholder=""
+              label="Revenue Earned"
+              icon={"₹"}
               value={data.revenueEarned}
               onChange={(e) =>
                 setData({
@@ -68,13 +101,13 @@ export const AddData = () => {
                   revenueEarned: Number(e.target.value),
                 })
               }
-              type='number'
+              type="number"
             />
 
             <FormInput
-              label='Ad Spends'
-              icon={'₹'}
-              type='number'
+              label="Ad Spends"
+              icon={"₹"}
+              type="number"
               value={data.adSpends}
               onChange={(e) =>
                 setData({ ...data, adSpends: Number(e.target.value) })
@@ -82,17 +115,17 @@ export const AddData = () => {
             />
 
             <FormInput
-              label='Average Cost Per Lead'
-              icon={'₹'}
+              label="Average Cost Per Lead"
+              icon={"₹"}
               value={data.costPerLead}
               onChange={(e) =>
                 setData({ ...data, costPerLead: Number(e.target.value) })
               }
-              type='number'
+              type="number"
             />
 
             <FormInput
-              label='Total Leads Generated'
+              label="Total Leads Generated"
               value={data.totalLeadsGenerated}
               onChange={(e) =>
                 setData({
@@ -103,7 +136,7 @@ export const AddData = () => {
             />
 
             <FormInput
-              label='Total Paid Customers'
+              label="Total Paid Customers"
               value={data.totalPaidCustomers}
               onChange={(e) =>
                 setData({
@@ -113,8 +146,8 @@ export const AddData = () => {
               }
             />
             <FormInput
-              label='Total Group Size'
-              type='number'
+              label="Total Group Size"
+              type="number"
               value={data.vipGroupSize}
               onChange={(e) =>
                 setData({
@@ -125,7 +158,7 @@ export const AddData = () => {
             />
             <FormInput
               value={data.adSpendsReturn}
-              label='ROAS'
+              label="ROAS"
               onChange={(e) =>
                 setData({
                   ...data,
@@ -133,12 +166,14 @@ export const AddData = () => {
                 })
               }
             />
-            <Flex gap='middle' justify='end'>
-              <PrimaryButton variant='secondary' text='Cancel' />
+            <Flex gap="middle" justify="end">
+              <PrimaryButton variant="secondary" text="Cancel" />
               <PrimaryButton
-                variant='primary'
-                text='Save'
-                onClick={handleCreateAnalytics}
+                loading={loading}
+                disabled={isButtonDisabled}
+                variant="primary"
+                text="Save"
+                onClick={handleSaveData}
               />
             </Flex>
           </div>

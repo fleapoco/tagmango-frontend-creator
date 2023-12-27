@@ -1,8 +1,8 @@
-import React from 'react';
 import { Tag } from 'antd';
+import React from 'react';
 
 interface TagProps {
-  title: string;
+  title: React.ReactNode;
   variant: 'gray' | 'success';
 }
 

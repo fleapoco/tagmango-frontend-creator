@@ -44,7 +44,7 @@ export const Task = () => {
             <PrimaryButton
               text='New Task'
               icon={<AddIcon />}
-              variant='dark'
+              variant='primary'
               onClick={handleButtonClick}
             />
           </Col>

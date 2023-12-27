@@ -74,7 +74,11 @@ const Task = () => {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push("/productivity/task/addtask");
+    router.push("/productivity/task/add-task");
+  };
+
+  const handleUpdateTakButton = (groupId: string) => {
+    router.push(`/productivity/task/add-task?groupId=${groupId}`);
   };
 
   const search = (e: ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +110,7 @@ const Task = () => {
             <PrimaryButton
               text="New Task"
               icon={<AddIcon />}
-              variant="secondary"
+              variant="primary"
               onClick={handleButtonClick}
             />
           </Col>
@@ -168,6 +172,7 @@ const Task = () => {
                     CountData={0}
                     dataPerPage={0}
                     currentPage={0}
+                    handleUpdate={(groupId) => handleUpdateTakButton(groupId)}
                   />
                 </div>
               </TabPane>

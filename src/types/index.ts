@@ -51,7 +51,7 @@ export interface GetTasksQuery {
 
 export interface GetTask {
   id?: string;
-  category: CategoryType | null;
+  category?: CategoryType | null;
   categoryId?: string | null;
   endDate: string | null;
   endTime: string | null;
@@ -64,11 +64,12 @@ export interface GetTask {
   status: TaskStatus;
   title: string;
   type: TaskType;
+  dayOfTheMonth: string | null;
   groupId?: string;
 }
 
 export interface DataAnalyticsTypes {
-  id: string;
+  id?: string;
   revenueEarned?: number;
   adSpends?: number;
   costPerLead?: number;
@@ -93,6 +94,7 @@ export interface CharitiesType {
   category?: CategoryType | null;
   categoryId?: string | null;
   createdAt?: string | null;
+  date?: string | null;
 }
 
 export interface UserDetails {
@@ -102,6 +104,27 @@ export interface UserDetails {
   email: string;
   profilePicUrl: string;
 }
+
+export interface GetEventType {
+  id: string;
+  creatorId: string;
+  title: string;
+  description: string;
+  eventLink: string;
+  location: string;
+  startDate: string | null;
+  endDate: string | null;
+  startTime: string;
+  endTime: string;
+  points: number;
+  recurringStatus: boolean;
+  backgroundImageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
+export interface UpdateEventType extends Partial<GetEventType> {}
 
 export interface UpdateCharityType extends CharitiesType {
   id: string;

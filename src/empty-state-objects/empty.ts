@@ -10,9 +10,6 @@ import {
 import dayjs from "dayjs";
 
 export const initialTaskState: GetTask = {
-  category: null,
-  categoryId: null,
-
   endDate: dayjs().toString(),
   endTime: null,
   firstDayOfTheWeek: null,
@@ -23,6 +20,7 @@ export const initialTaskState: GetTask = {
   startTime: null,
   status: TaskStatus.PENDING,
   title: "",
+  dayOfTheMonth: null,
   type: TaskType.ONE_TIME,
 };
 
@@ -42,7 +40,6 @@ export const initialDataAnalyticsState: DataAnalyticsTypes = {
   totalPaidCustomers: 0,
   totalLeadsGenerated: 0,
   month: null,
-  id: "",
 };
 
 export const initialCharitiesState: CharitiesType = {
@@ -50,4 +47,5 @@ export const initialCharitiesState: CharitiesType = {
   amount: 0,
 
   categoryId: null,
+  date: dayjs().toISOString(),
 };

@@ -2,10 +2,12 @@ import {
   CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
+  GetEventType,
   GetTask,
   GetTasksQuery,
   IFetchAPICall,
   TaskAnalytics,
+  TaskStatus,
   UpdateCharityType,
 } from "@/types";
 import { getCookie } from "cookies-next";
@@ -71,11 +73,11 @@ const useAPI = () => {
     return http(endPoint);
   };
 
-  const updateTask = (
+  const updateTaskStatus = (
     id: string,
-    data: Partial<GetTask>
+    data: { status: TaskStatus }
   ): Promise<GetTask[]> => {
-    return http(`/tasks/update/${id}`, { method: "PUT", data });
+    return http(`/tasks/status/${id}`, { method: "PUT", data });
   };
 
   const deleteTask = (id?: string) => {
@@ -134,12 +136,27 @@ const useAPI = () => {
     return http(`/charities/${id}`, { method: "PATCH", data });
   };
 
+  const getUserEvents = (): Promise<GetEventType[]> => {
+    return http(`/events/user`);
+  };
+
+  const getTaskByGroupId = (groupId: string): Promise<GetTask> => {
+    return http(`/tasks/${groupId}`);
+  };
+
+  const updateTaskByGroupId = (
+    groupId: string,
+    data: GetTask
+  ): Promise<GetTask[]> => {
+    return http(`/tasks/update/${groupId}`, { method: "PUT", data });
+  };
+
   return {
     getTasks,
     createTask,
     taskCounts,
     getTodaysTasks,
-    updateTask,
+    updateTaskStatus,
     deleteTask,
     getDataAnalytics,
     deleteAnalytic,
@@ -150,6 +167,9 @@ const useAPI = () => {
     getCategories,
     updateDataAnalytic,
     updateCharity,
+    getUserEvents,
+    getTaskByGroupId,
+    updateTaskByGroupId,
   };
 };
 

@@ -1,20 +1,20 @@
-import { FormInputType } from '@/types';
-import { Col, Row, Typography } from 'antd';
-import { FormInput } from '../form/input';
+import { Col, DatePicker, Row, Typography } from 'antd';
 const { Title } = Typography;
+
+const { RangePicker } = DatePicker;
 
 export const DisplayGraph = () => {
   return (
     <>
       <div className='border-box'>
         <Row>
-          <Col span={16}>
+          <Col span={18}>
             <Title level={4} className='sub-title'>
               Revenue Earned
             </Title>
           </Col>
-          <Col span={8}>
-            <FormInput type={FormInputType.DATE} placeholder='Select Date' />
+          <Col span={6} style={{ textAlign: 'right' }}>
+            <RangePicker />
           </Col>
         </Row>
         <Row>

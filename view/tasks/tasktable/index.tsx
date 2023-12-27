@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { CategoryType, GetTask, TaskType } from "@/types";
+import { CategoryType, GetTask, TaskFrequency, TaskType } from "@/types";
 import { Button, Popconfirm, Popover, Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import dayjs from "dayjs";
@@ -10,17 +10,19 @@ import { TableNoData } from "../../../components/common/tablenodata";
 interface DataType {
   id?: string;
   title: string | null;
-  category: CategoryType | null;
+  category?: CategoryType | null;
   endDate?: string | null;
   startDate?: string | null;
   status: string;
   groupId?: string;
   type?: TaskType;
+  frequency: TaskFrequency;
 }
 
 interface PropTypeForTable {
   data: GetTask[];
   handleDelete: (id: string) => void;
+  handleUpdate: (groupId: string) => void;
   handlePagination: (page: number, pageSize: number) => void;
   CountData: number;
   dataPerPage: number;
@@ -41,6 +43,7 @@ const onChange: TableProps<DataType>["onChange"] = (
 export const TaskTable = ({
   data,
   handleDelete,
+  handleUpdate,
   handlePagination,
   dataPerPage,
   CountData,
@@ -75,15 +78,23 @@ export const TaskTable = ({
     },
 
     {
+      title: "Frequency",
+      dataIndex: "frequency",
+      render: (value, record) => {
+        return value;
+      },
+    },
+
+    {
       title: "Deadline",
       dataIndex: "startDate",
       render: (value, record) => {
         if (record.type === TaskType.ONE_TIME) {
-          return dayjs(record.startDate).format("MM/DD/YYYY");
-        } else {
-          return `${dayjs(record.startDate).format("MM/DD/YYYY")}-${dayjs(
-            record.endDate
-          ).format("MM/DD/YYYY")}`;
+          return dayjs(record.startDate).format("DD MMM YYYY");
+        } else if (record.type === TaskType.RECURRING) {
+          return `from ${dayjs(record.startDate).format(
+            "DD MMM YYYY"
+          )}- till ${dayjs(record.endDate).format("DD MMM YYYY")}`;
         }
       },
     },
@@ -96,14 +107,16 @@ export const TaskTable = ({
       title: "",
       dataIndex: "",
       key: "x",
+      align: "right",
       render: (text, record, index) => (
         <Popover
           placement="top"
+          className="action-btn"
           content={
             <>
               <Button
                 type="text"
-                onClick={() => handlePopoverOpen(index)}
+                onClick={() => handleUpdate(record.groupId!)}
                 style={{
                   width: "100%",
                   textAlign: "left",
