@@ -1,5 +1,5 @@
 "use client";
-window;
+
 import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
 import useApi from "@/hooks/useApi";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
@@ -8,7 +8,7 @@ import { getUpdateDataAnalyticState } from "@/redux/reducers/update-analytic.red
 import { DataAnalyticsTypes } from "@/types";
 import { Col, Flex, Row, message } from "antd";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
@@ -24,8 +24,8 @@ export const AddData = () => {
   const [data, setData] = useState<DataAnalyticsTypes>(
     initialDataAnalyticsState
   );
-
-  const type = new URLSearchParams(window.location.search).get("type") ?? "";
+  const params = useSearchParams();
+  const type = params.get("type");
 
   const isButtonDisabled = Object.values(data)
     .filter((key) => key !== "month")
