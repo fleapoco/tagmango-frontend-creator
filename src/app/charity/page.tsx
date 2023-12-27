@@ -4,6 +4,7 @@ import { useAppDispatch } from "@/hooks/useRedux";
 import { setCharity } from "@/redux/reducers/charity.reducer";
 import { CharitiesType } from "@/types";
 import { Col, DatePicker, Row, message } from "antd";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PrimaryButton } from "../../../components/common/button";
@@ -27,13 +28,27 @@ const CharityPage = () => {
     labels: [],
   });
   const [charities, setCharities] = useState<CharitiesType[]>([]);
+
   // const [charity, setCharity] = useState<CharitiesType>(initialCharitiesState);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [filterDate, setFilterDate] = useState<string>("");
 
+  const [dateRange, setDateRange] = useState<[string, string]>(["", ""]);
+
+  const handleDateChangeCallback = (
+    dates: dayjs.Dayjs,
+    dateStrings: [string, string]
+  ) => {
+    // Perform actions with selected dates, e.g., update state or make API calls
+    setDateRange(dateStrings);
+  };
+
   const graphData = async () => {
     try {
-      const data = await getCharitiesGraphData();
+      const data = await getCharitiesGraphData({
+        startMonth: dateRange.at(0),
+        endMonth: dateRange.at(1),
+      });
       console.log(data);
       setChartData({
         series: data.amount.map((e) => Number(e)),
@@ -64,7 +79,7 @@ const CharityPage = () => {
 
   useEffect(() => {
     graphData();
-  }, [filterDate]);
+  }, [dateRange]);
 
   const handleDeleteCharity = async (id: string) => {
     try {
@@ -110,7 +125,11 @@ const CharityPage = () => {
         <div className="p-r-b-l-15">
           <Row gutter={[0, 12]}>
             <Col span={24}>
-              <DisplayGraph chartData={chartData} title="Charity Tracker" />
+              <DisplayGraph
+                chartData={chartData}
+                title="Charity Tracker"
+                onDateChange={handleDateChangeCallback}
+              />
             </Col>
           </Row>
         </div>

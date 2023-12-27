@@ -1,5 +1,6 @@
 import { ChartData } from "@/app/charity/page";
 import { Col, DatePicker, Row, Typography } from "antd";
+import dayjs from "dayjs";
 import Chart from "./Chart";
 const { Title } = Typography;
 
@@ -8,7 +9,16 @@ const { RangePicker } = DatePicker;
 export const DisplayGraph = (props: {
   chartData: ChartData;
   title: string;
+  onDateChange: (dates: dayjs.Dayjs, dateStrings: [string, string]) => void;
 }) => {
+  const handleDateChange = (
+    dates: dayjs.Dayjs,
+    dateStrings: [string, string]
+  ) => {
+    console.log("Selected Dates:", dates);
+    console.log("Formatted Dates:", dateStrings);
+    props.onDateChange(dates, dateStrings);
+  };
   return (
     <>
       <div className="border-box">
@@ -19,7 +29,7 @@ export const DisplayGraph = (props: {
             </Title>
           </Col>
           <Col span={6} style={{ textAlign: "right" }}>
-            <RangePicker />
+            <RangePicker picker="month" onChange={handleDateChange as any} />
           </Col>
         </Row>
         <Row>
