@@ -16,8 +16,6 @@ import {
 } from 'react-icons/md';
 
 import { useAppDispatch } from '@/hooks/useRedux';
-import { setUser } from '@/redux/reducers/user.reducer';
-import { UserDetails } from '@/types';
 import { Analytics } from './common/icons';
 import { Header } from './header';
 import style from '/style/dashboard.module.scss';
@@ -67,31 +65,31 @@ const items: ItemType[] = [
     link: '/data',
   },
   {
-    key: '5',
+    key: '3',
     label: 'Events',
     icon: <MdEmojiEvents size={20} />,
     link: '/events',
   },
   {
-    key: '6',
+    key: '4',
     label: 'Charity',
     icon: <Analytics />,
     link: '/charity',
   },
   {
-    key: '7',
+    key: '5',
     label: 'Quizzes',
     icon: <MdOutlineQuiz size={20} />,
     link: '/quizzes',
   },
   {
-    key: '8',
+    key: '6',
     label: 'Degree',
     icon: <MdCastForEducation size={20} />,
     link: '/degree',
   },
   {
-    key: '9',
+    key: '7',
     label: 'Achievement',
     icon: <MdAdsClick size={20} />,
     link: '/achievement',
@@ -115,11 +113,38 @@ export default function PageLayout(props: Props) {
   //   if (props.userDetails) dispatch(setUser(props.userDetails));
   // }, [dispatch, props.userDetails]);
 
+  // useEffect(() => {
+  //   const key = items.find((item) => item.link === currentPathname)?.key;
+  //   console.log(key);
+
+  //   if (key) {
+  //     setSelectedKeys([key]);
+  //   }
+  // }, [currentPathname]);\
+
   useEffect(() => {
-    // Update selected key based on the current pathname
-    const key = items.find((item) => item.link === currentPathname)?.key;
-    if (key) {
-      setSelectedKeys([key]);
+    const findSelectedKey = (item: ItemType): string | undefined => {
+      if (item.link === currentPathname) {
+        return item.key;
+      } else if (item.children) {
+        for (const subItem of item.children) {
+          const key = findSelectedKey(subItem);
+          if (key) {
+            return key;
+          }
+        }
+      }
+      return undefined;
+    };
+    let newSelectedKey: string | undefined;
+    for (const item of items) {
+      newSelectedKey = findSelectedKey(item);
+      if (newSelectedKey) {
+        break;
+      }
+    }
+    if (newSelectedKey) {
+      setSelectedKeys([newSelectedKey]);
     }
   }, [currentPathname]);
 
