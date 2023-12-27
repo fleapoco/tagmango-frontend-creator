@@ -1,5 +1,5 @@
-"use-client";
 window;
+
 import { useEffect, useState } from "react";
 
 import type { RadioChangeEvent } from "antd";
@@ -27,7 +27,7 @@ const typeArray = ["one-time", "recurring"];
 
 export const CreateTask = () => {
   const router = useRouter();
-  const groupId =
+  const groupId: string =
     new URLSearchParams(window.location.search).get("groupId") ?? "";
 
   const {
@@ -90,7 +90,7 @@ export const CreateTask = () => {
   useEffect(() => {
     if (groupId) fetchTasksByGroupId();
     else return;
-  }, [groupId, window]);
+  }, [groupId]);
 
   const handleSave = async () => {
     if (
@@ -241,7 +241,7 @@ export const CreateTask = () => {
                   <FormInput
                     label="Date"
                     type="date"
-                    value={createTaskFormData.startDate ?? ""}
+                    value={createTaskFormData.startDate!}
                     onDateChange={(date, dateString) =>
                       setCreateTaskFormData({
                         ...createTaskFormData,
@@ -381,7 +381,7 @@ export const CreateTask = () => {
                             handleChange={(value) =>
                               setCreateTaskFormData((createTaskFormData) => ({
                                 ...createTaskFormData,
-                                dayOfTheMonth: value,
+                                firstDayOfTheWeek: value,
                               }))
                             }
                           />

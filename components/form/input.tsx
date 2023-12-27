@@ -60,7 +60,7 @@ export const FormInput = (props: Props) => {
         ) : props.type === "time" ? (
           <TimePicker
             style={{ width: "100%", padding: "7.5px 12px" }}
-            defaultValue={dayjs("00:00:00", "HH:mm:ss")}
+            // defaultValue={dayjs("00:00:00", "HH:mm:ss")}
             onChange={(time, timeString) => {
               props.onTimeChange?.(time, timeString);
             }}
