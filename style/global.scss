@@ -182,6 +182,25 @@ p {
     padding: 0;
   }
 }
+.certification-card {
+  border: 1px solid #dedee3;
+  padding: 0px;
+  .ant-card-cover {
+    img {
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+  }
+  .ant-card-body {
+    padding: 16px;
+    p {
+      margin-top: 5px;
+    }
+    h3 {
+      margin: 0;
+    }
+  }
+}
 .events-card {
   border: 1px solid #dedee3;
   padding: 0px;

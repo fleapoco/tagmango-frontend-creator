@@ -2,11 +2,10 @@
 window;
 import { initialCharitiesState } from "@/empty-state-objects/empty";
 import useAPI from "@/hooks/useApi";
-import { CharitiesType, TypeCategory } from "@/types";
-import { Col, Flex, Row, message } from "antd";
-
 import { useAppSelector } from "@/hooks/useRedux";
 import { getCharityStored } from "@/redux/reducers/charity.reducer";
+import { CharitiesType, TypeCategory } from "@/types";
+import { Col, Flex, Row, message } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,7 +20,10 @@ export const AddCharity = () => {
 
   const charity = useAppSelector(getCharityStored);
 
-  const type = new URLSearchParams(window.location.search).get("type") ?? "";
+  const type =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("type") ?? ""
+      : "";
 
   const [loading, setLoading] = useState<boolean>(false);
   const { createCharities, getCategories, updateCharity } = useAPI();
