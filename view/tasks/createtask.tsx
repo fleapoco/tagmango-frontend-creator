@@ -1,3 +1,4 @@
+"user client";
 window;
 
 import { useEffect, useState } from "react";
@@ -27,8 +28,11 @@ const typeArray = ["one-time", "recurring"];
 
 export const CreateTask = () => {
   const router = useRouter();
-  const groupId: string =
-    new URLSearchParams(window.location.search).get("groupId") ?? "";
+
+  const groupId =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("groupId") ?? ""
+      : "";
 
   const {
     createTask,

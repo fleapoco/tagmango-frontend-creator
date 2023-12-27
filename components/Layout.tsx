@@ -86,7 +86,7 @@ const items: ItemType[] = [
 
 interface Props {
   children: React.ReactNode;
-  userDetails?: UserDetails;
+  // userDetails?: UserDetails;
 }
 
 export default function PageLayout(props: Props) {
@@ -97,9 +97,9 @@ export default function PageLayout(props: Props) {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const currentPathname = usePathname();
 
-  useEffect(() => {
-    if (props.userDetails) dispatch(setUser(props.userDetails));
-  }, [dispatch, props.userDetails]);
+  // useEffect(() => {
+  //   if (props.userDetails) dispatch(setUser(props.userDetails));
+  // }, [dispatch, props.userDetails]);
 
   useEffect(() => {
     // Update selected key based on the current pathname

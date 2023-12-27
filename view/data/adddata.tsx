@@ -25,7 +25,10 @@ export const AddData = () => {
     initialDataAnalyticsState
   );
 
-  const type = new URLSearchParams(window.location.search).get("type") ?? "";
+  const type =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("type") ?? ""
+      : "";
 
   const isButtonDisabled = Object.values(data)
     .filter((key) => key !== "month")
