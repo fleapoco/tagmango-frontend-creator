@@ -1,5 +1,4 @@
-"user client";
-window;
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -18,7 +17,7 @@ import { useAppDispatch } from "@/hooks/useRedux";
 import { setTasks } from "@/redux/reducers/task.reducer";
 import { GetTask, TaskFrequency, TaskType, TypeCategory } from "@/types";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
 import { FormInput } from "../../components/form/input";
@@ -28,11 +27,9 @@ const typeArray = ["one-time", "recurring"];
 
 export const CreateTask = () => {
   const router = useRouter();
+  const params = useSearchParams();
 
-  const groupId =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("groupId") ?? ""
-      : "";
+  const groupId = params.get("groupId");
 
   const {
     createTask,
@@ -66,7 +63,7 @@ export const CreateTask = () => {
   const fetchTasksByGroupId = async () => {
     setGroupIdLoading(true);
     try {
-      const task = await getTaskByGroupId(groupId);
+      const task = await getTaskByGroupId(groupId ?? "");
       setCreateTaskFormData({
         startDate: task.startDate,
         endDate:

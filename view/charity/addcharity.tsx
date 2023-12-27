@@ -1,5 +1,4 @@
 "use client";
-window;
 import { initialCharitiesState } from "@/empty-state-objects/empty";
 import useAPI from "@/hooks/useApi";
 import { useAppSelector } from "@/hooks/useRedux";
@@ -7,7 +6,7 @@ import { getCharityStored } from "@/redux/reducers/charity.reducer";
 import { CharitiesType, TypeCategory } from "@/types";
 import { Col, Flex, Row, message } from "antd";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
@@ -17,13 +16,11 @@ import PageTitle from "../../components/pagetitle";
 
 export const AddCharity = () => {
   const router = useRouter();
+  const params = useSearchParams();
 
   const charity = useAppSelector(getCharityStored);
 
-  const type =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("type") ?? ""
-      : "";
+  const type = params.get("type");
 
   const [loading, setLoading] = useState<boolean>(false);
   const { createCharities, getCategories, updateCharity } = useAPI();
