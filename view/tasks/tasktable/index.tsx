@@ -107,9 +107,11 @@ export const TaskTable = ({
       title: "",
       dataIndex: "",
       key: "x",
+      align: "right",
       render: (text, record, index) => (
         <Popover
           placement="top"
+          className="action-btn"
           content={
             <>
               <Button

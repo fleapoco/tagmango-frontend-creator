@@ -25,11 +25,7 @@ export const Events = () => {
   return (
     <>
       {/* Page Title */}
-      <Row
-        justify={"space-between"}
-        style={{ alignItems: "center" }}
-        className="p-15"
-      >
+      <Row style={{ padding: "15px 0" }}>
         <Col span={24}>
           <PageTitle title="Events" />
         </Col>

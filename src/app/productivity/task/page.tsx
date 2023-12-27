@@ -110,7 +110,7 @@ const Task = () => {
             <PrimaryButton
               text="New Task"
               icon={<AddIcon />}
-              variant="secondary"
+              variant="primary"
               onClick={handleButtonClick}
             />
           </Col>
