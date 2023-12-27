@@ -81,6 +81,12 @@
                 }
               }
             }
+            .ant-menu-item-selected {
+              background: transparent !important;
+              &::before {
+                background: #f18926;
+              }
+            }
           }
         }
 
