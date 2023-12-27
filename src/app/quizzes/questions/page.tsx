@@ -1,11 +1,12 @@
 'use client';
 
-import { Card, Col, Flex, Input, Radio, Row, Typography } from 'antd';
+import { Card, Col, Flex, Input, Row, Typography } from 'antd';
 import { BreadCrumbNav } from '../../../../components/common/breadcrumb';
 import { PrimaryButton } from '../../../../components/common/button';
 import { CustomTag } from '../../../../components/common/tag';
 import PageTitle from '../../../../components/pagetitle';
 import style from '../../../../style/task.module.scss';
+import { Questionbox } from '../common/questionbox';
 
 const { TextArea } = Input;
 
@@ -44,33 +45,18 @@ const QuizQuestions = () => {
                   />
                 }
               >
+                {/* Heading */}
                 <div className='content-wrapper'>
                   <Flex
                     align='start'
                     justify='space-between'
                     className='heading-content'
                   >
-                    <div>
-                      <h4>Questions 3/10</h4>
-                      <h2>Quiz Title Add Here</h2>
-                    </div>
+                    <h4>Questions 3/10</h4>
                     <CustomTag variant='success' title='30xp' />
                   </Flex>
                   {/* Questions Wrapper */}
-                  <Flex vertical className='q-wrapper'>
-                    <li className='right-question'>
-                      <Radio className='q-name-list'> HTML</Radio>
-                    </li>
-                    <li>
-                      <Radio className='q-name-list'> CSS</Radio>
-                    </li>
-                    <li className='wrong-answer'>
-                      <Radio className='q-name-list'> JS</Radio>
-                    </li>
-                    <li>
-                      <Radio className='q-name-list'> React</Radio>
-                    </li>
-                  </Flex>
+                  <Questionbox />
                   {/* Textarea Box Wrapper Start */}
                   <div className='textarea-box'>
                     <TextArea
