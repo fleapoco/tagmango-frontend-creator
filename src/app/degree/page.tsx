@@ -11,7 +11,7 @@ const Certification = () => {
       {/* Page Title */}
       <Row style={{ padding: '15px 0' }}>
         <Col span={24}>
-          <PageTitle title='Certification' />
+          <PageTitle title='Degree' />
         </Col>
       </Row>
       {/* Events Cards */}

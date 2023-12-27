@@ -36,7 +36,7 @@ const QuizzesPage = () => {
                   text={
                     <div style={{ display: 'flex', gap: '12px' }}>
                       <span>Play & Earn</span>
-                      <CustomTag title='30XP' variant='success' />
+                      <CustomTag title='30XP' color='#87d068' />
                     </div>
                   }
                   variant='secondary'

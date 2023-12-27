@@ -26,7 +26,7 @@ const MarkAsCompleteCard = () => {
             text={
               <>
                 Mark as complete &nbsp;
-                <CustomTag variant='success' title='20XP' />
+                <CustomTag color='#87d068' title='20XP' />
               </>
             }
             size='small'

@@ -149,7 +149,11 @@ p {
   .ant-btn {
     margin-left: auto;
   }
+  td {
+    text-transform: capitalize;
+  }
 }
+
 .ant-pagination {
   padding: 15px;
   margin: 0 !important;

@@ -55,7 +55,7 @@ const QuizSubmitted = () => {
                           </Flex>
                           <Flex justify='space-between' align='center'>
                             <h4>Points earned</h4>
-                            <CustomTag title='20xp' variant='success' />
+                            <CustomTag title='20xp' color='#87d068' />
                           </Flex>
                         </div>
                         <div

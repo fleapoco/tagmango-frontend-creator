@@ -18,7 +18,7 @@ const UpcomingEventsCard = () => {
       >
         <div className='content'>
           <CustomTag
-            variant='gray'
+            color='default'
             title={
               <>
                 <Flex align='center' gap={3}>

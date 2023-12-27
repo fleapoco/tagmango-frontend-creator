@@ -1,8 +1,7 @@
 .dashboard-wrapper :global {
   .main-layout {
     position: relative;
-    min-height: 100vh;
-    padding-top: 60px;
+    min-height: calc(100vh - 60px);
     background-color: #eff2f5;
     display: flex;
     justify-content: space-between;

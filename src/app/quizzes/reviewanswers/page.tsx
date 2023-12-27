@@ -4,11 +4,12 @@ import { Col, Row } from 'antd';
 import { PrimaryCard } from '../../../../components/common/card';
 import PageTitle from '../../../../components/pagetitle';
 import style from '../../../../style/task.module.scss';
+import { AnswerTable } from './table';
 
 const ReviewAnswers = () => {
   return (
     <>
-      <div className={`${style['task-page']} common-panel-wrapper`}>
+      <div className={`${style['quiz-answer-page']} common-panel-wrapper`}>
         {/* Page Title */}
         <Row
           justify={'space-between'}
@@ -20,25 +21,24 @@ const ReviewAnswers = () => {
           </Col>
         </Row>
         {/* Task Total Count Section */}
-        <div className='gray-box task-count-wrapper p-15'>
+        <div className='task-count-wrapper p-r-b-l-15'>
           <Row gutter={[12, 0]} className=' '>
-            {[
-              {
-                taskName: 'Questions Attempted',
-                count: `${23} of ${30}`,
-              },
-              {
-                taskName: 'Points Obtained',
-                count: '30XP',
-              },
-            ].map((ele, i) => (
-              <Col key={i} span={6} className='count-card'>
-                <PrimaryCard title={ele.taskName}>
-                  <span style={{ margin: 0 }}>{ele.count}</span>
-                </PrimaryCard>
-              </Col>
-            ))}
+            <Col span={6} className='count-card'>
+              <PrimaryCard title='Questions Attempted'>
+                <span style={{ margin: 0 }}>
+                  30 <span className='small-txt'>out of 40</span>
+                </span>
+              </PrimaryCard>
+            </Col>
+            <Col span={6} className='count-card'>
+              <PrimaryCard title='Points Obtained'>
+                <span style={{ margin: 0 }}>30XP</span>
+              </PrimaryCard>
+            </Col>
           </Row>
+        </div>
+        <div className='answer-table-box'>
+          <AnswerTable />
         </div>
       </div>
     </>

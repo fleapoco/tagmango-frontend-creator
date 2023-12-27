@@ -21,7 +21,7 @@ const CompleteTodayTasks = () => {
           </Space>
           <span className='mock-block custom-tag-wrapper'>
             <CustomTag
-              variant='gray'
+              color='default'
               title={
                 <>
                   <Flex align='center' gap={3}>

@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
+  MdAdsClick,
+  MdCastForEducation,
   MdDashboard,
   MdDatasetLinked,
   MdEmojiEvents,
@@ -47,12 +49,12 @@ const items: ItemType[] = [
     icon: <Analytics />,
     children: [
       {
-        key: '3',
+        key: 'sub2',
         label: 'Habits',
         link: '/productivity/habit',
       },
       {
-        key: '4',
+        key: 'sub3',
         label: 'Tasks',
         link: '/productivity/task',
       },
@@ -84,9 +86,15 @@ const items: ItemType[] = [
   },
   {
     key: '8',
-    label: 'Certification',
-    icon: <MdOutlineQuiz size={20} />,
-    link: '/certification',
+    label: 'Degree',
+    icon: <MdCastForEducation size={20} />,
+    link: '/degree',
+  },
+  {
+    key: '9',
+    label: 'Achievement',
+    icon: <MdAdsClick size={20} />,
+    link: '/achievement',
   },
 ];
 
@@ -119,7 +127,10 @@ export default function PageLayout(props: Props) {
     <>
       <div className={`${style['dashboard-wrapper']}`}>
         <Header />
-        <Space direction='vertical' style={{ width: '100%' }}>
+        <Space
+          direction='vertical'
+          style={{ width: '100%', marginTop: '60px' }}
+        >
           <Layout className='main-layout'>
             <Sider className='sidebar-main'>
               <Flex gap='middle' className='user-name-display' align='center'>
