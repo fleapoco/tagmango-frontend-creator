@@ -1,27 +1,45 @@
-import { useEffect, useState } from 'react';
+window;
 
-import type { RadioChangeEvent } from 'antd';
-import { Col, Flex, Radio, Row, Space, message } from 'antd';
-import PageTitle from '../../components/pagetitle';
+import { useEffect, useState } from "react";
 
-import { initialTaskState } from '@/empty-state-objects/empty';
-import useAPI from '@/hooks/useApi';
-import { useAppDispatch } from '@/hooks/useRedux';
-import { setTasks } from '@/redux/reducers/task.reducer';
-import { GetTask, TaskFrequency, TaskType, TypeCategory } from '@/types';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/navigation';
-import { BreadCrumbNav } from '../../components/common/breadcrumb';
-import { PrimaryButton } from '../../components/common/button';
-import { FormInput } from '../../components/form/input';
-import { FormSelect } from '../../components/form/select';
-const frequencyArray = ['daily', 'bi-weekly', 'weekly', 'monthly'];
-const typeArray = ['one-time', 'recurring'];
+import type { RadioChangeEvent } from "antd";
+import { Col, Flex, Radio, Row, Space, message } from "antd";
+import PageTitle from "../../components/pagetitle";
+
+import { initialTaskState } from "@/empty-state-objects/empty";
+import {
+  dateToISOString,
+  daysArray,
+  daysOfMonthDropdown,
+} from "@/empty-state-objects/helpers";
+import useAPI from "@/hooks/useApi";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { setTasks } from "@/redux/reducers/task.reducer";
+import { GetTask, TaskFrequency, TaskType, TypeCategory } from "@/types";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { BreadCrumbNav } from "../../components/common/breadcrumb";
+import { PrimaryButton } from "../../components/common/button";
+import { FormInput } from "../../components/form/input";
+import { FormSelect } from "../../components/form/select";
+const frequencyArray = ["daily", "bi-weekly", "weekly", "monthly"];
+const typeArray = ["one-time", "recurring"];
 
 export const CreateTask = () => {
   const router = useRouter();
-  const { createTask, getTasks, getCategories } = useAPI();
+  const groupId: string =
+    new URLSearchParams(window.location.search).get("groupId") ?? "";
+
+  const {
+    createTask,
+    getTasks,
+    getCategories,
+    getTaskByGroupId,
+    updateTaskByGroupId,
+  } = useAPI();
+
   const [loading, setLoading] = useState<boolean>(false);
+  const [groupIdLoading, setGroupIdLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<
     { value: string; label: string }[]
   >([]);
@@ -41,39 +59,91 @@ export const CreateTask = () => {
     setCreateTaskFormData({ ...createTaskFormData, frequency: e.target.value });
   };
 
+  const fetchTasksByGroupId = async () => {
+    setGroupIdLoading(true);
+    try {
+      const task = await getTaskByGroupId(groupId);
+      setCreateTaskFormData({
+        startDate: task.startDate,
+        endDate:
+          task.endDate ?? dayjs(task.startDate).add(1, "day").toISOString(),
+        startTime: task.startTime,
+        frequency: task.frequency,
+        title: task.title,
+        type: task.type,
+        firstDayOfTheWeek: task.firstDayOfTheWeek,
+        secondDayOfTheWeek: task.secondDayOfTheWeek,
+        categoryId: task.category?.id,
+        status: task.status,
+        points: task.points,
+        endTime: task.endTime,
+        dayOfTheMonth: task.dayOfTheMonth,
+      });
+      setValue(task.type);
+      setFrequency(task.frequency);
+    } catch (error) {
+    } finally {
+      setGroupIdLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (groupId) fetchTasksByGroupId();
+    else return;
+  }, [groupId]);
+
   const handleSave = async () => {
     if (
-      dayjs(createTaskFormData.startDate).format('YYYY-MM-DD') <
-      dayjs(new Date()).format('YYYY-MM-DD')
-    )
-      return message.error('Invalid start date');
+      createTaskFormData.type === TaskType.RECURRING &&
+      createTaskFormData.startDate &&
+      createTaskFormData.endDate &&
+      dayjs(createTaskFormData.startDate) >= dayjs(createTaskFormData.endDate)
+    ) {
+      message.error("Start date must be before the end date");
+      return;
+    }
+
+    const payLoad = {
+      ...createTaskFormData,
+
+      firstDayOfTheWeek:
+        createTaskFormData.frequency === TaskFrequency.BI_WEEKLY ||
+        createTaskFormData.frequency === TaskFrequency.WEEKLY
+          ? createTaskFormData.firstDayOfTheWeek
+          : null,
+      secondDayOfTheWeek:
+        createTaskFormData.frequency === TaskFrequency.BI_WEEKLY
+          ? createTaskFormData.secondDayOfTheWeek
+          : null,
+
+      endDate:
+        createTaskFormData.type === TaskType.RECURRING
+          ? createTaskFormData.endDate
+          : null,
+
+      dayOfTheMonth:
+        createTaskFormData.frequency === TaskFrequency.MONTHLY
+          ? createTaskFormData.dayOfTheMonth
+          : null,
+    };
+
     try {
       setLoading(true);
-      await createTask({
-        ...createTaskFormData,
-        firstDayOfTheWeek:
-          createTaskFormData.frequency === TaskFrequency.BI_WEEKLY
-            ? createTaskFormData.firstDayOfTheWeek
-            : null,
-        secondDayOfTheWeek:
-          createTaskFormData.frequency === TaskFrequency.BI_WEEKLY
-            ? createTaskFormData.secondDayOfTheWeek
-            : null,
+      if (groupId) {
+        await updateTaskByGroupId(groupId, payLoad);
+        message.success("Task Updated");
+      } else {
+        await createTask(payLoad);
+        const tasks = await getTasks(payLoad);
+        dispatch(setTasks(tasks));
+        setCreateTaskFormData({
+          ...initialTaskState,
+          categoryId: categories.at(0)?.value,
+        });
+        message.success("Task Created");
+      }
 
-        endDate:
-          createTaskFormData.type === TaskType.RECURRING
-            ? createTaskFormData.endDate
-            : null,
-      });
-      const tasks = await getTasks({});
-      dispatch(setTasks(tasks));
-      setCreateTaskFormData({
-        ...initialTaskState,
-        categoryId: categories.at(0)?.value,
-      });
-      router.push('/productivity/task');
-
-      message.success('Task Created');
+      router.push("/productivity/task");
     } catch (error: any) {
       console.log(error);
       message.error(error.message);
@@ -89,7 +159,7 @@ export const CreateTask = () => {
       setCategories(
         data.map((charity) => ({
           label: charity.title,
-          value: charity.id ?? '',
+          value: charity.id ?? "",
         }))
       );
       setCreateTaskFormData((createTaskFormData) => ({
@@ -105,26 +175,26 @@ export const CreateTask = () => {
 
   const breadCrumbItems = [
     {
-      title: 'Back to Task',
-      link: '/productivity/task',
+      title: "Back to Task",
+      link: "/productivity/task",
     },
   ];
 
   return (
     <>
-      <Row style={{ paddingTop: '15px' }}>
-        <Col span={16} className='border-box'>
+      <Row style={{ paddingTop: "15px" }}>
+        <Col span={16} className="border-box">
           <BreadCrumbNav item={breadCrumbItems} />
           {/* Page Title */}
-          <Row justify={'space-between'} style={{ alignItems: 'center' }}>
+          <Row justify={"space-between"} style={{ alignItems: "center" }}>
             <Col span={24}>
-              <PageTitle title='Create Task' />
+              <PageTitle title="Create Task" />
             </Col>
           </Row>
-          <Row style={{ paddingTop: '15px' }}>
+          <Row style={{ paddingTop: "15px" }}>
             <Col span={24}>
               <FormSelect
-                label='Category'
+                label="Category"
                 options={categories}
                 handleChange={(value) =>
                   setCreateTaskFormData((createTaskFormData) => ({
@@ -135,9 +205,9 @@ export const CreateTask = () => {
                 value={createTaskFormData.categoryId}
               />
               <FormInput
-                label='Title'
-                placeholder='E.g. Finish gamification'
-                type='text'
+                label="Title"
+                placeholder="E.g. Finish gamification"
+                type="text"
                 value={createTaskFormData.title}
                 onChange={(e) =>
                   setCreateTaskFormData({
@@ -146,18 +216,19 @@ export const CreateTask = () => {
                   })
                 }
               />
-              <div className='form-group'>
-                <Row style={{ display: 'flex', alignItems: 'center' }}>
-                  <label htmlFor='type' style={{ marginRight: '30px' }}>
+
+              <div className="form-group">
+                <Row style={{ display: "flex", alignItems: "center" }}>
+                  <label htmlFor="type" style={{ marginRight: "30px" }}>
                     Type
                   </label>
                   <Radio.Group onChange={onChange} value={value}>
-                    <Space direction='horizontal'>
+                    <Space direction="horizontal">
                       {typeArray.map((e, i) => (
                         <Radio
                           key={i}
                           value={e}
-                          style={{ textTransform: 'capitalize' }}
+                          style={{ textTransform: "capitalize" }}
                         >
                           {e}
                         </Radio>
@@ -167,22 +238,23 @@ export const CreateTask = () => {
                 </Row>
               </div>
               {/* Check One Time */}
-              {createTaskFormData.type === 'one-time' && (
+              {createTaskFormData.type === "one-time" && (
                 <div>
                   <FormInput
-                    label='Date'
-                    type='date'
-                    value={createTaskFormData.startDate ?? ''}
+                    label="Date"
+                    type="date"
+                    value={createTaskFormData.startDate!}
                     onDateChange={(date, dateString) =>
                       setCreateTaskFormData({
                         ...createTaskFormData,
-                        startDate: dateString,
+                        startDate: dateToISOString(dateString),
                       })
                     }
                   />
+
                   <FormInput
-                    label='Time'
-                    type='time'
+                    label="Time"
+                    type="time"
                     onTimeChange={(time, timeString) =>
                       setCreateTaskFormData({
                         ...createTaskFormData,
@@ -194,39 +266,39 @@ export const CreateTask = () => {
               )}
               {/* Recurring */}
               <div>
-                {createTaskFormData.type === 'recurring' && (
+                {createTaskFormData.type === "recurring" && (
                   <>
                     <Row gutter={24}>
                       <Col span={12}>
                         <FormInput
-                          label='Start Date'
-                          value={createTaskFormData.startDate ?? ''}
-                          type='date'
+                          label="Start Date"
+                          value={createTaskFormData.startDate ?? ""}
+                          type="date"
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
                               ...createTaskFormData,
-                              startDate: date,
+                              startDate: dateToISOString(dateString),
                             })
                           }
                         />
                       </Col>
                       <Col span={12}>
                         <FormInput
-                          label='End Date'
-                          type='date'
-                          value={createTaskFormData.endDate ?? ''}
+                          label="End Date"
+                          type="date"
+                          value={createTaskFormData.endDate ?? ""}
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
                               ...createTaskFormData,
-                              endDate: dateString,
+                              endDate: dateToISOString(dateString),
                             })
                           }
                         />
                       </Col>
                     </Row>
                     <FormInput
-                      label='Time'
-                      type='time'
+                      label="Time"
+                      type="time"
                       onTimeChange={(time, timeString) =>
                         setCreateTaskFormData({
                           ...createTaskFormData,
@@ -235,21 +307,21 @@ export const CreateTask = () => {
                       }
                     />
 
-                    <div className='form-group'>
-                      <Row style={{ display: 'flex', alignItems: 'center' }}>
-                        <label htmlFor='type' style={{ marginRight: '30px' }}>
+                    <div className="form-group">
+                      <Row style={{ display: "flex", alignItems: "center" }}>
+                        <label htmlFor="type" style={{ marginRight: "30px" }}>
                           Frequency
                         </label>
                         <Radio.Group
                           onChange={onFrequencyChange}
                           value={frequency}
                         >
-                          <Space direction='horizontal'>
+                          <Space direction="horizontal">
                             {frequencyArray.map((e, i) => (
                               <Radio
                                 key={i}
                                 value={e}
-                                style={{ textTransform: 'capitalize' }}
+                                style={{ textTransform: "capitalize" }}
                               >
                                 {e}
                               </Radio>
@@ -258,31 +330,65 @@ export const CreateTask = () => {
                         </Radio.Group>
                       </Row>
                     </div>
-                    {createTaskFormData.frequency === 'bi-weekly' && (
+                    {createTaskFormData.frequency === "bi-weekly" && (
                       <Row gutter={24}>
                         <Col span={12}>
-                          <FormInput
-                            label='First day of the Week'
-                            type='text'
-                            value={createTaskFormData.firstDayOfTheWeek ?? ''}
-                            onChange={(e) =>
-                              setCreateTaskFormData({
+                          <FormSelect
+                            label="First Day of the Week"
+                            options={daysArray}
+                            value={createTaskFormData.firstDayOfTheWeek ?? ""}
+                            handleChange={(value) =>
+                              setCreateTaskFormData((createTaskFormData) => ({
                                 ...createTaskFormData,
-                                firstDayOfTheWeek: e.target.value,
-                              })
+                                firstDayOfTheWeek: value,
+                              }))
                             }
                           />
                         </Col>
                         <Col span={12}>
-                          <FormInput
-                            label='Second day of the Week'
-                            type='text'
-                            value={createTaskFormData.secondDayOfTheWeek ?? ''}
-                            onChange={(e) =>
-                              setCreateTaskFormData({
+                          <FormSelect
+                            label="Second Day of the Week"
+                            options={daysArray}
+                            value={createTaskFormData.secondDayOfTheWeek ?? ""}
+                            handleChange={(value) =>
+                              setCreateTaskFormData((createTaskFormData) => ({
                                 ...createTaskFormData,
-                                secondDayOfTheWeek: e.target.value,
-                              })
+                                secondDayOfTheWeek: value,
+                              }))
+                            }
+                          />
+                        </Col>
+                      </Row>
+                    )}
+                    {createTaskFormData.frequency === TaskFrequency.MONTHLY && (
+                      <Row gutter={24}>
+                        <Col span={12}>
+                          <FormSelect
+                            label="Days of the Month"
+                            options={daysOfMonthDropdown}
+                            value={createTaskFormData.dayOfTheMonth ?? ""}
+                            handleChange={(value) =>
+                              setCreateTaskFormData((createTaskFormData) => ({
+                                ...createTaskFormData,
+                                dayOfTheMonth: value,
+                              }))
+                            }
+                          />
+                        </Col>
+                      </Row>
+                    )}
+                    {createTaskFormData.frequency === TaskFrequency.WEEKLY && (
+                      <Row gutter={24}>
+                        <Col span={12}>
+                          <FormSelect
+                            label="Day of the Week"
+                            options={daysArray}
+                            value={createTaskFormData.dayOfTheMonth ?? ""}
+                            handleChange={(value) =>
+                              setCreateTaskFormData((createTaskFormData) => ({
+                                ...createTaskFormData,
+                                firstDayOfTheWeek: value,
+                              }))
                             }
                           />
                         </Col>
@@ -292,8 +398,12 @@ export const CreateTask = () => {
                 )}
               </div>
 
-              <Flex gap={'middle'} justify='end'>
-                <PrimaryButton text='Cancel' variant='secondary' />
+              <Flex gap={"middle"} justify="end">
+                <PrimaryButton
+                  text="Cancel"
+                  variant="secondary"
+                  onClick={() => router.push("/productivity/task")}
+                />
                 <PrimaryButton
                   loading={loading}
                   disabled={
@@ -302,8 +412,8 @@ export const CreateTask = () => {
                     !createTaskFormData.startTime
                   }
                   onClick={() => handleSave()}
-                  text='Save'
-                  variant='primary'
+                  text="Save"
+                  variant="primary"
                 />
               </Flex>
             </Col>

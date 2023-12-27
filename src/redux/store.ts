@@ -1,9 +1,10 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
-import categoryReducer from "./reducers/category.reducer";
-import charityReduce from "./reducers/charity.reduce";
-import dataAnalyticReducer from "./reducers/data-analytic.reducer";
+
+import dataAnalyticReducer from "./reducers/analytics.reducer";
+import charityReducer from "./reducers/charity.reducer";
 import taskCountsReducer from "./reducers/task-counts.reducer";
 import taskReducer from "./reducers/task.reducer";
+import updateAnalyticReduce from "./reducers/update-analytic.reducer";
 import userReducer from "./reducers/user.reducer";
 
 export const store = configureStore({
@@ -11,8 +12,9 @@ export const store = configureStore({
     tasks: taskReducer,
     taskCounts: taskCountsReducer,
     dataAnalytics: dataAnalyticReducer,
-    categories: categoryReducer,
-    charities: charityReduce,
+    charity: charityReducer,
+    updateDataAnalytic: updateAnalyticReduce,
+
     user: userReducer,
   },
 });

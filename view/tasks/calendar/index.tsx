@@ -1,27 +1,37 @@
-import { Calendar, CalendarProps, Col, Row, Typography, message } from 'antd';
-import type { Dayjs } from 'dayjs';
-import style from '../../../style/task.module.scss';
+import {
+  Calendar,
+  CalendarProps,
+  Checkbox,
+  Col,
+  Row,
+  Space,
+  Typography,
+  message,
+} from "antd";
+import type { Dayjs } from "dayjs";
+import style from "../../../style/task.module.scss";
 const { Title } = Typography;
 
-import useAPI from '@/hooks/useApi';
-import { useAppDispatch } from '@/hooks/useRedux';
-import { setTaskCounts } from '@/redux/reducers/task-counts.reducer';
-import { GetTask, TaskStatus } from '@/types';
-import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
-import CompleteTodayTasks from '../../../components/completetodaytaskcard';
+import useAPI from "@/hooks/useApi";
+import { useAppDispatch } from "@/hooks/useRedux";
+import { setTaskCounts } from "@/redux/reducers/task-counts.reducer";
+import { GetTask, TaskStatus } from "@/types";
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { PrimaryCard } from "../../../components/common/card";
+import { CustomTag } from "../../../components/common/tag";
 
 export const CalendarTask = () => {
   const dispatch = useAppDispatch();
-  const { getTodaysTasks, updateTask, taskCounts } = useAPI();
+  const { getTodaysTasks, updateTaskStatus, taskCounts } = useAPI();
   const [task, setTasks] = useState<GetTask[]>();
   const [debouncedChecked, setDebouncedChecked] = useState<{
     taskId: string;
     status: TaskStatus;
   } | null>(null);
-  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
-    console.log(value.format('YYYY-MM-DD'), mode);
+  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
+    console.log(value.format("YYYY-MM-DD"), mode);
   };
 
   const _getTodayTasks = async () => {
@@ -33,9 +43,9 @@ export const CalendarTask = () => {
 
   const debouncedUpdateTask = async (taskId: string, status: TaskStatus) => {
     try {
-      await updateTask(taskId, { status });
+      await updateTaskStatus(taskId, { status });
       _getTodayTasks();
-      message.success('status updated');
+      message.success("status updated");
       const counts = await taskCounts();
       dispatch(setTaskCounts({ ...counts }));
     } catch (error) {}
@@ -43,7 +53,7 @@ export const CalendarTask = () => {
 
   const onChange = (e: CheckboxChangeEvent, task: GetTask) => {
     setDebouncedChecked({
-      taskId: task.id ?? '',
+      taskId: task.id ?? "",
       status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
     });
   };
@@ -66,32 +76,60 @@ export const CalendarTask = () => {
 
   return (
     <>
-      <div className={`${style['task-page-calendar']}`}>
+      <div className={`${style["task-page-calendar"]}`}>
         <Row gutter={[16, 0]}>
           <Col span={16}>
-            <div className='border-box'>
+            <div className="border-box">
               <Calendar
-                value={dayjs('2017-01-25')}
+                value={dayjs("2017-01-25")}
                 onPanelChange={onPanelChange}
               />
             </div>
           </Col>
           <Col span={8}>
-            <Row>
-              <Title
-                level={5}
-                className='sub-title'
-                style={{ margin: '0 0 18px 0' }}
-              >
-                Complete today's Tasks (5)
-              </Title>
-
-              <Row gutter={[0, 12]} style={{ width: '100%' }}>
-                {[1, 2, 3, 4].map((e) => (
-                  <Col span={24}>
-                    <CompleteTodayTasks />
-                  </Col>
-                ))}
+            <Row className="complete-you-tasks-cards border-box tasks-card">
+              <Row>
+                <Title
+                  level={5}
+                  className="sub-title"
+                  style={{ marginTop: "0" }}
+                >
+                  Complete today's Tasks (5)
+                </Title>
+                {task && (
+                  <Row gutter={[0, 12]} style={{ width: "100%" }}>
+                    {task.map((e) => (
+                      <Col span={24} key={e.id}>
+                        <PrimaryCard>
+                          <Space
+                            style={{
+                              width: "100%",
+                              alignItems: "start",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Space className="strike-check-box">
+                              <Checkbox
+                                defaultChecked={
+                                  e.status === TaskStatus.COMPLETED
+                                }
+                                onChange={(event) => onChange(event, e)}
+                              >
+                                {e.title}
+                              </Checkbox>
+                            </Space>
+                            <span className="mock-block">
+                              <CustomTag
+                                variant="gray"
+                                title={dayjs(e.startTime).format("hh:mm")}
+                              />
+                            </span>
+                          </Space>
+                        </PrimaryCard>
+                      </Col>
+                    ))}
+                  </Row>
+                )}
               </Row>
             </Row>
           </Col>

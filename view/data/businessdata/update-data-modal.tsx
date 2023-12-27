@@ -1,6 +1,6 @@
 import useAPI from "@/hooks/useApi";
 import { useAppDispatch } from "@/hooks/useRedux";
-import { setDataAnalytics } from "@/redux/reducers/data-analytic.reducer";
+import { setDataAnalytics } from "@/redux/reducers/analytics.reducer";
 import { DataAnalyticsTypes } from "@/types";
 import { Col, Modal, message } from "antd";
 import React, { useEffect, useState } from "react";
