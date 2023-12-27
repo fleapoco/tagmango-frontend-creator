@@ -29,7 +29,7 @@ export const CreateTask = () => {
   const router = useRouter();
   const params = useSearchParams();
 
-  const groupId = params.get("groupId");
+  const groupId = params?.get("groupId");
 
   const {
     createTask,
@@ -63,7 +63,9 @@ export const CreateTask = () => {
   const fetchTasksByGroupId = async () => {
     setGroupIdLoading(true);
     try {
-      const task = await getTaskByGroupId(groupId ?? "");
+      const task = await getTaskByGroupId(
+        "1fe93706-6105-43e8-aba4-885273238fd8"
+      );
       setCreateTaskFormData({
         startDate: task.startDate,
         endDate:
@@ -92,6 +94,8 @@ export const CreateTask = () => {
     if (groupId) fetchTasksByGroupId();
     else return;
   }, [groupId]);
+
+  console.log({ createTaskFormData });
 
   const handleSave = async () => {
     if (
@@ -274,7 +278,7 @@ export const CreateTask = () => {
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
                               ...createTaskFormData,
-                              startDate: dateToISOString(dateString),
+                              startDate: dateString,
                             })
                           }
                         />
