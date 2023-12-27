@@ -54,6 +54,9 @@
         overflow-y: auto;
 
         ul.ant-menu {
+          .ant-menu-item-selected {
+            background: hsl(29, 87.9%, 90%) !important;
+          }
           .ant-menu-submenu-open {
             background: #f0f2f5;
           }
