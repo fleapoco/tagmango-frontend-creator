@@ -33,20 +33,22 @@ export const Habit = () => {
           </Col>
           {/* Habits Cards Wrapper Start */}
           <Col span={8}>
-            <Title
-              level={5}
-              className='sub-title'
-              style={{ margin: '0 0 18px 0' }}
-            >
-              Complete today's Habits
-            </Title>
-            <Row gutter={[0, 12]}>
-              {[1, 2, 3, 4].map((i) => (
-                <Col span={24} key={i}>
-                  <MarkAsCompleteCard />
-                </Col>
-              ))}
-            </Row>
+            <div className='border-box'>
+              <Title
+                level={5}
+                className='sub-title'
+                style={{ margin: '0 0 18px 0' }}
+              >
+                Complete today's Habits
+              </Title>
+              <Row gutter={[0, 12]}>
+                {[1, 2, 3, 4].map((i) => (
+                  <Col span={24} key={i}>
+                    <MarkAsCompleteCard />
+                  </Col>
+                ))}
+              </Row>
+            </div>
           </Col>
         </Row>
       </div>
