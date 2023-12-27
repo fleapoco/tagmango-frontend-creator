@@ -1,7 +1,7 @@
 'use client';
 import useApi from '@/hooks/useApi';
 import type { MenuProps } from 'antd';
-import { Flex, Layout, Menu, Space, Typography } from 'antd';
+import { Button, Flex, Layout, Menu, Space, Typography } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -16,7 +16,7 @@ import {
 } from 'react-icons/md';
 
 import { useAppDispatch } from '@/hooks/useRedux';
-import { Analytics } from './common/icons';
+import { Analytics, CollapseArrow, NotCollapseArrow } from './common/icons';
 import { Header } from './header';
 import style from '/style/dashboard.module.scss';
 
@@ -103,6 +103,7 @@ interface Props {
 
 export default function PageLayout(props: Props) {
   // const userDetails = useAppSelector(getUserStored);
+  const [collapsed, setCollapsed] = useState(false);
   const dispatch = useAppDispatch();
 
   const { getCharities } = useApi();
@@ -157,7 +158,18 @@ export default function PageLayout(props: Props) {
           style={{ width: '100%', marginTop: '60px' }}
         >
           <Layout className='main-layout'>
-            <Sider className='sidebar-main'>
+            <Sider
+              className='sidebar-main'
+              collapsible
+              collapsed={collapsed}
+              onCollapse={(value) => setCollapsed(value)}
+            >
+              <Button
+                type='text'
+                icon={collapsed ? <CollapseArrow /> : <NotCollapseArrow />}
+                onClick={() => setCollapsed(!collapsed)}
+                className='collapsed-btn'
+              />
               <Flex gap='middle' className='user-name-display' align='center'>
                 <div className='avatar-circle'>
                   <img
