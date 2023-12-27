@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Col, Row, Typography } from 'antd';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PrimaryButton } from '../../../components/common/button';
 import { PrimaryCard } from '../../../components/common/card';
@@ -43,7 +44,7 @@ const QuizzesPage = () => {
                 <Button className='review-btn'>
                   Yo've completed the quiz and earned &nbsp;
                   <span className='s-text'>30 XP</span>&nbsp;{' '}
-                  <a href='#'>Review Answers</a>
+                  <Link href='/quizzes/reviewanswers'>Review Answers</Link>
                 </Button>
               </PrimaryCard>
             </Col>
