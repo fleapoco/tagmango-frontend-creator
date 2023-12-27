@@ -1,4 +1,5 @@
 "use client";
+window;
 import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
 import useApi from "@/hooks/useApi";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
@@ -7,7 +8,7 @@ import { getUpdateDataAnalyticState } from "@/redux/reducers/update-analytic.red
 import { DataAnalyticsTypes } from "@/types";
 import { Col, Flex, Row, message } from "antd";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BreadCrumbNav } from "../../components/common/breadcrumb";
 import { PrimaryButton } from "../../components/common/button";
@@ -16,7 +17,6 @@ import PageTitle from "../../components/pagetitle";
 
 export const AddData = () => {
   const router = useRouter();
-  const params = useSearchParams();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const { createAnalytics, updateDataAnalytic } = useApi();
@@ -25,7 +25,7 @@ export const AddData = () => {
     initialDataAnalyticsState
   );
 
-  const type = params.get("type");
+  const type = new URLSearchParams(window.location.search).get("type") ?? "";
 
   const isButtonDisabled = Object.values(data)
     .filter((key) => key !== "month")
@@ -66,14 +66,16 @@ export const AddData = () => {
 
   return (
     <>
-      <Row style={{ paddingTop: "16px" }}>
+      <Row>
         <Col span={16} className="border-box">
           <BreadCrumbNav item={breadCrumbItems} />
 
           {/* Page Title */}
           <Row justify={"space-between"} style={{ alignItems: "center" }}>
             <Col span={24}>
-              <PageTitle title={type === "update" ? "Edit Data" : "Add Data"} />
+              <PageTitle
+                title={type === "update" ? "Update Data" : "Add Data"}
+              />
             </Col>
           </Row>
 

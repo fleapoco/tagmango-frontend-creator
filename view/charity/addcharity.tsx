@@ -77,6 +77,7 @@ export const AddCharity = () => {
         organizationName: charity.organizationName,
         amount: charity.amount,
         categoryId: charity.category?.id,
+        date: charity.date,
       });
   }, [type]);
 
@@ -86,8 +87,6 @@ export const AddCharity = () => {
       link: "/charity",
     },
   ];
-
-  console.log(formData);
 
   return (
     <>
