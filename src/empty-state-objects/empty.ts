@@ -10,13 +10,13 @@ import {
 import dayjs from "dayjs";
 
 export const initialTaskState: GetTask = {
-  endDate: dayjs().toString(),
+  endDate: dayjs()?.toString(),
   endTime: null,
   firstDayOfTheWeek: null,
   frequency: TaskFrequency.DAILY,
   secondDayOfTheWeek: null,
   points: 0,
-  startDate: dayjs().toString(),
+  startDate: dayjs()?.toString(),
   startTime: String(dayjs()),
   status: TaskStatus.PENDING,
   title: "",

@@ -11,7 +11,7 @@ const MarkAsCompleteCard = ({
   habitData,
   onMarkComplete,
 }: {
-  habitData: HabitType;
+  habitData?: HabitType;
   onMarkComplete: () => void;
 }) => {
   const { updateHabitStatusByUser } = useApi();
@@ -22,8 +22,8 @@ const MarkAsCompleteCard = ({
       await updateHabitStatusByUser({
         creatorId: habitData?.creatorId!,
         habitId: habitData?.id!,
-        habitTitle: habitData?.title,
-        habitPoints: habitData?.points,
+        habitTitle: habitData?.title ?? "",
+        habitPoints: habitData?.points ?? 0,
       });
 
       message.success("Habit Marked Completed");

@@ -49,7 +49,7 @@ const useAPI = () => {
     if (type) params.append("type", type);
     if (uniqueGroup !== undefined)
       params.append("uniqueGroup", String(uniqueGroup));
-    const queryString = params.toString();
+    const queryString = params?.toString();
     const endPoint = `/tasks${queryString ? `?${queryString}` : ""}`;
     return http(endPoint, { method: "GET" });
   };
@@ -87,7 +87,7 @@ const useAPI = () => {
     const params = new URLSearchParams();
     if (startMonth) params.append("startMonth", startMonth);
     if (endMonth) params.append("endMonth", endMonth);
-    const queryString = params.toString();
+    const queryString = params?.toString();
     const endPoint = `/charities/graph/track${
       queryString ? `?${queryString}` : ""
     }`;
@@ -101,7 +101,7 @@ const useAPI = () => {
   }): Promise<CategoryType[]> => {
     const params = new URLSearchParams();
     if (type) params.append("type", type);
-    const queryString = params.toString();
+    const queryString = params?.toString();
     const endPoint = `/categories${queryString ? `?${queryString}` : ""}`;
     return http(endPoint);
   };
@@ -139,7 +139,7 @@ const useAPI = () => {
     const params = new URLSearchParams();
     if (query) params.append("query", query);
     if (createdAt) params.append("createdAt", createdAt);
-    const queryString = params.toString();
+    const queryString = params?.toString();
     const endPoint = `/charities${queryString ? `?${queryString}` : ""}`;
     return http(endPoint, { method: "GET" });
   };
