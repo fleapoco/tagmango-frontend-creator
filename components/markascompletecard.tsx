@@ -20,10 +20,10 @@ const MarkAsCompleteCard = ({
   const handleMarkComplete = async () => {
     try {
       await updateHabitStatusByUser({
-        creatorId: habitData.creatorId!,
-        habitId: habitData.id!,
-        habitTitle: habitData.title,
-        habitPoints: habitData.points,
+        creatorId: habitData?.creatorId!,
+        habitId: habitData?.id!,
+        habitTitle: habitData?.title,
+        habitPoints: habitData?.points,
       });
 
       message.success("Habit Marked Completed");
@@ -42,12 +42,12 @@ const MarkAsCompleteCard = ({
         }
       >
         <div className="content">
-          <Title level={5}>{habitData.title}</Title>
+          <Title level={5}>{habitData?.title}</Title>
           <PrimaryButton
             text={
               <>
                 Mark as complete &nbsp;
-                <CustomTag color="#87d068" title={habitData.points} />
+                <CustomTag color="#87d068" title={habitData?.points} />
               </>
             }
             size="small"
