@@ -1,4 +1,5 @@
 "use client";
+
 import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
 import useApi from "@/hooks/useApi";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
@@ -16,7 +17,6 @@ import PageTitle from "../../components/pagetitle";
 
 export const AddData = () => {
   const router = useRouter();
-  const params = useSearchParams();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const { createAnalytics, updateDataAnalytic } = useApi();
@@ -24,7 +24,7 @@ export const AddData = () => {
   const [data, setData] = useState<DataAnalyticsTypes>(
     initialDataAnalyticsState
   );
-
+  const params = useSearchParams();
   const type = params.get("type");
 
   const isButtonDisabled = Object.values(data)
@@ -66,14 +66,16 @@ export const AddData = () => {
 
   return (
     <>
-      <Row style={{ paddingTop: "16px" }}>
+      <Row>
         <Col span={16} className="border-box">
           <BreadCrumbNav item={breadCrumbItems} />
 
           {/* Page Title */}
           <Row justify={"space-between"} style={{ alignItems: "center" }}>
             <Col span={24}>
-              <PageTitle title={type === "update" ? "Edit Data" : "Add Data"} />
+              <PageTitle
+                title={type === "update" ? "Update Data" : "Add Data"}
+              />
             </Col>
           </Row>
 

@@ -70,11 +70,24 @@ const useAPI = () => {
     return http("/analytics");
   };
 
-  const getCharitiesGraphData = (): Promise<{
+  const getCharitiesGraphData = ({
+    startMonth,
+    endMonth,
+  }: {
+    startMonth?: string;
+    endMonth?: string;
+  }): Promise<{
     months: string[];
     amount: string[];
   }> => {
-    return http("/charities/graph/track");
+    const params = new URLSearchParams();
+    if (startMonth) params.append("startMonth", startMonth);
+    if (endMonth) params.append("endMonth", endMonth);
+    const queryString = params.toString();
+    const endPoint = `/charities/graph/track${
+      queryString ? `?${queryString}` : ""
+    }`;
+    return http(endPoint, { method: "GET" });
   };
 
   const getCategories = ({

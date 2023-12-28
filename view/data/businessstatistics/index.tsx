@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 
 import { ChartData } from "@/app/charity/page";
+import { Dayjs } from "dayjs";
 import { DisplayGraph } from "../../../components/common/graph";
 
 export const BusinessStatistics = (props: { chartData: ChartData }) => {
@@ -13,6 +14,12 @@ export const BusinessStatistics = (props: { chartData: ChartData }) => {
               <DisplayGraph
                 chartData={props.chartData}
                 title="Revenue Tracker"
+                onDateChange={function (
+                  dates: Dayjs,
+                  dateStrings: [string, string]
+                ): void {
+                  throw new Error("Function not implemented.");
+                }}
               />
             </Col>
           ))}

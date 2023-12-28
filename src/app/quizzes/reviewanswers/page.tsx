@@ -26,7 +26,10 @@ const ReviewAnswers = () => {
             <Col span={6} className='count-card'>
               <PrimaryCard title='Questions Attempted'>
                 <span style={{ margin: 0 }}>
-                  30 <span className='small-txt'>out of 40</span>
+                  30{' '}
+                  <span className='small-txt'>
+                    out of <strong>40</strong>
+                  </span>
                 </span>
               </PrimaryCard>
             </Col>
