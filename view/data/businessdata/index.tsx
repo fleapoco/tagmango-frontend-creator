@@ -156,7 +156,7 @@ export const BusinessData = ({
           dataSource={data as any}
           onChange={onChange}
           pagination={{ pageSize: 20 }}
-          scroll={{ x: 1200 }}
+          scroll={{ x: 1200, y: 900 }}
           locale={{ emptyText: <TableNoData /> }}
         />
       </div>
