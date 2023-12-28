@@ -103,24 +103,24 @@ p {
   }
 }
 
-.vertical-content {
-  position: absolute;
-  left: -10px;
-  top: 0%;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
+// .vertical-content {
+//   position: absolute;
+//   left: -10px;
+//   top: 0%;
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   align-items: center;
 
-  .vertical-text {
-    display: inline-block;
-    vertical-align: top;
-    transform: translate(0, 100%) rotate(-90deg);
-    transform-origin: 0 0;
-    white-space: nowrap;
-    font-size: 12px;
-  }
-}
+//   .vertical-text {
+//     display: inline-block;
+//     vertical-align: top;
+//     transform: translate(0, 100%) rotate(-90deg);
+//     transform-origin: 0 0;
+//     white-space: nowrap;
+//     font-size: 12px;
+//   }
+// }
 .common-panel-wrapper {
   width: 100%;
   border: 1px solid #eaeaec;

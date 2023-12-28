@@ -7,23 +7,23 @@ import {
   Space,
   Typography,
   message,
-} from "antd";
-import type { Dayjs } from "dayjs";
-import style from "../../../style/task.module.scss";
+} from 'antd';
+import type { Dayjs } from 'dayjs';
+import style from '../../../style/task.module.scss';
 const { Title } = Typography;
 
-import useAPI from "@/hooks/useApi";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import useAPI from '@/hooks/useApi';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import {
   getTasksCounts,
   setTaskCounts,
-} from "@/redux/reducers/task-counts.reducer";
-import { GetTask, TaskStatus } from "@/types";
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { PrimaryCard } from "../../../components/common/card";
-import { CustomTag } from "../../../components/common/tag";
+} from '@/redux/reducers/task-counts.reducer';
+import { GetTask, TaskStatus } from '@/types';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { PrimaryCard } from '../../../components/common/card';
+import { CustomTag } from '../../../components/common/tag';
 
 interface CustomDateRange {
   start: string;
@@ -43,8 +43,8 @@ export const CalendarTask = () => {
     taskId: string;
     status: TaskStatus;
   } | null>(null);
-  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
-    console.log(value.format("YYYY-MM-DD"), mode);
+  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
+    console.log(value.format('YYYY-MM-DD'), mode);
   };
 
   const fetchTasksWithUniqueGroupFalse = async () => {
@@ -66,7 +66,7 @@ export const CalendarTask = () => {
       await updateTaskStatus(taskId, { status });
       _getTodayTasks();
       fetchTasksWithUniqueGroupFalse();
-      message.success("status updated");
+      message.success('status updated');
       const counts = await taskCounts();
       dispatch(setTaskCounts(counts));
     } catch (error) {}
@@ -74,7 +74,7 @@ export const CalendarTask = () => {
 
   const onChange = (e: CheckboxChangeEvent, task: GetTask) => {
     setDebouncedChecked({
-      taskId: task.id ?? "",
+      taskId: task.id ?? '',
       status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
     });
   };
@@ -97,9 +97,9 @@ export const CalendarTask = () => {
   }, []);
 
   const monthCellRender = (value: Dayjs) => {
-    const formattedMonth = value.format("YYYY-MM");
+    const formattedMonth = value.format('YYYY-MM');
     const tasksInMonth = allTasks?.filter((t) =>
-      dayjs(t.startDate).isSame(formattedMonth, "month")
+      dayjs(t.startDate).isSame(formattedMonth, 'month')
     );
 
     return (
@@ -107,13 +107,13 @@ export const CalendarTask = () => {
         {tasksInMonth?.map((task) => (
           <div key={task.id} style={{ marginBottom: 8 }}>
             {/* Check if the task's startDate matches the current cell's date */}
-            {dayjs(task.startDate).isSame(value, "day") && (
+            {dayjs(task.startDate).isSame(value, 'day') && (
               <Space>
                 <CustomTag
                   color={
-                    task.status === TaskStatus.COMPLETED ? "#87d068" : "warning"
+                    task.status === TaskStatus.COMPLETED ? '#87d068' : 'warning'
                   }
-                  title={`${dayjs(task.startTime).format("hh:mm A")} ${
+                  title={`${dayjs(task.startTime).format('hh:mm A')} ${
                     task.title
                   } `}
                 />
@@ -127,10 +127,10 @@ export const CalendarTask = () => {
 
   return (
     <>
-      <div className={`${style["task-page-calendar"]}`}>
+      <div className={`${style['task-page-calendar']}`}>
         <Row gutter={[16, 0]}>
           <Col span={16}>
-            <div className="border-box">
+            <div className='border-box'>
               <Calendar
                 // value={dayjs()}
                 onPanelChange={onPanelChange}
@@ -139,28 +139,36 @@ export const CalendarTask = () => {
             </div>
           </Col>
           <Col span={8}>
-            <Row className="complete-you-tasks-cards border-box tasks-card">
-              <Row>
-                <Title
-                  level={5}
-                  className="sub-title"
-                  style={{ margin: "0 0 18px 0" }}
-                >
-                  Complete today's Tasks {task?.length}
-                </Title>
+            <div
+              className='border-box'
+              style={{ width: '100%', height: '100%' }}
+            >
+              <Row className='complete-you-tasks-cards  tasks-card' align='top'>
+                <Col span={24}>
+                  <Title
+                    level={5}
+                    className='sub-title'
+                    style={{ margin: '0 0 18px 0' }}
+                  >
+                    Complete today's Tasks {task?.length}
+                  </Title>
+                </Col>
                 {task && (
-                  <Row gutter={[0, 12]} style={{ width: "100%" }}>
+                  <Row
+                    gutter={[0, 12]}
+                    style={{ width: '100%', alignItems: 'baseline' }}
+                  >
                     {task.map((e) => (
                       <Col span={24} key={e.id}>
                         <PrimaryCard>
                           <Space
                             style={{
-                              width: "100%",
-                              alignItems: "start",
-                              justifyContent: "space-between",
+                              width: '100%',
+                              alignItems: 'start',
+                              justifyContent: 'space-between',
                             }}
                           >
-                            <Space className="strike-check-box">
+                            <Space className='strike-check-box'>
                               <Checkbox
                                 defaultChecked={
                                   e.status === TaskStatus.COMPLETED
@@ -170,10 +178,10 @@ export const CalendarTask = () => {
                                 {e.title}
                               </Checkbox>
                             </Space>
-                            <span className="mock-block">
+                            <span className='mock-block'>
                               <CustomTag
-                                color="default"
-                                title={dayjs(e.startTime).format("hh:mm")}
+                                color='default'
+                                title={dayjs(e.startTime).format('hh:mm')}
                               />
                             </span>
                           </Space>
@@ -183,7 +191,7 @@ export const CalendarTask = () => {
                   </Row>
                 )}
               </Row>
-            </Row>
+            </div>
           </Col>
         </Row>
       </div>
