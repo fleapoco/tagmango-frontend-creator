@@ -129,6 +129,7 @@ const CharityPage = () => {
                 chartData={chartData}
                 title="Charity Tracker"
                 onDateChange={handleDateChangeCallback}
+                type={"area"}
               />
             </Col>
           </Row>

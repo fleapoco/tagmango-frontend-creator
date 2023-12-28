@@ -70,6 +70,7 @@ export interface GetTask {
 }
 
 export interface DataAnalyticsTypes {
+  [key: string]: any;
   id?: string;
   revenueEarned?: number;
   adSpends?: number;
@@ -129,4 +130,33 @@ export interface UpdateEventType extends Partial<GetEventType> {}
 
 export interface UpdateCharityType extends CharitiesType {
   id: string;
+}
+
+export interface AnalyticsGraphData {
+  months: string[];
+  amount: string[];
+}
+export interface GetAnalyticsGraphDataTypes {
+  revenueEarnedGraph: AnalyticsGraphData;
+  costPerLeadGraph: AnalyticsGraphData;
+  adSpendsGraph: AnalyticsGraphData;
+  adSpendsReturnGraph: AnalyticsGraphData;
+  vipGroupSizeGraph: AnalyticsGraphData;
+  totalPaidCustomerGraph: AnalyticsGraphData;
+}
+
+export interface HabitType {
+  id?: string;
+  creatorId?: string;
+  title: string;
+  points: number;
+  habitSubmit: HabitSubmissionType;
+}
+
+export interface HabitSubmissionType {
+  userId?: string;
+  creatorId: string;
+  habitId: string;
+  habitTitle: string;
+  habitPoints: number;
 }

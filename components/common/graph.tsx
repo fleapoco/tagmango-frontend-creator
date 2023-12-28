@@ -9,14 +9,13 @@ const { RangePicker } = DatePicker;
 export const DisplayGraph = (props: {
   chartData: ChartData;
   title: string;
+  type: "area" | "line" | "bar";
   onDateChange: (dates: dayjs.Dayjs, dateStrings: [string, string]) => void;
 }) => {
   const handleDateChange = (
     dates: dayjs.Dayjs,
     dateStrings: [string, string]
   ) => {
-    console.log("Selected Dates:", dates);
-    console.log("Formatted Dates:", dateStrings);
     props.onDateChange(dates, dateStrings);
   };
   return (
@@ -34,26 +33,16 @@ export const DisplayGraph = (props: {
         </Row>
         <Row>
           <Col span={24}>
-            <div
-              className="graph-wrapper"
-              style={
-                {
-                  // position: "relative",
-                  // height: "300px",
-                  // textAlign: "center",
-                }
-              }
-            >
+            <div className="graph-wrapper">
               <div>
-                Graph
                 <div>
-                  <Chart chartData={props.chartData} />
+                  <Chart chartData={props.chartData} type={props.type} />
                 </div>
               </div>
 
               <div className="vertical-content">
                 <Title level={5} className="vertical-text">
-                  Revenue
+                  {props.title}
                 </Title>
               </div>
             </div>

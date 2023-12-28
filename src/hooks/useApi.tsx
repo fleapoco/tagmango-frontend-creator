@@ -2,9 +2,12 @@ import {
   CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
+  GetAnalyticsGraphDataTypes,
   GetEventType,
   GetTask,
   GetTasksQuery,
+  HabitSubmissionType,
+  HabitType,
   IFetchAPICall,
   TaskAnalytics,
   TaskStatus,
@@ -31,6 +34,7 @@ const useAPI = () => {
     const data = await raw.json();
     return data;
   };
+
   const getTasks = ({
     query,
     status,
@@ -180,6 +184,20 @@ const useAPI = () => {
     return http(`/tasks/update/${groupId}`, { method: "PUT", data });
   };
 
+  const getAnalyticsGraphData = (): Promise<GetAnalyticsGraphDataTypes> => {
+    return http(`/analytics/track/graph`);
+  };
+
+  const getUserHabits = (): Promise<HabitType[]> => {
+    return http(`/habits/user`);
+  };
+
+  const updateHabitStatusByUser = (
+    data: HabitSubmissionType
+  ): Promise<HabitSubmissionType> => {
+    return http(`/habits-submission`, { method: "POST", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -200,6 +218,9 @@ const useAPI = () => {
     getTaskByGroupId,
     updateTaskByGroupId,
     getCharitiesGraphData,
+    getAnalyticsGraphData,
+    getUserHabits,
+    updateHabitStatusByUser,
   };
 };
 

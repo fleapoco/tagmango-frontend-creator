@@ -27,19 +27,33 @@ export const AddData = () => {
   const params = useSearchParams();
   const type = params.get("type");
 
-  const isButtonDisabled = Object.values(data)
-    .filter((key) => key !== "month")
-    .some((value) => value === undefined || value === 0 || value === "");
+  const isButtonDisabled = Object.keys(data)
+    .filter((key) => key !== "month" && key !== "adSpendsReturn")
+    .some(
+      (key) => data[key] === undefined || data[key] === 0 || data[key] === ""
+    );
 
   const handleSaveData = async () => {
     try {
       setLoading(true);
       if (type && type === "update") {
-        await updateDataAnalytic(dataAnalytic.id!, data);
+        await updateDataAnalytic(dataAnalytic.id!, {
+          ...data,
+          adSpendsReturn: Math.round(
+            data.adSpends && data.revenueEarned
+              ? (data.revenueEarned ?? 0) / (data.adSpends ?? 0)
+              : 0
+          ),
+        });
         message.success("data updated successfully");
       } else {
         await createAnalytics({
           ...data,
+          adSpendsReturn: Math.round(
+            data.adSpends && data.revenueEarned
+              ? (data.revenueEarned ?? 0) / (data.adSpends ?? 0)
+              : 0
+          ),
           month: data.month ?? dayjs().toISOString(),
         });
         setData(initialDataAnalyticsState);
@@ -157,7 +171,12 @@ export const AddData = () => {
               }
             />
             <FormInput
-              value={data.adSpendsReturn}
+              value={
+                data.adSpends && data.revenueEarned
+                  ? (data.revenueEarned ?? 0) / (data.adSpends ?? 0)
+                  : 0
+              }
+              disabled={true}
               label="ROAS"
               onChange={(e) =>
                 setData({

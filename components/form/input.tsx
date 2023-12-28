@@ -32,6 +32,7 @@ interface Props {
   onTimeChange?: (time: any, timeString: string) => unknown;
   onDateChange?: (date: any, dateString: string) => unknown;
   defaultDate?: Dayjs;
+  disabled?: boolean;
 }
 
 export const FormInput = (props: Props) => {
@@ -89,6 +90,7 @@ export const FormInput = (props: Props) => {
             prefix={props.icon}
             required={props.required ? props.required : false}
             type={props.type}
+            disabled={props.disabled}
             className={_className}
             id="label"
             value={props.value}

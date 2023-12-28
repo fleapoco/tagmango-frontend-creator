@@ -1,11 +1,11 @@
 import { Card } from "antd";
-import { MdAvTimer, MdDateRange, MdInsertLink } from "react-icons/md";
+import { MdAvTimer, MdDateRange } from "react-icons/md";
 import { PrimaryButton } from "./button";
 const { Meta } = Card;
 
 import { GetEventType } from "@/types";
 import { Typography } from "antd";
-import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 const { Title } = Typography;
 
@@ -14,6 +14,7 @@ interface EvenProps {
 }
 
 export const EventsCard = ({ event }: EvenProps) => {
+  const router = useRouter();
   return (
     <>
       <Card
@@ -44,22 +45,20 @@ export const EventsCard = ({ event }: EvenProps) => {
                   <span>2:00PM</span>
                 </div>
               </div>
-              <Title level={3}>
-                Lorem Ipsum is simply dummy text of the printing.
-              </Title>
+
               <Title level={3}>{event.title}</Title>
             </div>
           }
           description={
             <div className="events-card-description">
               <a
-                href="#"
+                href={event.eventLink}
+                target="_blank"
                 style={{ display: "flex", alignItems: "center", gap: "5px" }}
               >
                 {" "}
-                <MdInsertLink size={16} /> meet.google.com/tesrtin-test
+                <PrimaryButton text="Join Event" variant="primary" />
               </a>
-              <PrimaryButton text="Join Event" variant="primary" />
             </div>
           }
         />

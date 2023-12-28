@@ -10,13 +10,60 @@ interface ChartProps {
     series: number[];
     labels: string[];
   };
+  type: "area" | "line" | "bar";
 }
 
-const Chart: React.FC<ChartProps> = ({ chartData }) => {
+const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
   console.log({ chartData });
+
+  const barOptions = {
+    chart: {
+      id: "basic-bar",
+      toolbar: {
+        show: true,
+      },
+    },
+    xaxis: {
+      categories: chartData.labels,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "55%",
+        endingShape: "rounded",
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      // colors: ["transparent"],
+    },
+    colors: ["#f5a442"],
+    grid: {
+      borderColor: "#e0e0e0",
+      row: {
+        colors: ["#f3f3f3", "transparent"],
+        opacity: 0.5,
+      },
+    },
+    yaxis: {},
+    fill: {
+      opacity: 1,
+    },
+    tooltip: {
+      y: {
+        formatter: function (val: number) {
+          return `${val} units`;
+        },
+      },
+    },
+  };
+
   const options: ApexCharts.ApexOptions = {
     chart: {
-      type: "area",
       zoom: {
         enabled: true,
       },
@@ -74,13 +121,22 @@ const Chart: React.FC<ChartProps> = ({ chartData }) => {
     },
   };
 
+  const series = [
+    {
+      name: "",
+      data: chartData.series,
+    },
+  ];
+
   return (
-    <ReactApexChart
-      options={options}
-      series={[{ data: chartData.series }]}
-      type="area"
-      height={270}
-    />
+    <>
+      <ReactApexChart
+        options={type === "bar" ? barOptions : options}
+        series={type === "bar" ? series : [{ data: chartData.series }]}
+        type={type}
+        height={400}
+      />
+    </>
   );
 };
 
