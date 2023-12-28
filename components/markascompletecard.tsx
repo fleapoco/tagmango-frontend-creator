@@ -51,7 +51,7 @@ const MarkAsCompleteCard = ({
               </>
             }
             size="small"
-            variant={habitData.habitSubmit !== null ? "primary" : "secondary"}
+            variant={habitData?.habitSubmit !== null ? "primary" : "secondary"}
             onClick={() => handleMarkComplete()}
           />
         </div>
