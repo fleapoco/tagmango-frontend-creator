@@ -2,13 +2,14 @@
   --primary-color: #f18926;
   --accent-color: hsl(29, 87.9%, 90%);
   --secondary-color: #0f2137;
+  --white-color: #ffffff;
 }
 
 body {
   max-width: 100%;
   margin: 0;
   padding: 0;
-  background: #fff;
+  background: var(--white-color);
   font-size: 15px;
   font-family: var(--font-poppins);
   overflow: hidden;
@@ -75,9 +76,15 @@ p {
 .border-box {
   border: 1px solid #dedee3;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: var(--white-color);
   overflow: hidden;
   padding: 16px;
+}
+.calendar-main {
+  .ant-tag {
+    line-height: normal;
+    white-space: break-all;
+  }
 }
 .gray-box {
   background: #fafafa;
@@ -125,7 +132,7 @@ p {
   width: 100%;
   border: 1px solid #eaeaec;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: var(--white-color);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -165,7 +172,7 @@ p {
 }
 
 .card {
-  background: #ffff;
+  background: var(--white-color);
   border: 1px solid #f0f0f0;
   border-radius: 6px;
   padding: 12px;
@@ -208,11 +215,21 @@ p {
 .events-card {
   border: 1px solid #dedee3;
   padding: 0px;
+  overflow: hidden;
 
   .ant-card-cover {
+    aspect-ratio: 16 / 9;
+
     img {
       aspect-ratio: 16 / 9;
       object-fit: cover;
+    }
+    .calendar-icon-box {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      background: #f2f3f7 !important;
+      place-items: center;
     }
   }
 

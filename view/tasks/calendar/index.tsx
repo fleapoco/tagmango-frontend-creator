@@ -130,7 +130,7 @@ export const CalendarTask = () => {
       <div className={`${style['task-page-calendar']}`}>
         <Row gutter={[16, 0]}>
           <Col span={16}>
-            <div className='border-box'>
+            <div className='border-box calendar-main'>
               <Calendar
                 // value={dayjs()}
                 onPanelChange={onPanelChange}
@@ -174,6 +174,7 @@ export const CalendarTask = () => {
                                   e.status === TaskStatus.COMPLETED
                                 }
                                 onChange={(event) => onChange(event, e)}
+                                style={{ textTransform: 'capitalize' }}
                               >
                                 {e.title}
                               </Checkbox>

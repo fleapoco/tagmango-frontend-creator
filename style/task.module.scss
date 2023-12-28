@@ -49,10 +49,10 @@
       padding: 15px;
       word-break: break-all;
       white-space: wrap;
-      background: #f18926;
+      background: var(--primary-color);
       font-weight: 500;
       font-size: 14px;
-      color: #fff;
+      color: var(--white-color);
       height: auto;
       .s-text {
         font-weight: 700;
@@ -62,9 +62,9 @@
         font-weight: 700;
       }
       &:hover {
-        color: #fff;
+        color: var(--white-color);
         a {
-          color: #fff;
+          color: var(--white-color);
         }
       }
     }
@@ -77,7 +77,7 @@
   .q-wrapper {
     & > li {
       border: 1px solid #ddd;
-      background: #fff;
+      background: var(--white-color);
       padding: 10px;
       border-radius: 6px;
       &:not(:last-child) {
