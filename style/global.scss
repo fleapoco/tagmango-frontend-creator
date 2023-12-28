@@ -83,7 +83,7 @@ p {
 .calendar-main {
   .ant-tag {
     line-height: normal;
-    white-space: break-all;
+    white-space: break-spaces !important;
   }
 }
 .gray-box {

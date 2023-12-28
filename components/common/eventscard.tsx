@@ -54,7 +54,7 @@ export const EventsCard = ({ event }: EvenProps) => {
               <a
                 href={event.eventLink}
                 target='_blank'
-                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                style={{ margin: '16px 0 0 0' }}
               >
                 <PrimaryButton text='Join Event' variant='primary' />
               </a>

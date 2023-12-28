@@ -208,6 +208,26 @@
     font-weight: 600;
   }
 
+  &.completed-btn {
+    height: 36px !important;
+    background: rgb(135, 208, 104);
+    color: var(--white-color);
+    text-transform: uppercase;
+    &:hover {
+      background: rgb(135, 208, 104);
+      color: var(--white-color);
+    }
+    &.small-btn {
+      padding: 0px 10px !important;
+      height: 32px !important;
+
+      span {
+        font-size: 12px;
+        line-height: 12px;
+      }
+    }
+  }
+
   &.secondary-btn {
     height: 36px !important;
     background-color: #e4e6eb !important;
