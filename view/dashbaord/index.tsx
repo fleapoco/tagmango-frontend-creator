@@ -1,4 +1,7 @@
+import useAPI from "@/hooks/useApi";
+import { HabitType } from "@/types";
 import { Col, Row, Typography } from "antd";
+import { useEffect, useState } from "react";
 import {
   MdControlPoint,
   MdCurrencyRupee,
@@ -17,6 +20,20 @@ import style from "../../style/task.module.scss";
 const { Title } = Typography;
 
 export const Dashboard = () => {
+  const { getUserHabits } = useAPI();
+  const [habitData, setHabitData] = useState<HabitType[]>();
+  const fetchUserHabits = async () => {
+    try {
+      const data = await getUserHabits();
+      setHabitData(data ?? []);
+    } catch (error) {
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchUserHabits();
+  }, []);
   return (
     <>
       <div className={`${style["dashboard-page"]} common-panel-wrapper`}>
@@ -92,17 +109,18 @@ export const Dashboard = () => {
           <Col span={8}>
             <div className="border-box habit-cards">
               <Title level={5}>Complete today's Habits</Title>
-              <Row gutter={[0, 12]}>
-                {[1, 2, 3, 4].map((i) => (
-                  <Col span={24} key={i}>
-                    <MarkAsCompleteCard
-                      onMarkComplete={function (): void {
-                        throw new Error("Function not implemented.");
-                      }}
-                    />
-                  </Col>
-                ))}
-              </Row>
+              {habitData && (
+                <Row gutter={[0, 12]}>
+                  {habitData.map((e, i) => (
+                    <Col span={24} key={i}>
+                      <MarkAsCompleteCard
+                        habitData={e}
+                        onMarkComplete={() => fetchUserHabits()}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              )}
             </div>
           </Col>
           <Col span={8}>
