@@ -1,10 +1,11 @@
-import { Card } from 'antd';
-import { MdAvTimer, MdCalendarMonth, MdDateRange } from 'react-icons/md';
-import { PrimaryButton } from './button';
+import { Card } from "antd";
+import { MdAvTimer, MdCalendarMonth, MdDateRange } from "react-icons/md";
+import { PrimaryButton } from "./button";
 
-import { GetEventType } from '@/types';
-import { Typography } from 'antd';
-import { useRouter } from 'next/navigation';
+import { GetEventType } from "@/types";
+import { Typography } from "antd";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 const { Meta } = Card;
 
@@ -19,14 +20,14 @@ export const EventsCard = ({ event }: EvenProps) => {
   return (
     <>
       <Card
-        className='events-card'
-        style={{ width: '100%' }}
+        className="events-card"
+        style={{ width: "100%" }}
         cover={
           <>
             {event.backgroundImageUrl ? (
-              <img alt='example' src={event.backgroundImageUrl} />
+              <img alt="example" src={event.backgroundImageUrl} />
             ) : (
-              <div className='calendar-icon-box'>
+              <div className="calendar-icon-box">
                 <MdCalendarMonth size={32} />
               </div>
             )}
@@ -35,28 +36,28 @@ export const EventsCard = ({ event }: EvenProps) => {
       >
         <Meta
           title={
-            <div className='event-card-heading'>
-              <div className='date-time-info'>
+            <div className="event-card-heading">
+              <div className="date-time-info">
                 <div>
                   <MdDateRange size={13} />
-                  <span>07 Dec 2023</span>
+                  <span>{dayjs(event.startDate).format("DD MMM YYYY")}</span>
                 </div>
                 <div>
                   <MdAvTimer size={13} />
-                  <span>2:00PM</span>
+                  <span>{dayjs(event.startDate).format("hh:mm A")}</span>
                 </div>
               </div>
               <Title level={3}>{event.title}</Title>
             </div>
           }
           description={
-            <div className='events-card-description'>
+            <div className="events-card-description">
               <a
                 href={event.eventLink}
-                target='_blank'
-                style={{ margin: '16px 0 0 0' }}
+                target="_blank"
+                style={{ margin: "16px 0 0 0" }}
               >
-                <PrimaryButton text='Join Event' variant='primary' />
+                <PrimaryButton text="Join Event" variant="primary" />
               </a>
             </div>
           }

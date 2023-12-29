@@ -154,10 +154,12 @@ export interface HabitType {
 }
 
 export interface HabitSubmissionType {
+  id?: string;
   userId?: string;
   creatorId: string;
   habitId: string;
   habitTitle: string;
   habitPoints: number;
   createdAt?: Date;
+  deletedAt?: Date | null;
 }

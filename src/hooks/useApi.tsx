@@ -198,6 +198,16 @@ const useAPI = () => {
     return http(`/habits-submission`, { method: "POST", data });
   };
 
+  const removeUserHabit = (id: string) => {
+    return http(`/habits-submission/${id}`, { method: "DELETE" });
+  };
+
+  const authenticateUser = (data: {
+    token: string;
+  }): Promise<{ jwtToken: string }> => {
+    return http(`/auth/login`, { method: "POST", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -221,6 +231,8 @@ const useAPI = () => {
     getAnalyticsGraphData,
     getUserHabits,
     updateHabitStatusByUser,
+    removeUserHabit,
+    authenticateUser,
   };
 };
 

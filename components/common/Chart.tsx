@@ -14,7 +14,15 @@ interface ChartProps {
 }
 
 const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
-  console.log({ chartData });
+  const formatter = (value: number | bigint) => {
+    const formattedValue = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 2,
+    }).format(value);
+
+    return formattedValue;
+  };
 
   const barOptions = {
     chart: {
@@ -50,7 +58,11 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
         opacity: 0.5,
       },
     },
-    yaxis: {},
+    yaxis: {
+      labels: {
+        formatter,
+      },
+    },
     fill: {
       type: "gradient",
       gradient: {
@@ -74,9 +86,7 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
     },
     tooltip: {
       y: {
-        formatter: function (val: number) {
-          return `${val} units`;
-        },
+        formatter,
       },
     },
   };
@@ -108,6 +118,11 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
     },
     xaxis: {
       categories: chartData?.labels,
+    },
+    yaxis: {
+      labels: {
+        formatter,
+      },
     },
     legend: {
       horizontalAlign: "left",
