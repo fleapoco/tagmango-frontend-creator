@@ -127,7 +127,7 @@
               }
             }
             .ant-menu-item-selected {
-              background: transparent !important;
+              background: var(--accent-color) !important;
               &::before {
                 background: var(--primary-color);
               }

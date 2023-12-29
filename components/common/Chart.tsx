@@ -1,7 +1,7 @@
-import dynamic from "next/dynamic";
-import React from "react";
+import dynamic from 'next/dynamic';
+import React from 'react';
 
-const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 });
 
@@ -10,14 +10,15 @@ interface ChartProps {
     series: number[];
     labels: string[];
   };
-  type: "area" | "line" | "bar";
+
+  type: 'area' | 'line' | 'bar';
 }
 
 const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
   const formatter = (value: number | bigint) => {
-    const formattedValue = new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
+    const formattedValue = new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
       maximumFractionDigits: 2,
     }).format(value);
 
@@ -26,7 +27,7 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
 
   const barOptions = {
     chart: {
-      id: "basic-bar",
+      id: 'basic-bar',
       toolbar: {
         show: true,
       },
@@ -37,8 +38,8 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "55%",
-        endingShape: "rounded",
+        columnWidth: '55%',
+        endingShape: 'rounded',
       },
     },
     dataLabels: {
@@ -49,10 +50,10 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
       width: 2,
       // colors: ["transparent"],
     },
-    colors: ["#f5a442"],
+    colors: ['#f5a442'],
 
     grid: {
-      borderColor: "#e0e0e0",
+      borderColor: '#e0e0e0',
       row: {
         // colors: ["#f3f3f3", "transparent"],
         opacity: 0.5,
@@ -64,7 +65,7 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
       },
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
         shadeIntensity: 1,
         opacityFrom: 0.7,
@@ -73,12 +74,12 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
         colorStops: [
           {
             offset: 0,
-            color: "var(--primary-color)",
+            color: 'var(--primary-color)',
             opacity: 1,
           },
           {
             offset: 100,
-            color: "var(--primary-color)",
+            color: 'var(--primary-color)',
             opacity: 0,
           },
         ],
@@ -101,7 +102,7 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
       enabled: false,
       background: {
         enabled: true,
-        foreColor: "",
+        foreColor: '',
       },
     },
     tooltip: {
@@ -109,9 +110,9 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
     },
     markers: {
       size: 6,
-      colors: ["var(--primary-color)"],
+      colors: ['var(--primary-color)'],
       strokeWidth: 0,
-      strokeColors: ["#fff"],
+      strokeColors: ['#fff'],
       hover: {
         size: 8,
       },
@@ -125,15 +126,15 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
       },
     },
     legend: {
-      horizontalAlign: "left",
+      horizontalAlign: 'left',
     },
     stroke: {
       width: 3,
-      curve: "smooth",
-      colors: ["var(--primary-color)"],
+      curve: 'smooth',
+      colors: ['var(--primary-color)'],
     },
     fill: {
-      type: "gradient",
+      type: 'gradient',
       gradient: {
         shadeIntensity: 1,
         opacityFrom: 0.7,
@@ -142,12 +143,12 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
         colorStops: [
           {
             offset: 0,
-            color: "var(--primary-color)",
+            color: 'var(--primary-color)',
             opacity: 1,
           },
           {
             offset: 100,
-            color: "var(--primary-color)",
+            color: 'var(--primary-color)',
             opacity: 0,
           },
         ],
@@ -157,7 +158,7 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
 
   const barChartSeries = [
     {
-      name: "",
+      name: '',
       data: chartData?.series,
     },
   ];
@@ -165,11 +166,11 @@ const Chart: React.FC<ChartProps> = ({ chartData, type }) => {
   return (
     <>
       <ReactApexChart
-        options={type === "bar" ? barOptions : options}
-        series={type === "bar" ? barChartSeries : [{ data: chartData?.series }]}
+        options={type === 'bar' ? barOptions : options}
+        series={type === 'bar' ? barChartSeries : [{ data: chartData?.series }]}
         type={type}
         height={400}
-        width={"100%"}
+        width={'100%'}
       />
     </>
   );

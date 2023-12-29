@@ -31,9 +31,12 @@ export const Events = () => {
         </Col>
       </Row>
       {/* Events Cards */}
-      <Row gutter={[16, 16]}>
+      <Row
+        gutter={[16, 16]}
+        style={{ flexWrap: 'wrap', alignItems: 'stretch' }}
+      >
         {events.map((event) => (
-          <Col span={6} key={event.id}>
+          <Col md={12} lg={8} xl={6} key={event.id}>
             <EventsCard event={event} />
           </Col>
         ))}

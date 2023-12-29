@@ -62,7 +62,7 @@ export const BusinessData = ({
       },
     },
     {
-      title: 'Total Revenue Earned (₹)',
+      title: 'Total Revenue Earned',
       dataIndex: 'revenueEarned',
       width: 150,
       render: (value, record) => {
@@ -70,7 +70,7 @@ export const BusinessData = ({
       },
     },
     {
-      title: 'Total Ad Spends (₹)',
+      title: 'Total Ad Spends',
       dataIndex: 'adSpends',
       width: 150,
       render: (value, record) => {
@@ -78,7 +78,7 @@ export const BusinessData = ({
       },
     },
     {
-      title: 'Average Cost/Lead (₹)',
+      title: 'Average Cost/Lead',
       dataIndex: 'costPerLead',
       width: 150,
       render: (value, record) => {
@@ -164,8 +164,8 @@ export const BusinessData = ({
           columns={columns}
           dataSource={data as any}
           onChange={onChange}
-          pagination={{ pageSize: 20 }}
-          scroll={{ x: 1200, y: 400 }}
+          pagination={{ pageSize: 10 }}
+          scroll={{ x: 1200, y: 450 }}
           locale={{ emptyText: <TableNoData /> }}
         />
       </div>
