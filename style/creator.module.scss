@@ -1,0 +1,65 @@
+.creator-event :global {
+  .upcoming-events-list {
+    .list-item {
+      margin-bottom: 8px;
+      padding-bottom: 20px;
+    }
+    .date-label {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #e4e6eb;
+      background: #fafafa;
+      display: block;
+      margin-bottom: 15px;
+    }
+    .event-details-wrapper {
+      padding: 15px;
+      border: 1px solid #ced0d4;
+      border-radius: 6px;
+      background: #fff;
+
+      .date-time-count {
+        h4 {
+          font-size: 16px;
+          font-weight: 500;
+          color: #050505;
+          margin-bottom: 6px;
+        }
+        h5 {
+          margin: 0;
+          display: block;
+          font-size: 14px;
+          color: rgba(0, 7, 19, 0.6235294118);
+          font-weight: 600;
+          margin: 0 0 6px;
+        }
+      }
+
+      .event-details {
+        .img-box {
+          position: relative;
+          width: 130px;
+          height: 80px;
+          border-radius: 6px;
+          overflow: hidden;
+        }
+
+        .content-wrap {
+          width: calc(100% - 130px);
+        }
+        h5 {
+          font-size: 16px;
+          font-weight: 500;
+          color: #050505;
+          margin-bottom: 6px;
+        }
+      }
+    }
+  }
+}
+.creator-form :global {
+  .form-group {
+    width: 100%;
+  }
+}

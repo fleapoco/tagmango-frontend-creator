@@ -32,6 +32,7 @@ type ItemType = {
   icon?: React.ReactNode;
   link?: string;
   children?: ItemType[];
+  creator: boolean;
 };
 
 const items: ItemType[] = [
@@ -40,21 +41,25 @@ const items: ItemType[] = [
     label: 'Dashboard',
     link: '/',
     icon: <MdDashboard size={20} />,
+    creator: false,
   },
   {
     key: 'sub1',
     label: 'Productivity',
     icon: <Analytics />,
+    creator: false,
     children: [
       {
         key: 'sub2',
         label: 'Habits',
         link: '/productivity/habit',
+        creator: false,
       },
       {
         key: 'sub3',
         label: 'Tasks',
         link: '/productivity/task',
+        creator: false,
       },
     ],
   },
@@ -63,36 +68,49 @@ const items: ItemType[] = [
     label: 'Data',
     icon: <MdDatasetLinked size={20} />,
     link: '/data',
+    creator: false,
   },
   {
     key: '3',
     label: 'Events',
     icon: <MdEmojiEvents size={20} />,
     link: '/events',
+    creator: false,
   },
   {
     key: '4',
     label: 'Charity',
     icon: <Analytics />,
     link: '/charity',
+    creator: false,
   },
   {
     key: '5',
     label: 'Quizzes',
     icon: <MdOutlineQuiz size={20} />,
     link: '/quizzes',
+    creator: false,
   },
   {
     key: '6',
     label: 'Degree',
     icon: <MdCastForEducation size={20} />,
     link: '/degree',
+    creator: false,
   },
   {
     key: '7',
     label: 'Achievement',
     icon: <MdAdsClick size={20} />,
     link: '/achievement',
+    creator: false,
+  },
+  {
+    key: '8',
+    label: 'Creator Event',
+    icon: <MdAdsClick size={20} />,
+    link: '/creator/events',
+    creator: true,
   },
 ];
 
@@ -109,19 +127,6 @@ export default function PageLayout(props: Props) {
   const { getCharities } = useApi();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const currentPathname = usePathname();
-
-  // useEffect(() => {
-  //   if (props.userDetails) dispatch(setUser(props.userDetails));
-  // }, [dispatch, props.userDetails]);
-
-  // useEffect(() => {
-  //   const key = items.find((item) => item.link === currentPathname)?.key;
-  //   console.log(key);
-
-  //   if (key) {
-  //     setSelectedKeys([key]);
-  //   }
-  // }, [currentPathname]);\
 
   useEffect(() => {
     const findSelectedKey = (item: ItemType): string | undefined => {
