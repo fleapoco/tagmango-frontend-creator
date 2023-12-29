@@ -124,7 +124,10 @@ export const Dashboard = () => {
             </div>
           </Col>
           <Col span={8}>
-            <div className='complete-you-tasks-cards border-box tasks-card'>
+            <div
+              className='complete-you-tasks-cards border-box tasks-card'
+              style={{ height: '100%' }}
+            >
               <Row>
                 <Title level={5}>Complete today's Tasks</Title>
 
