@@ -159,4 +159,5 @@ export interface HabitSubmissionType {
   habitId: string;
   habitTitle: string;
   habitPoints: number;
+  createdAt: Date;
 }
