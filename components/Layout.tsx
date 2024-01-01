@@ -112,6 +112,20 @@ const items: ItemType[] = [
     link: '/creator/events',
     creator: true,
   },
+  {
+    key: '9',
+    label: 'Creator Tasks',
+    icon: <MdAdsClick size={20} />,
+    link: '/creator/tasks',
+    creator: true,
+  },
+  {
+    key: '10',
+    label: 'Creator Certification',
+    icon: <MdAdsClick size={20} />,
+    link: '/creator/certification',
+    creator: true,
+  },
 ];
 
 interface Props {

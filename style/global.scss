@@ -29,6 +29,22 @@ body {
     padding: 8px 0;
   }
 }
+.input-box {
+  padding: 7.5px 12px;
+  border: 1px solid #ced0d4;
+  border-radius: 4px;
+}
+.image-uploader {
+  .ant-upload.ant-upload-select {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 16 / 9;
+    border: 1px solid #ced0d4 !important;
+    background-color: transparent !important;
+    border-radius: 4px !important;
+    overflow: hidden;
+  }
+}
 .dark-variant-input {
   background: rgb(228, 230, 235);
   border: 0;
@@ -199,10 +215,18 @@ p {
 .certification-card {
   border: 1px solid #dedee3;
   padding: 0px;
+
   .ant-card-cover {
+    position: relative;
     img {
       aspect-ratio: 16 / 9;
       object-fit: cover;
+    }
+    .cover-over-img {
+      position: absolute;
+      width: auto;
+      top: 15px;
+      right: 15px;
     }
   }
   .ant-card-body {

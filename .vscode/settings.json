@@ -5,5 +5,5 @@
   "editor.detectIndentation": false,
   "editor.insertSpaces": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["createevent"]
+  "cSpell.words": ["createevent", "totaltaskscompleted", "totaltaskspending"]
 }

@@ -7,7 +7,6 @@ import PageTitle from '../../../../components/pagetitle';
 import style from '../../../../style/creator.module.scss';
 
 import { Col, DatePicker, Flex, List, Row, Tabs, Typography } from 'antd';
-import Link from 'next/link';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -104,7 +103,6 @@ const CreatorEvent = () => {
                                       Lorem, ipsum dolor sit amet consectetur
                                       adipisicing elit. Omnis.
                                     </Title>
-                                    <Link href='#'>goggle meet link</Link>
                                   </div>
                                 </Flex>
                               </Col>

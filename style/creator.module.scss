@@ -58,8 +58,33 @@
     }
   }
 }
-.creator-form :global {
+.creator-task-form :global {
   .form-group {
     width: 100%;
+  }
+  .switch-box {
+    width: 100%;
+  }
+  .schedule-wrapper {
+    .form-group {
+      margin-bottom: 0;
+    }
+  }
+  .header-img-box {
+    max-height: 150px;
+    min-height: 150px;
+  }
+  .about-event {
+    border-top: 1px solid #ced0d4;
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+}
+.creator-task-details-form :global {
+  .ant-tag {
+    text-transform: uppercase;
+  }
+  .pending-tag {
+    color: #050505 !important;
   }
 }
