@@ -88,3 +88,34 @@
     color: #050505 !important;
   }
 }
+
+.creator-quizzes-page :global {
+  .creator-quiz-card-wrapper {
+    .content-wrapper {
+      .card-heading {
+        h4 {
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+        .questions-count {
+          & > span {
+            &:first-child {
+              padding-right: 15px;
+              border-right: 1px solid #e4e6eb;
+            }
+            &:last-child {
+              padding-left: 15px;
+            }
+          }
+        }
+      }
+      .action-btn {
+        .ant-tag {
+          display: flex;
+          color: #0958d9 !important;
+          align-items: center;
+        }
+      }
+    }
+  }
+}

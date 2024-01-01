@@ -1,11 +1,10 @@
 'use client';
 
 import { Col, Row, Table } from 'antd';
-import PageTitle from '../../../../components/pagetitle';
-import style from '../../../../style/creator.module.scss';
-
 import type { ColumnsType } from 'antd/es/table';
 import { PrimaryButton } from '../../../../components/common/button';
+import PageTitle from '../../../../components/pagetitle';
+import style from '../../../../style/creator.module.scss';
 
 interface DataType {
   key: string;
@@ -33,7 +32,7 @@ const columns: ColumnsType<DataType> = [
   {
     title: '',
     key: 'action',
-    render: (_, record) => (
+    render: (record) => (
       <PrimaryButton text='View Details' variant='secondary' />
     ),
   },
@@ -72,3 +71,6 @@ const TasksPage = () => {
   );
 };
 export default TasksPage;
+function handleButtonClick(key: any): void {
+  throw new Error('Function not implemented.');
+}
