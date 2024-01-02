@@ -7,23 +7,23 @@ import {
   Space,
   Typography,
   message,
-} from "antd";
-import type { Dayjs } from "dayjs";
+} from 'antd';
+import type { Dayjs } from 'dayjs';
 const { Title } = Typography;
 
-import useAPI from "@/hooks/useApi";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import useAPI from '@/hooks/useApi';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import {
   getTasksCounts,
   setTaskCounts,
-} from "@/redux/reducers/task-counts.reducer";
-import { GetTask, TaskStatus } from "@/types";
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { MdOutlineWatchLater } from "react-icons/md";
-import { PrimaryCard } from "./common/card";
-import { CustomTag } from "./common/tag";
+} from '@/redux/reducers/task-counts.reducer';
+import { GetTask, TaskStatus } from '@/types';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { MdOutlineWatchLater } from 'react-icons/md';
+import { PrimaryCard } from './common/card';
+import { CustomTag } from './common/tag';
 
 interface CustomDateRange {
   start: string;
@@ -47,8 +47,8 @@ export const CompleteTodayTasks = ({
     taskId: string;
     status: TaskStatus;
   } | null>(null);
-  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
-    console.log(value.format("YYYY-MM-DD"), mode);
+  const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>['mode']) => {
+    console.log(value.format('YYYY-MM-DD'), mode);
   };
 
   const fetchTasksWithUniqueGroupFalse = async () => {
@@ -71,7 +71,7 @@ export const CompleteTodayTasks = ({
       _getTodayTasks();
 
       onUpdateStatus();
-      message.success("status updated");
+      message.success('status updated');
       const counts = await taskCounts();
       dispatch(setTaskCounts(counts));
     } catch (error) {}
@@ -79,7 +79,7 @@ export const CompleteTodayTasks = ({
 
   const onChange = (e: CheckboxChangeEvent, task: GetTask) => {
     setDebouncedChecked({
-      taskId: task.id ?? "",
+      taskId: task.id ?? '',
       status: e.target.checked ? TaskStatus.COMPLETED : TaskStatus.PENDING,
     });
   };
@@ -103,41 +103,49 @@ export const CompleteTodayTasks = ({
 
   return (
     <>
-      <Row className="complete-you-tasks-cards  tasks-card" align="top">
+      <Row
+        className='complete-you-tasks-cards  tasks-card'
+        align='top'
+        style={{ width: '100%' }}
+      >
         <Col span={24}></Col>
         {task && (
           <Row
             gutter={[0, 12]}
-            style={{ width: "100%", alignItems: "baseline" }}
+            style={{ width: '100%', alignItems: 'baseline' }}
           >
             {task.map((e) => (
               <Col span={24} key={e.id}>
                 <PrimaryCard>
                   <Space
                     style={{
-                      width: "100%",
-                      alignItems: "start",
-                      justifyContent: "space-between",
+                      width: '100%',
+                      alignItems: 'start',
+                      justifyContent: 'space-between',
                     }}
                   >
-                    <Space className="strike-check-box">
+                    <Space className='strike-check-box'>
                       <Checkbox
                         defaultChecked={e.status === TaskStatus.COMPLETED}
                         onChange={(event) => onChange(event, e)}
-                        style={{ textTransform: "capitalize" }}
+                        style={{ textTransform: 'capitalize' }}
                       >
                         {e.title}
                       </Checkbox>
                     </Space>
-                    <span className="mock-block custom-tag-wrapper">
+                    <span className='mock-block custom-tag-wrapper'>
                       <CustomTag
-                        color="default"
+                        color='default'
                         title={
                           <>
-                            <Flex align="center" gap={3}>
-                              <MdOutlineWatchLater />{" "}
+                            <Flex
+                              align='center'
+                              gap={3}
+                              style={{ color: 'rgba(0, 0, 0, 0.88)' }}
+                            >
+                              <MdOutlineWatchLater />{' '}
                               <span>
-                                {dayjs(e.startTime).format("hh:mm A")}
+                                {dayjs(e.startTime).format('hh:mm A')}
                               </span>
                             </Flex>
                           </>
