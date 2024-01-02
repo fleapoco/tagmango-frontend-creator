@@ -10,10 +10,11 @@ export default function Home() {
   const params = useSearchParams();
   const refreshToken = params.get("refreshToken");
   const { authenticateUser } = useAPI();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       if (refreshToken) {
         try {
           const token = await authenticateUser({ token: refreshToken });

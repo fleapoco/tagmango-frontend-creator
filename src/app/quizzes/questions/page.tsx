@@ -56,7 +56,7 @@ const QuizQuestions = () => {
                     <CustomTag color="#87d068" title="30xp" />
                   </Flex>
                   {/* Questions Wrapper */}
-                  <Questionbox />
+                  {/* <Questionbox /> */}
                   {/* Textarea Box Wrapper Start */}
                   <div className="textarea-box">
                     <TextArea
