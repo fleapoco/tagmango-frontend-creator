@@ -66,7 +66,7 @@ export const BusinessData = ({
       dataIndex: 'revenueEarned',
       width: 150,
       render: (value, record) => {
-        return `₹ ${value.toLocaleString('en-IN')}`;
+        return `₹${value.toLocaleString('en-IN')}`;
       },
     },
     {
@@ -74,7 +74,7 @@ export const BusinessData = ({
       dataIndex: 'adSpends',
       width: 150,
       render: (value, record) => {
-        return `₹ ${value.toLocaleString('en-IN')}`;
+        return `₹${value.toLocaleString('en-IN')}`;
       },
     },
     {
@@ -82,7 +82,7 @@ export const BusinessData = ({
       dataIndex: 'costPerLead',
       width: 150,
       render: (value, record) => {
-        return `₹ ${value.toLocaleString('en-IN')}`;
+        return `₹${value.toLocaleString('en-IN')}`;
       },
     },
     {

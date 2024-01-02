@@ -58,7 +58,7 @@ export const Charity = ({
       },
     },
     {
-      title: 'Amount (₹)',
+      title: 'Amount',
       dataIndex: 'amount',
       render: (value, record) => {
         return `₹ ${value.toLocaleString('en-IN')}`;
