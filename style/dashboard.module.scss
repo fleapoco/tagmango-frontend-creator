@@ -95,7 +95,7 @@
         overflow-y: auto;
         padding-top: 20px;
 
-        ul.ant-menu {
+        & > ul.ant-menu {
           height: calc(100vh - 180px);
           overflow-y: auto;
           .ant-menu-item-selected {
