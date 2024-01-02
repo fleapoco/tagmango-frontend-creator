@@ -17,7 +17,6 @@ import {
 
 import { useAppDispatch } from '@/hooks/useRedux';
 import { Analytics, CollapseArrow, NotCollapseArrow } from './common/icons';
-import { Header } from './header';
 import style from '/style/dashboard.module.scss';
 
 const { Sider, Content } = Layout;
@@ -107,13 +106,40 @@ const items: ItemType[] = [
   },
   {
     key: '8',
+    label: 'Dashboard',
+    icon: <MdDashboard size={20} />,
+    link: '/creator/dashboard',
+    creator: false,
+  },
+  {
+    key: 'sub2',
+    label: 'Productivity',
+    icon: <Analytics />,
+    creator: false,
+    children: [
+      {
+        key: 'sub3',
+        label: 'Habits',
+        link: '/creator/productivity/habits',
+        creator: false,
+      },
+      {
+        key: 'sub4',
+        label: 'Tasks',
+        link: '/creator/productivity/tasks',
+        creator: false,
+      },
+    ],
+  },
+  {
+    key: '9',
     label: 'Creator Event',
-    icon: <MdAdsClick size={20} />,
+    icon: <MdEmojiEvents size={20} />,
     link: '/creator/events',
     creator: true,
   },
   {
-    key: '9',
+    key: '10',
     label: 'Creator Tasks',
     icon: <MdAdsClick size={20} />,
     link: '/creator/tasks',
@@ -122,15 +148,22 @@ const items: ItemType[] = [
   {
     key: '11',
     label: 'Creator Quiz',
-    icon: <MdAdsClick size={20} />,
+    icon: <MdOutlineQuiz size={20} />,
     link: '/creator/quizzes',
     creator: true,
   },
   {
-    key: '10',
-    label: 'Creator Certification',
-    icon: <MdAdsClick size={20} />,
-    link: '/creator/certification',
+    key: '12',
+    label: 'Creator Degree',
+    icon: <MdCastForEducation size={20} />,
+    link: '/creator/degree',
+    creator: true,
+  },
+  {
+    key: '13',
+    label: 'Creator Achievement',
+    icon: <MdCastForEducation size={20} />,
+    link: '/creator/achievement',
     creator: true,
   },
 ];
@@ -178,11 +211,7 @@ export default function PageLayout(props: Props) {
   return (
     <>
       <div className={`${style['dashboard-wrapper']}`}>
-        <Header />
-        <Space
-          direction='vertical'
-          style={{ width: '100%', marginTop: '60px' }}
-        >
+        <Space direction='vertical' style={{ width: '100%' }}>
           <Layout className='main-layout'>
             <Sider
               className='sidebar-main'

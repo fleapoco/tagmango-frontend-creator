@@ -12,8 +12,8 @@ import style from '../../../../../style/creator.module.scss';
 
 const breadCrumbItems = [
   {
-    title: 'Back to Certification',
-    link: '/creator/certification',
+    title: 'Back to Achievement',
+    link: '/creator/achievement',
   },
 ];
 

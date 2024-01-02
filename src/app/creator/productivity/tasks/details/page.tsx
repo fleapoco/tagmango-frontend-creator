@@ -2,11 +2,11 @@
 
 import { Col, Row, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { BreadCrumbNav } from '../../../../../components/common/breadcrumb';
-import { PrimaryCard } from '../../../../../components/common/card';
-import { CustomTag } from '../../../../../components/common/tag';
-import PageTitle from '../../../../../components/pagetitle';
-import style from '../../../../../style/creator.module.scss';
+import { BreadCrumbNav } from '../../../../../../components/common/breadcrumb';
+import { PrimaryCard } from '../../../../../../components/common/card';
+import { CustomTag } from '../../../../../../components/common/tag';
+import PageTitle from '../../../../../../components/pagetitle';
+import style from '../../../../../../style/creator.module.scss';
 
 interface DataType {
   key: string;

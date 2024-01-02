@@ -7,7 +7,6 @@ import { SwitchToggle } from '../../../../../components/common/switch';
 
 import ImageUpload from '../../../../../components/form/imgupload';
 import { FormInput } from '../../../../../components/form/input';
-import { FormSelect } from '../../../../../components/form/select';
 import { FormTextArea } from '../../../../../components/form/textarea';
 import PageTitle from '../../../../../components/pagetitle';
 import style from '../../../../../style/creator.module.scss';
@@ -35,18 +34,18 @@ const CreateEvent = () => {
 
             <div style={{ paddingTop: '15px' }}>
               <FormInput placeholder='Add a Title' label='Title' type='text' />
-              <FormSelect
+              {/* <FormSelect
                 label='Who can join this Event?'
                 handleChange={function (value: string): void {
                   throw new Error('Function not implemented.');
                 }}
+              /> */}
+              <FormInput
+                placeholder='Add a Event Link'
+                label='Event Link'
+                type='text'
               />
-              <FormSelect
-                label='Event Location'
-                handleChange={function (value: string): void {
-                  throw new Error('Function not implemented.');
-                }}
-              />
+
               <div className='form-group schedule-wrapper'>
                 <label htmlFor='schedule'>Schedule Event</label>
                 <Row gutter={16}>

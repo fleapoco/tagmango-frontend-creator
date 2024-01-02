@@ -20,7 +20,7 @@ const CreatorCertification = () => {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push('/creator/certification/newcertification');
+    router.push('/creator/degree/newcertification');
   };
   return (
     <>
@@ -31,11 +31,11 @@ const CreatorCertification = () => {
           style={{ alignItems: 'center', padding: '15px 0' }}
         >
           <Col span={12}>
-            <PageTitle title='Certification' />
+            <PageTitle title='Degree' />
           </Col>
           <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
             <PrimaryButton
-              text='New Certification'
+              text='New Degree'
               icon={<AddIcon />}
               onClick={handleButtonClick}
               variant='primary'

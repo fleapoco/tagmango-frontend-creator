@@ -1,3 +1,23 @@
+.creator-dashboard-page :global {
+  .creator-dashboard-table {
+    .heading-wrapper {
+      padding: 0 16px;
+    }
+    h4 {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 18px;
+    }
+  }
+  .avatar-name {
+    h5 {
+      font-weight: 500;
+      font-size: 13px;
+      margin: 0;
+    }
+  }
+}
+
 .creator-event :global {
   .upcoming-events-list {
     .list-item {
@@ -56,6 +76,9 @@
         }
       }
     }
+  }
+  .previous-wrapper {
+    padding: 4px 15px 0 15px;
   }
 }
 .creator-task-form :global {

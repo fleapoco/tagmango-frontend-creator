@@ -1,10 +1,10 @@
 'use client';
-
 import { Col, Row, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { PrimaryButton } from '../../../../components/common/button';
-import PageTitle from '../../../../components/pagetitle';
-import style from '../../../../style/creator.module.scss';
+import { useRouter } from 'next/navigation';
+import { PrimaryButton } from '../../../../../components/common/button';
+import PageTitle from '../../../../../components/pagetitle';
+import style from '../../../../../style/creator.module.scss';
 
 interface DataType {
   key: string;
@@ -33,7 +33,11 @@ const columns: ColumnsType<DataType> = [
     title: '',
     key: 'action',
     render: (record) => (
-      <PrimaryButton text='View Details' variant='secondary' />
+      <PrimaryButton
+        text='View Details'
+        variant='secondary'
+        onClick={() => handleButtonClick(data[0])}
+      />
     ),
   },
 ];
@@ -48,6 +52,12 @@ const data: DataType[] = [
 ];
 
 const TasksPage = () => {
+  const router = useRouter();
+
+  const handleButtonClick = (record) => {
+    router.push('/productivity/task/add-task');
+  };
+
   return (
     <>
       <div className={`${style['event-tasks-page']} common-panel-wrapper`}>
