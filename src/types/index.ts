@@ -70,6 +70,7 @@ export interface GetTask {
 }
 
 export interface DataAnalyticsTypes {
+  [key: string]: any;
   id?: string;
   revenueEarned?: number;
   adSpends?: number;
@@ -129,4 +130,71 @@ export interface UpdateEventType extends Partial<GetEventType> {}
 
 export interface UpdateCharityType extends CharitiesType {
   id: string;
+}
+
+export interface AnalyticsGraphData {
+  months: string[];
+  amount: string[];
+}
+export interface GetAnalyticsGraphDataTypes {
+  revenueEarnedGraph: AnalyticsGraphData;
+  costPerLeadGraph: AnalyticsGraphData;
+  adSpendsGraph: AnalyticsGraphData;
+  adSpendsReturnGraph: AnalyticsGraphData;
+  vipGroupSizeGraph: AnalyticsGraphData;
+  totalPaidCustomerGraph: AnalyticsGraphData;
+}
+
+export interface HabitType {
+  id?: string;
+  creatorId?: string;
+  title: string;
+  points: number;
+
+  habitSubmit: HabitSubmissionType;
+}
+
+export interface HabitSubmissionType {
+  id?: string;
+  userId?: string;
+  creatorId: string;
+  deletedAt?: string;
+  createdAt?: string;
+
+  habitId: string;
+  habitTitle: string;
+  habitPoints: number;
+}
+
+export interface Badge {
+  id: string;
+  creatorId: string;
+  badgeId: string;
+}
+
+export interface Option {
+  id: string;
+  text: string;
+}
+
+export interface QuizSubmission {
+  id: string;
+}
+
+export interface Question {
+  id: string;
+  creatorId: string;
+  text: string;
+  options: Option[];
+  imageUrl?: string;
+  submissions: QuizSubmission[];
+}
+
+export interface Quiz {
+  id: string;
+  creatorId: string;
+  name: string;
+  badges: Badge[];
+  points: number;
+  questions: Question[];
 }

@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 60px;
-  background: #fff;
+  background: var(--white-color);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   overflow: hidden;
   z-index: 1000;
@@ -89,7 +89,7 @@
       }
       a {
         font-size: 13px;
-        color: #f18926;
+        color: var(--primary-color);
         text-transform: uppercase;
         font-weight: 600;
         letter-spacing: 0.025em;
@@ -104,7 +104,7 @@
 
       li {
         list-style: none;
-        background-color: #fff;
+        background-color: var(--white-color);
         transition: background-color 0.3s ease;
         list-style: none;
         border-radius: 6px;
@@ -165,7 +165,6 @@
       }
       .site-btn.secondary-btn.small-btn span {
         .ant-tag {
-          color: #fff !important;
           line-height: 14px;
           font-size: 11px;
         }
@@ -208,6 +207,26 @@
     font-weight: 600;
   }
 
+  &.completed-btn {
+    height: 36px !important;
+    background: rgb(135, 208, 104);
+    color: var(--white-color);
+    text-transform: uppercase;
+    &:hover {
+      background: rgb(135, 208, 104);
+      color: var(--white-color);
+    }
+    &.small-btn {
+      padding: 0px 10px !important;
+      height: 32px !important;
+
+      span {
+        font-size: 12px;
+        line-height: 12px;
+      }
+    }
+  }
+
   &.secondary-btn {
     height: 36px !important;
     background-color: #e4e6eb !important;
@@ -233,7 +252,7 @@
     background-color: #0f2137 !important;
 
     span {
-      color: #fff !important;
+      color: var(--white-color) !important;
     }
   }
   &.into-btn {
@@ -276,4 +295,12 @@
       right: 15px;
     }
   }
+}
+.loader-main {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
 }

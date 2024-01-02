@@ -23,16 +23,16 @@ const QuizzesConfirmation = () => {
         <Row style={{ padding: '16px 0' }}>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title='Quiz Submission Confirmation' />
+            <PageTitle title='Quiz Title Here ' />
           </Col>
         </Row>
 
         <Row className='select-quizzes-card-wrapper' gutter={[12, 12]}>
           {[1].map((i) => (
-            <Col span={12} key={i} className='quizzes-confirmation-card'>
+            <Col span={24} key={i} className='quizzes-confirmation-card'>
               <PrimaryCard>
                 <div className='content-wrapper'>
-                  <h2>Quiz Title Here</h2>
+                  <h2>Quiz Submission Confirmation</h2>
                   <p>
                     You're about to submit your quiz. Once you click Submit Quiz
                     button you can not return to your quiz.

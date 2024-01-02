@@ -1,3 +1,20 @@
+.habit-page :global {
+  .list-calendar-wrapper {
+    height: 790px;
+
+    .border-box,
+    .col {
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .habit-cards-wrapper {
+      height: calc(100% - 32px);
+      overflow-y: auto;
+    }
+  }
+}
+
 .task-page :global {
   .table-searching-functionality {
     .form-group {
@@ -49,10 +66,10 @@
       padding: 15px;
       word-break: break-all;
       white-space: wrap;
-      background: #f18926;
+      background: var(--primary-color);
       font-weight: 500;
       font-size: 14px;
-      color: #fff;
+      color: var(--white-color);
       height: auto;
       .s-text {
         font-weight: 700;
@@ -62,9 +79,9 @@
         font-weight: 700;
       }
       &:hover {
-        color: #fff;
+        color: var(--white-color);
         a {
-          color: #fff;
+          color: var(--white-color);
         }
       }
     }
@@ -72,14 +89,15 @@
 }
 .question-box-wrapper :global {
   h2 {
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0;
   }
   .q-wrapper {
     & > li {
       border: 1px solid #ddd;
-      background: #fff;
+      background: var(--white-color);
       padding: 10px;
       border-radius: 6px;
+
       &:not(:last-child) {
         margin-bottom: 15px;
       }
@@ -107,7 +125,7 @@
         }
       }
     }
-    margin-top: 20px;
+
     .q-name-list {
       width: 100%;
       justify-content: space-between;
@@ -128,25 +146,37 @@
 }
 .quiz-remark-box-wrapper :global {
   h2 {
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0;
   }
   .quiz-remark-box {
-    border-radius: 8px;
+    border-radius: 4px;
     background: #f3f3f3;
     border: 1px solid #d9d9d9;
     color: rgba(0, 0, 0, 0.88);
-    padding: 16px;
+    padding: 10px;
+    h3 {
+      font-size: 14px;
+    }
     h3,
     p {
       margin: 0;
     }
     p {
+      font-size: 13px;
       margin-top: 6px;
     }
   }
 }
 
 .quizzes-confirmation-page :global {
+  .quizzes-confirmation-card {
+    .ant-card {
+      .content-wrapper {
+        max-width: 450px;
+        margin: 0 auto;
+      }
+    }
+  }
   .ant-card {
     max-height: 350px;
     min-height: 350px;
@@ -169,23 +199,6 @@
       p {
         margin: 0 0 30px 0;
       }
-      .point-box-wrapper {
-        width: 100%;
-        max-width: 350px;
-        margin: 0 auto 30px auto;
-        h4 {
-          font-weight: 500;
-          span {
-            font-weight: 600;
-            font-size: 16px;
-          }
-        }
-        & > div {
-          &:first-child {
-            margin-bottom: 20px;
-          }
-        }
-      }
     }
 
     .quizzes-confirmation-card {
@@ -200,6 +213,35 @@
 
       .ant-result {
         padding: 16px;
+      }
+    }
+    .point-box-wrapper {
+      width: 100%;
+      max-width: 350px;
+      margin: 0 auto;
+
+      .border-box {
+        margin-bottom: 20px;
+        h4 {
+          font-weight: 500;
+          span {
+            font-weight: 600;
+            font-size: 16px;
+          }
+        }
+        .ant-tag {
+          margin-right: 0;
+        }
+        & > div {
+          &:first-child {
+            margin-bottom: 20px;
+          }
+        }
+      }
+      .add-btn {
+        .site-btn {
+          width: 100%;
+        }
       }
     }
   }

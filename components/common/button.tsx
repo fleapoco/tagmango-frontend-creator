@@ -3,7 +3,7 @@ import React from 'react';
 
 interface ButtonProps {
   text?: React.ReactNode;
-  variant: 'primary' | 'secondary' | 'info' | 'dark';
+  variant: 'primary' | 'secondary' | 'info' | 'dark' | 'completed';
   size?: 'small';
   icon?: React.ReactNode;
   onClick?: () => void;
@@ -53,6 +53,7 @@ export const PrimaryButton = ({
 
   if (variant === 'dark') _className += ' dark-btn';
   else if (variant === 'info') _className += ' into-btn';
+  else if (variant === 'completed') _className += ' completed-btn';
   else if (variant === 'secondary') _className += ' secondary-btn';
   else _className += ' site-btn';
 

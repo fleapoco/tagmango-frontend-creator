@@ -65,19 +65,28 @@ export const BusinessData = ({
       title: 'Total Revenue Earned',
       dataIndex: 'revenueEarned',
       width: 150,
+      render: (value, record) => {
+        return `₹${value.toLocaleString('en-IN')}`;
+      },
     },
     {
       title: 'Total Ad Spends',
       dataIndex: 'adSpends',
       width: 150,
+      render: (value, record) => {
+        return `₹${value.toLocaleString('en-IN')}`;
+      },
     },
     {
       title: 'Average Cost/Lead',
       dataIndex: 'costPerLead',
       width: 150,
+      render: (value, record) => {
+        return `₹${value.toLocaleString('en-IN')}`;
+      },
     },
     {
-      title: 'Total Leads Generated',
+      title: 'Total Leads Generated ',
       dataIndex: 'totalLeadsGenerated',
     },
     {
@@ -155,8 +164,8 @@ export const BusinessData = ({
           columns={columns}
           dataSource={data as any}
           onChange={onChange}
-          pagination={{ pageSize: 20 }}
-          scroll={{ x: 1200 }}
+          pagination={{ pageSize: 10 }}
+          scroll={{ x: 1200, y: 450 }}
           locale={{ emptyText: <TableNoData /> }}
         />
       </div>

@@ -39,6 +39,7 @@ const CharityPage = () => {
     dates: dayjs.Dayjs,
     dateStrings: [string, string]
   ) => {
+    console.log({ dateStrings });
     // Perform actions with selected dates, e.g., update state or make API calls
     setDateRange(dateStrings);
   };
@@ -128,46 +129,23 @@ const CharityPage = () => {
               <DisplayGraph
                 chartData={chartData}
                 title="Charity Tracker"
-                onDateChange={handleDateChangeCallback}
+                onDateChange={(
+                  dates: dayjs.Dayjs,
+                  dateStrings: [string, string]
+                ) => handleDateChangeCallback(dates, dateStrings)}
+                type={"area"}
               />
             </Col>
           </Row>
         </div>
 
-        <Row
-          gutter={[24, 0]}
-          className="filter-wrapper"
-          style={{ padding: "0 16px 16px 16px" }}
-        >
+        <Row gutter={[24, 0]} className="filter-wrapper p-15">
           <Col span={6}>
-            {/* <FormInput
-              type='date'
-              label='Select Date'
-              placeholder='Select date'
-              onDateChange={(date, dateString) => {
-                setFilterDate(dateString);
-              }}
-            /> */}
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label htmlFor="" style={{ paddingTop: 0 }}>
-                Select Date
+                Filter By Date
               </label>
               <RangePicker />
-            </div>
-          </Col>
-          {/* <Col span={6}>
-            <FormInput type={"search"} placeholder="Search" label="Search" />
-          </Col> */}
-          <Col span={10}>
-            <div className="form-group filter-by">
-              {/* <label htmlFor="filter" style={{ marginBottom: 0 }}>
-                Filter by
-              </label> */}
-              {/* <FormSelect
-                handleChange={function (value: string): void {
-                  throw new Error("Function not implemented.");
-                }}
-              /> */}
             </div>
           </Col>
         </Row>

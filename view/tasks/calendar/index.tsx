@@ -1,7 +1,6 @@
 import {
   Calendar,
   CalendarProps,
-  Checkbox,
   Col,
   Row,
   Space,
@@ -22,8 +21,8 @@ import { GetTask, TaskStatus } from "@/types";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { PrimaryCard } from "../../../components/common/card";
 import { CustomTag } from "../../../components/common/tag";
+import { CompleteTodayTasks } from "../../../components/completetodaytaskcard";
 
 interface CustomDateRange {
   start: string;
@@ -130,60 +129,33 @@ export const CalendarTask = () => {
       <div className={`${style["task-page-calendar"]}`}>
         <Row gutter={[16, 0]}>
           <Col span={16}>
-            <div className="border-box">
+            <div className="border-box calendar-main">
               <Calendar
-                // value={dayjs()}
                 onPanelChange={onPanelChange}
                 cellRender={monthCellRender}
               />
             </div>
           </Col>
           <Col span={8}>
-            <Row className="complete-you-tasks-cards border-box tasks-card">
-              <Row>
-                <Title
-                  level={5}
-                  className="sub-title"
-                  style={{ margin: "0 0 18px 0" }}
-                >
-                  Complete today's Tasks {task?.length}
-                </Title>
-                {task && (
-                  <Row gutter={[0, 12]} style={{ width: "100%" }}>
-                    {task.map((e) => (
-                      <Col span={24} key={e.id}>
-                        <PrimaryCard>
-                          <Space
-                            style={{
-                              width: "100%",
-                              alignItems: "start",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <Space className="strike-check-box">
-                              <Checkbox
-                                defaultChecked={
-                                  e.status === TaskStatus.COMPLETED
-                                }
-                                onChange={(event) => onChange(event, e)}
-                              >
-                                {e.title}
-                              </Checkbox>
-                            </Space>
-                            <span className="mock-block">
-                              <CustomTag
-                                color="default"
-                                title={dayjs(e.startTime).format("hh:mm")}
-                              />
-                            </span>
-                          </Space>
-                        </PrimaryCard>
-                      </Col>
-                    ))}
-                  </Row>
-                )}
+            <div
+              className="border-box"
+              style={{ width: "100%", height: "100%" }}
+            >
+              <Row className="complete-you-tasks-cards  tasks-card" align="top">
+                <Col span={24}>
+                  <Title
+                    level={5}
+                    className="sub-title"
+                    style={{ margin: "0 0 18px 0" }}
+                  >
+                    Complete today's Tasks {task?.length}
+                  </Title>
+                </Col>
+                <CompleteTodayTasks
+                  onUpdateStatus={() => fetchTasksWithUniqueGroupFalse()}
+                />
               </Row>
-            </Row>
+            </div>
           </Col>
         </Row>
       </div>

@@ -17,8 +17,8 @@ export const daysArray = [
 const daysOfMonthArray = Array.from({ length: 31 }, (_, index) => index + 1);
 
 export const daysOfMonthDropdown = daysOfMonthArray.map((day) => ({
-  label: day.toString(),
-  value: day.toString(),
+  label: day?.toString(),
+  value: day?.toString(),
 }));
 
 export const formatTimeWithAMPM = (time: string) => {

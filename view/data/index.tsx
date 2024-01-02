@@ -14,7 +14,7 @@ import {
   setDataAnalytics,
 } from "@/redux/reducers/analytics.reducer";
 import { setUpdateDataAnalytic } from "@/redux/reducers/update-analytic.reducer";
-import { DataAnalyticsTypes } from "@/types";
+import { DataAnalyticsTypes, GetAnalyticsGraphDataTypes } from "@/types";
 import { PrimaryButton } from "../../components/common/button";
 import { AddIcon } from "../../components/common/icons";
 import PageTitle from "../../components/pagetitle";
@@ -30,9 +30,11 @@ export const Data = () => {
   const dispatch = useAppDispatch();
 
   const [openModal, setOpenModal] = useState(false);
+  const [analyticGraphData, setAnalyticGraphData] =
+    useState<GetAnalyticsGraphDataTypes | null>(null);
 
   const storedAnalytics = useAppSelector(getDataAnalyticsStored);
-  const { getDataAnalytics, deleteAnalytic } = useAPI();
+  const { getDataAnalytics, deleteAnalytic, getAnalyticsGraphData } = useAPI();
   const [value, setValue] = useState(1);
 
   const onChange = (e: RadioChangeEvent) => {
@@ -40,10 +42,19 @@ export const Data = () => {
     setValue(e.target.value);
   };
 
-  const chartData = {
-    series: [30, 40, 45, 50, 49, 60, 70, 91, 125],
-    labels: ["1", " 2", " 3", "4", "5", "6", "7", "8", "9"],
+  const fetchAnalyticsGraphData = async () => {
+    try {
+      const data = await getAnalyticsGraphData();
+      setAnalyticGraphData(data);
+    } catch (error) {
+    } finally {
+    }
   };
+
+  // const chartData = {
+  //   series: [30, 40, 45, 50, 49, 60, 70, 91, 125],
+  //   labels: ["1", " 2", " 3", "4", "5", "6", "7", "8", "9"],
+  // };
 
   const _getAnalytics = async () => {
     try {
@@ -54,6 +65,10 @@ export const Data = () => {
 
   useEffect(() => {
     _getAnalytics();
+  }, []);
+
+  useEffect(() => {
+    fetchAnalyticsGraphData();
   }, []);
 
   const handleButtonClick = () => {
@@ -117,7 +132,7 @@ export const Data = () => {
                 />
               </TabPane>
               <TabPane tab="Business Statistics" key="2">
-                <BusinessStatistics chartData={chartData} />
+                <BusinessStatistics chartData={analyticGraphData!} />
               </TabPane>
             </Tabs>
           </Col>

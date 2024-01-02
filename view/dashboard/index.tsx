@@ -1,4 +1,7 @@
+import useAPI from '@/hooks/useApi';
+import { HabitType } from '@/types';
 import { Col, Row, Typography } from 'antd';
+import { useEffect, useState } from 'react';
 import {
   MdControlPoint,
   MdCurrencyRupee,
@@ -8,7 +11,7 @@ import {
   MdOutlineLeaderboard,
 } from 'react-icons/md';
 import { PrimaryCard } from '../../components/common/card';
-import CompleteTodayTasks from '../../components/completetodaytaskcard';
+import { CompleteTodayTasks } from '../../components/completetodaytaskcard';
 import MarkAsCompleteCard from '../../components/markascompletecard';
 import PageTitle from '../../components/pagetitle';
 import UpcomingEventsCard from '../../components/upcomingeventscard';
@@ -17,6 +20,21 @@ import style from '../../style/task.module.scss';
 const { Title } = Typography;
 
 export const Dashboard = () => {
+  const { getUserHabits } = useAPI();
+
+  const [habitData, setHabitData] = useState<HabitType[]>();
+  const fetchUserHabits = async () => {
+    try {
+      const data = await getUserHabits();
+      setHabitData(data ?? []);
+    } catch (error) {
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    fetchUserHabits();
+  }, []);
   return (
     <>
       <div className={`${style['dashboard-page']} common-panel-wrapper`}>
@@ -42,7 +60,7 @@ export const Dashboard = () => {
               {
                 icon: <MdCurrencyRupee size={26} color='rgba(0, 0, 0, 0.45)' />,
                 taskName: 'My Earnings',
-                count: `₹ ${8}`,
+                count: `₹${8}`,
               },
               {
                 icon: <MdNewspaper size={26} color='rgba(0, 0, 0, 0.45)' />,
@@ -90,32 +108,40 @@ export const Dashboard = () => {
         </div>
         <Row className='cards-wrapper p-15' gutter={[15, 0]}>
           <Col span={8}>
-            <div className='border-box habit-cards'>
+            <div className='border-box habit-cards' style={{ height: '100%' }}>
               <Title level={5}>Complete today's Habits</Title>
-              <Row gutter={[0, 12]}>
-                {[1, 2, 3, 4].map((i) => (
-                  <Col span={24} key={i}>
-                    <MarkAsCompleteCard />
-                  </Col>
-                ))}
-              </Row>
+              {habitData && (
+                <Row gutter={[0, 12]}>
+                  {habitData.map((e, i) => (
+                    <Col span={24} key={i}>
+                      <MarkAsCompleteCard
+                        habitData={e}
+                        onMarkComplete={() => fetchUserHabits()}
+                      />
+                    </Col>
+                  ))}
+                </Row>
+              )}
             </div>
           </Col>
           <Col span={8}>
-            <div className='complete-you-tasks-cards border-box tasks-card'>
+            <div
+              className='complete-you-tasks-cards border-box tasks-card'
+              style={{ height: '100%' }}
+            >
               <Row>
                 <Title level={5}>Complete today's Tasks</Title>
 
                 <Row gutter={[0, 12]} style={{ width: '100%' }}>
                   <Col span={24}>
-                    <CompleteTodayTasks />
+                    <CompleteTodayTasks onUpdateStatus={() => null} />
                   </Col>
                 </Row>
               </Row>
             </div>
           </Col>
           <Col span={8}>
-            <div className='border-box'>
+            <div className='border-box' style={{ height: '100%' }}>
               <Title level={5}>Upcoming Events</Title>
 
               <Row gutter={[0, 12]} style={{ width: '100%' }}>

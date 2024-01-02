@@ -1,15 +1,18 @@
-import { Tag } from "antd";
-import React from "react";
+import { Tag } from 'antd';
+import React from 'react';
 
 interface TagProps {
   title: React.ReactNode;
   color?: string;
+  className?: string;
 }
 
-export const CustomTag = ({ title, color }: TagProps) => {
+export const CustomTag = ({ title, color, className }: TagProps) => {
   return (
     <>
-      <Tag color={color}>{title}</Tag>
+      <Tag color={color} className={className}>
+        {title}
+      </Tag>
     </>
   );
 };

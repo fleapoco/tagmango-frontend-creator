@@ -1,7 +1,6 @@
 'use client';
 
-import { Button, Col, Row, Typography } from 'antd';
-import Link from 'next/link';
+import { Col, Row, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
 import { PrimaryButton } from '../../../components/common/button';
 import { PrimaryCard } from '../../../components/common/card';
@@ -41,11 +40,11 @@ const QuizzesPage = () => {
                   }
                   variant='secondary'
                 />
-                <Button className='review-btn'>
+                {/* <Button className='review-btn'>
                   Yo've completed the quiz and earned &nbsp;
                   <span className='s-text'>30 XP</span>&nbsp;{' '}
                   <Link href='/quizzes/reviewanswers'>Review Answers</Link>
-                </Button>
+                </Button> */}
               </PrimaryCard>
             </Col>
           ))}

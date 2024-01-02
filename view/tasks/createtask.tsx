@@ -7,11 +7,7 @@ import { Col, Flex, Radio, Row, Space, message } from "antd";
 import PageTitle from "../../components/pagetitle";
 
 import { initialTaskState } from "@/empty-state-objects/empty";
-import {
-  dateToISOString,
-  daysArray,
-  daysOfMonthDropdown,
-} from "@/empty-state-objects/helpers";
+import { daysArray, daysOfMonthDropdown } from "@/empty-state-objects/helpers";
 import useAPI from "@/hooks/useApi";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { setTasks } from "@/redux/reducers/task.reducer";
@@ -63,9 +59,7 @@ export const CreateTask = () => {
   const fetchTasksByGroupId = async () => {
     setGroupIdLoading(true);
     try {
-      const task = await getTaskByGroupId(
-        "1fe93706-6105-43e8-aba4-885273238fd8"
-      );
+      const task = await getTaskByGroupId(groupId!);
       setCreateTaskFormData({
         startDate: task.startDate,
         endDate:
@@ -149,7 +143,7 @@ export const CreateTask = () => {
         message.success("Task Created");
       }
 
-      router.push("/productivity/task");
+      router.push("/productivity/task?tab=my-task");
     } catch (error: any) {
       console.log(error);
       message.error(error.message);
@@ -231,7 +225,7 @@ export const CreateTask = () => {
                       <Radio
                         key={i}
                         value={e}
-                        style={{ textTransform: "capitalize" }}
+                        style={{ textTransform: "capitalize", fontWeight: 400 }}
                       >
                         {e}
                       </Radio>
@@ -310,27 +304,28 @@ export const CreateTask = () => {
                     />
 
                     <div className="form-group">
-                      <Row style={{ display: "flex", alignItems: "center" }}>
-                        <label htmlFor="type" style={{ marginRight: "30px" }}>
-                          Frequency
-                        </label>
-                        <Radio.Group
-                          onChange={onFrequencyChange}
-                          value={frequency}
-                        >
-                          <Space direction="horizontal">
-                            {frequencyArray.map((e, i) => (
-                              <Radio
-                                key={i}
-                                value={e}
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                {e}
-                              </Radio>
-                            ))}
-                          </Space>
-                        </Radio.Group>
-                      </Row>
+                      <label htmlFor="type" style={{ marginRight: "30px" }}>
+                        Frequency
+                      </label>
+                      <Radio.Group
+                        onChange={onFrequencyChange}
+                        value={frequency}
+                      >
+                        <Space direction="horizontal">
+                          {frequencyArray.map((e, i) => (
+                            <Radio
+                              key={i}
+                              value={e}
+                              style={{
+                                textTransform: "capitalize",
+                                fontWeight: 400,
+                              }}
+                            >
+                              {e}
+                            </Radio>
+                          ))}
+                        </Space>
+                      </Radio.Group>
                     </div>
                     {createTaskFormData.frequency === "bi-weekly" && (
                       <Row gutter={24}>
@@ -404,7 +399,7 @@ export const CreateTask = () => {
                 <PrimaryButton
                   text="Cancel"
                   variant="secondary"
-                  onClick={() => router.push("/productivity/task")}
+                  onClick={() => router.back()}
                 />
                 <PrimaryButton
                   loading={loading}

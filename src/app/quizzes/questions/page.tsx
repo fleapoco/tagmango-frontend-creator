@@ -1,14 +1,12 @@
 "use client";
 
-import { Card, Col, Flex, Input, Row, Typography } from "antd";
+import { Card, Col, Flex, Row, Typography } from "antd";
 import { BreadCrumbNav } from "../../../../components/common/breadcrumb";
 import { PrimaryButton } from "../../../../components/common/button";
 import { CustomTag } from "../../../../components/common/tag";
+import { FormTextArea } from "../../../../components/form/textarea";
 import PageTitle from "../../../../components/pagetitle";
 import style from "../../../../style/task.module.scss";
-import { Questionbox } from "../common/questionbox";
-
-const { TextArea } = Input;
 
 const { Meta } = Card;
 
@@ -56,14 +54,10 @@ const QuizQuestions = () => {
                     <CustomTag color="#87d068" title="30xp" />
                   </Flex>
                   {/* Questions Wrapper */}
-                  <Questionbox />
+                  {/* <Questionbox /> */}
                   {/* Textarea Box Wrapper Start */}
                   <div className="textarea-box">
-                    <TextArea
-                      rows={4}
-                      placeholder="Write you answer"
-                      maxLength={6}
-                    />
+                    <FormTextArea placeholder="Placeholder" />
                   </div>
                   {/* Buttons Wrapper */}
                   <Flex gap="middle" className="btns-wrapper">

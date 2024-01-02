@@ -1,7 +1,7 @@
 "use client";
 import type { RadioChangeEvent } from "antd";
 import { Col, Row, Tabs } from "antd";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import style from "../../../../style/task.module.scss";
 
@@ -26,6 +26,10 @@ const { TabPane } = Tabs;
 
 const Task = () => {
   const dispatch = useAppDispatch();
+  const param = useSearchParams();
+  const tab = param.get("tab");
+
+  console.log({ tab });
   const counts = useAppSelector(getTasksCounts);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
@@ -94,6 +98,12 @@ const Task = () => {
     } catch (error) {}
   };
 
+  const handleTabChange = (key: string) => {
+    if (key === "1") return router.push("/productivity/task?tab=task-calender");
+    else if (key === "2") return router.push("/productivity/task?tab=my-task");
+    else return null;
+  };
+
   return (
     <>
       <div className={`${style["task-page"]} common-panel-wrapper`}>
@@ -139,7 +149,11 @@ const Task = () => {
         {/* Calendar And My Task Tab Changing */}
         <Row>
           <Col span={24}>
-            <Tabs defaultActiveKey="1" onChange={() => onChange}>
+            <Tabs
+              defaultActiveKey="1"
+              activeKey={tab === "my-task" ? "2" : "1"}
+              onChange={(key: string) => handleTabChange(key)}
+            >
               <TabPane tab="Calendar" key="1">
                 <div className="p-15">
                   <CalendarTask />

@@ -33,7 +33,7 @@ const QuizSubmitted = () => {
           gutter={[12, 12]}
         >
           {[1].map((i) => (
-            <Col span={12} key={i} className='quizzes-confirmation-card'>
+            <Col span={24} key={i} className='quizzes-confirmation-card '>
               <PrimaryCard>
                 <div className='content-wrapper'>
                   <Result
@@ -43,29 +43,25 @@ const QuizSubmitted = () => {
                         <h2>Your Quiz has been submitted successfully</h2>
                       </>
                     }
-                    subTitle='Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait.'
+                    subTitle='Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the'
                     extra={
                       <>
-                        <div className='point-box-wrapper border-box'>
-                          <Flex justify='space-between' align='center'>
-                            <h4>No Of Questions Attempted</h4>
-                            <h4>
-                              <span>20</span>/30
-                            </h4>
-                          </Flex>
-                          <Flex justify='space-between' align='center'>
-                            <h4>Points earned</h4>
-                            <CustomTag title='20xp' color='#87d068' />
-                          </Flex>
-                        </div>
-                        <div
-                          style={{
-                            width: '100%',
-                            display: 'flex',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <PrimaryButton text='Okay' variant='primary' />
+                        <div className='point-box-wrapper '>
+                          <div className='border-box'>
+                            <Flex justify='space-between' align='center'>
+                              <h4>No Of Questions Attempted</h4>
+                              <h4>
+                                <span>20</span>/30
+                              </h4>
+                            </Flex>
+                            <Flex justify='space-between' align='center'>
+                              <h4>Points earned</h4>
+                              <CustomTag title='20xp' color='#87d068' />
+                            </Flex>
+                          </div>
+                          <div className='add-btn'>
+                            <PrimaryButton text='Okay' variant='primary' />
+                          </div>
                         </div>
                       </>
                     }

@@ -37,11 +37,11 @@ export const AnswerTable = () => {
     {
       key: "1",
       sno: 1,
-      questions: <Questionbox />,
+      questions: <Questionbox question={{} as any} />,
       pointassigned: <CustomTag title="20 XP" color="#87d068" />,
       pointearned: (
         <>
-          <Flex vertical gap={15} justify="start" align="start">
+          <Flex vertical gap={10} justify="start" align="start">
             <CustomTag title="20 XP" color="#87d068" />
             <RemarkBox />
           </Flex>
@@ -51,11 +51,11 @@ export const AnswerTable = () => {
     {
       key: "2",
       sno: 2,
-      questions: <RemarkBox />,
+      questions: <RemarkBox title="Box Title" />,
       pointassigned: <CustomTag title="20 XP" color="#87d068" />,
       pointearned: (
         <>
-          <Flex vertical gap={15} justify="start" align="start">
+          <Flex vertical gap={10} justify="start" align="start">
             <CustomTag title="20 XP" color="#87d068" />
             <RemarkBox />
           </Flex>

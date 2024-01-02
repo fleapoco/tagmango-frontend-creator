@@ -1,11 +1,11 @@
-'use client';
-import useApi from '@/hooks/useApi';
-import type { MenuProps } from 'antd';
-import { Button, Flex, Layout, Menu, Space, Typography } from 'antd';
-import SubMenu from 'antd/es/menu/SubMenu';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+"use client";
+import useApi from "@/hooks/useApi";
+import type { MenuProps } from "antd";
+import { Button, Flex, Layout, Menu, Space, Typography } from "antd";
+import SubMenu from "antd/es/menu/SubMenu";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   MdAdsClick,
   MdCastForEducation,
@@ -13,18 +13,17 @@ import {
   MdDatasetLinked,
   MdEmojiEvents,
   MdOutlineQuiz,
-} from 'react-icons/md';
+} from "react-icons/md";
 
-import { useAppDispatch } from '@/hooks/useRedux';
-import { Analytics, CollapseArrow, NotCollapseArrow } from './common/icons';
-import { Header } from './header';
-import style from '/style/dashboard.module.scss';
+import { useAppDispatch } from "@/hooks/useRedux";
+import { Analytics, CollapseArrow, NotCollapseArrow } from "./common/icons";
+import style from "/style/dashboard.module.scss";
 
 const { Sider, Content } = Layout;
 
 const { Title } = Typography;
 
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>["items"][number];
 
 type ItemType = {
   key: string;
@@ -32,67 +31,136 @@ type ItemType = {
   icon?: React.ReactNode;
   link?: string;
   children?: ItemType[];
+  creator: boolean;
 };
 
-const items: ItemType[] = [
+const fanItems: ItemType[] = [
   {
-    key: '1',
-    label: 'Dashboard',
-    link: '/',
+    key: "1",
+    label: "Dashboard",
+    link: "/",
     icon: <MdDashboard size={20} />,
+    creator: false,
   },
   {
-    key: 'sub1',
-    label: 'Productivity',
+    key: "sub1",
+    label: "Productivity",
     icon: <Analytics />,
+    creator: false,
     children: [
       {
-        key: 'sub2',
-        label: 'Habits',
-        link: '/productivity/habit',
+        key: "sub2",
+        label: "Habits",
+        link: "/productivity/habit",
+        creator: false,
       },
       {
-        key: 'sub3',
-        label: 'Tasks',
-        link: '/productivity/task',
+        key: "sub3",
+        label: "Tasks",
+        link: "/productivity/task",
+        creator: false,
       },
     ],
   },
   {
-    key: '2',
-    label: 'Data',
+    key: "2",
+    label: "Data",
     icon: <MdDatasetLinked size={20} />,
-    link: '/data',
+    link: "/data",
+    creator: false,
   },
   {
-    key: '3',
-    label: 'Events',
+    key: "3",
+    label: "Events",
     icon: <MdEmojiEvents size={20} />,
-    link: '/events',
+    link: "/events",
+    creator: false,
   },
   {
-    key: '4',
-    label: 'Charity',
+    key: "4",
+    label: "Charity",
     icon: <Analytics />,
-    link: '/charity',
+    link: "/charity",
+    creator: false,
   },
   {
-    key: '5',
-    label: 'Quizzes',
+    key: "5",
+    label: "Quizzes",
     icon: <MdOutlineQuiz size={20} />,
-    link: '/quizzes',
+    link: "/quizzes",
+    creator: false,
   },
   {
-    key: '6',
-    label: 'Degree',
+    key: "6",
+    label: "Degree",
     icon: <MdCastForEducation size={20} />,
-    link: '/degree',
+    link: "/degree",
+    creator: false,
   },
   {
-    key: '7',
-    label: 'Achievement',
+    key: "7",
+    label: "Achievement",
     icon: <MdAdsClick size={20} />,
-    link: '/achievement',
+    link: "/achievement",
+    creator: false,
+  },
+];
+
+const creatorItems: ItemType[] = [
+  {
+    key: "8",
+    label: "Dashboard",
+    icon: <MdDashboard size={20} />,
+    link: "/creator/dashboard",
+    creator: false,
+  },
+  {
+    key: "sub2",
+    label: "Productivity",
+    icon: <Analytics />,
+    creator: false,
+    children: [
+      {
+        key: "sub3",
+        label: "Habits",
+        link: "/creator/productivity/habits",
+        creator: false,
+      },
+      {
+        key: "sub4",
+        label: "Tasks",
+        link: "/creator/productivity/tasks",
+        creator: false,
+      },
+    ],
+  },
+  {
+    key: "9",
+    label: "Creator Event",
+    icon: <MdEmojiEvents size={20} />,
+    link: "/creator/events",
+    creator: true,
+  },
+  {
+    key: "11",
+    label: "Creator Quiz",
+    icon: <MdOutlineQuiz size={20} />,
+    link: "/creator/quizzes",
+    creator: true,
+  },
+  {
+    key: "12",
+    label: "Creator Degree",
+    icon: <MdCastForEducation size={20} />,
+    link: "/creator/degree",
+    creator: true,
+  },
+  {
+    key: "13",
+    label: "Creator Achievement",
+    icon: <MdCastForEducation size={20} />,
+    link: "/creator/achievement",
+    creator: true,
   },
 ];
 
@@ -108,22 +176,17 @@ export default function PageLayout(props: Props) {
 
   const { getCharities } = useApi();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [userRole, setUserRole] = useState<string>("");
   const currentPathname = usePathname();
 
-  // useEffect(() => {
-  //   if (props.userDetails) dispatch(setUser(props.userDetails));
-  // }, [dispatch, props.userDetails]);
-
-  // useEffect(() => {
-  //   const key = items.find((item) => item.link === currentPathname)?.key;
-  //   console.log(key);
-
-  //   if (key) {
-  //     setSelectedKeys([key]);
-  //   }
-  // }, [currentPathname]);\
-
   useEffect(() => {
+    const userdata = localStorage.getItem("userdata");
+
+    if (userdata) {
+      const user = JSON.parse(userdata);
+      setUserRole(user?.roles);
+    }
+
     const findSelectedKey = (item: ItemType): string | undefined => {
       if (item.link === currentPathname) {
         return item.key;
@@ -138,6 +201,9 @@ export default function PageLayout(props: Props) {
       return undefined;
     };
     let newSelectedKey: string | undefined;
+    let items;
+    if (userRole === "fan_completed") items = fanItems;
+    else items = creatorItems;
     for (const item of items) {
       newSelectedKey = findSelectedKey(item);
       if (newSelectedKey) {
@@ -151,75 +217,103 @@ export default function PageLayout(props: Props) {
 
   return (
     <>
-      <div className={`${style['dashboard-wrapper']}`}>
-        <Header />
-        <Space
-          direction='vertical'
-          style={{ width: '100%', marginTop: '60px' }}
-        >
-          <Layout className='main-layout'>
+      <div className={`${style["dashboard-wrapper"]}`}>
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <Layout className="main-layout">
             <Sider
-              className='sidebar-main'
+              className="sidebar-main"
               collapsible
               collapsed={collapsed}
               onCollapse={(value) => setCollapsed(value)}
             >
               <Button
-                type='text'
+                type="text"
                 icon={collapsed ? <CollapseArrow /> : <NotCollapseArrow />}
                 onClick={() => setCollapsed(!collapsed)}
-                className='collapsed-btn'
+                className="collapsed-btn"
               />
-              <Flex gap='middle' className='user-name-display' align='center'>
-                <div className='avatar-circle'>
+              <Flex gap="middle" className="user-name-display" align="center">
+                <div className="avatar-circle">
                   <img
                     src={
-                      'https://tagmango.com/staticassets/avatar-placeholder.png-1612857612139.png'
+                      "https://tagmango.com/staticassets/avatar-placeholder.png-1612857612139.png"
                     }
-                    alt='Avatar'
+                    alt="Avatar"
                   />
                 </div>
-                <h1>Welcome, {'jhwvefhj'}</h1>
+                <h1>Welcome, {"jhwvefhj"}</h1>
               </Flex>
-              <div className='inner-sidebar'>
+              <div className="inner-sidebar">
                 <Menu
-                  defaultSelectedKeys={['1']}
+                  defaultSelectedKeys={["1"]}
                   selectedKeys={selectedKeys}
-                  mode='inline'
-                  className='sidebar'
-                  style={{ padding: '0 8px', width: '100%', marginLeft: 0 }}
+                  mode="inline"
+                  className="sidebar"
+                  style={{ padding: "0 8px", width: "100%", marginLeft: 0 }}
                 >
-                  {items.map((item) =>
-                    item.children ? (
-                      <SubMenu
-                        key={item.key}
-                        icon={item.icon}
-                        title={item.label}
-                      >
-                        {item.children.map((subItem) => (
-                          <Menu.Item key={subItem.key}>
-                            {subItem.link ? (
-                              <Link href={subItem.link}>{subItem.label}</Link>
+                  {userRole === "fan_completed"
+                    ? fanItems.map((item) =>
+                        item.children ? (
+                          <SubMenu
+                            key={item.key}
+                            icon={item.icon}
+                            title={item.label}
+                          >
+                            {item.children.map((subItem) => (
+                              <Menu.Item key={subItem.key}>
+                                {subItem.link ? (
+                                  <Link href={subItem.link}>
+                                    {subItem.label}
+                                  </Link>
+                                ) : (
+                                  <span>{subItem.label}</span>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </SubMenu>
+                        ) : (
+                          <Menu.Item key={item.key} icon={item.icon}>
+                            {item.link ? (
+                              <Link href={item.link}>{item.label}</Link>
                             ) : (
-                              <span>{subItem.label}</span>
+                              <span>{item.label}</span>
                             )}
                           </Menu.Item>
-                        ))}
-                      </SubMenu>
-                    ) : (
-                      <Menu.Item key={item.key} icon={item.icon}>
-                        {item.link ? (
-                          <Link href={item.link}>{item.label}</Link>
+                        )
+                      )
+                    : creatorItems.map((item) =>
+                        item.children ? (
+                          <SubMenu
+                            key={item.key}
+                            icon={item.icon}
+                            title={item.label}
+                          >
+                            {item.children.map((subItem) => (
+                              <Menu.Item key={subItem.key}>
+                                {subItem.link ? (
+                                  <Link href={subItem.link}>
+                                    {subItem.label}
+                                  </Link>
+                                ) : (
+                                  <span>{subItem.label}</span>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </SubMenu>
                         ) : (
-                          <span>{item.label}</span>
-                        )}
-                      </Menu.Item>
-                    )
-                  )}
+                          <Menu.Item key={item.key} icon={item.icon}>
+                            {item.link ? (
+                              <Link href={item.link}>{item.label}</Link>
+                            ) : (
+                              <span>{item.label}</span>
+                            )}
+                          </Menu.Item>
+                        )
+                      )}
                 </Menu>
               </div>
             </Sider>
-            <Layout className='main-contain-layout'>
+            <Layout className="main-contain-layout">
               <Content>{props.children}</Content>
             </Layout>
           </Layout>

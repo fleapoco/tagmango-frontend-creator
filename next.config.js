@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	reactStrictMode: false
-}
-
-module.exports = nextConfig
+	reactStrictMode: false,
+	basePath: '/web/apps/levelup',
+};
+module.exports = nextConfig;

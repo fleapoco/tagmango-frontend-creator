@@ -2,13 +2,18 @@ import {
   CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
+  GetAnalyticsGraphDataTypes,
   GetEventType,
   GetTask,
   GetTasksQuery,
+  HabitSubmissionType,
+  HabitType,
   IFetchAPICall,
+  Quiz,
   TaskAnalytics,
   TaskStatus,
   UpdateCharityType,
+  UserDetails,
 } from "@/types";
 import { getCookie } from "cookies-next";
 
@@ -31,6 +36,7 @@ const useAPI = () => {
     const data = await raw.json();
     return data;
   };
+
   const getTasks = ({
     query,
     status,
@@ -45,7 +51,7 @@ const useAPI = () => {
     if (type) params.append("type", type);
     if (uniqueGroup !== undefined)
       params.append("uniqueGroup", String(uniqueGroup));
-    const queryString = params.toString();
+    const queryString = params?.toString();
     const endPoint = `/tasks${queryString ? `?${queryString}` : ""}`;
     return http(endPoint, { method: "GET" });
   };
@@ -83,7 +89,7 @@ const useAPI = () => {
     const params = new URLSearchParams();
     if (startMonth) params.append("startMonth", startMonth);
     if (endMonth) params.append("endMonth", endMonth);
-    const queryString = params.toString();
+    const queryString = params?.toString();
     const endPoint = `/charities/graph/track${
       queryString ? `?${queryString}` : ""
     }`;
@@ -97,7 +103,7 @@ const useAPI = () => {
   }): Promise<CategoryType[]> => {
     const params = new URLSearchParams();
     if (type) params.append("type", type);
-    const queryString = params.toString();
+    const queryString = params?.toString();
     const endPoint = `/categories${queryString ? `?${queryString}` : ""}`;
     return http(endPoint);
   };
@@ -135,7 +141,7 @@ const useAPI = () => {
     const params = new URLSearchParams();
     if (query) params.append("query", query);
     if (createdAt) params.append("createdAt", createdAt);
-    const queryString = params.toString();
+    const queryString = params?.toString();
     const endPoint = `/charities${queryString ? `?${queryString}` : ""}`;
     return http(endPoint, { method: "GET" });
   };
@@ -180,6 +186,38 @@ const useAPI = () => {
     return http(`/tasks/update/${groupId}`, { method: "PUT", data });
   };
 
+  const getAnalyticsGraphData = (): Promise<GetAnalyticsGraphDataTypes> => {
+    return http(`/analytics/track/graph`);
+  };
+
+  const getUserHabits = (): Promise<HabitType[]> => {
+    return http(`/habits/user`);
+  };
+
+  const updateHabitStatusByUser = (
+    data: HabitSubmissionType
+  ): Promise<HabitSubmissionType> => {
+    return http(`/habits-submission`, { method: "POST", data });
+  };
+
+  const removeUserHabit = (id: string) => {
+    return http(`/habits-submission/${id}`, { method: "DELETE" });
+  };
+
+  const authenticateUser = (data: {
+    token: string;
+  }): Promise<{ jwtToken: string }> => {
+    return http(`/auth/login`, { method: "POST", data });
+  };
+
+  const getUserDetails = (): Promise<UserDetails> => {
+    return http(`/auth/user`);
+  };
+
+  const getUserQuizByQuizId = (quizId: string): Promise<Quiz> => {
+    return http(`/quizzes/${quizId}`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -200,6 +238,13 @@ const useAPI = () => {
     getTaskByGroupId,
     updateTaskByGroupId,
     getCharitiesGraphData,
+    getAnalyticsGraphData,
+    getUserHabits,
+    updateHabitStatusByUser,
+    removeUserHabit,
+    authenticateUser,
+    getUserQuizByQuizId,
+    getUserDetails,
   };
 };
 
