@@ -150,6 +150,7 @@ export interface HabitType {
   creatorId?: string;
   title: string;
   points: number;
+
   habitSubmit: HabitSubmissionType;
 }
 
@@ -157,6 +158,9 @@ export interface HabitSubmissionType {
   id?: string;
   userId?: string;
   creatorId: string;
+  deletedAt?: string;
+  createdAt?: string;
+
   habitId: string;
   habitTitle: string;
   habitPoints: number;

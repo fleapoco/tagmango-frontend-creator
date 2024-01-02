@@ -42,7 +42,7 @@ const MarkAsCompleteCard = ({
           habitId: habitData?.id!,
           habitTitle: habitData?.title ?? "",
           habitPoints: 0,
-          deletedAt: new Date(),
+          deletedAt: new Date() as unknown as string,
         });
         onMarkComplete();
       }
