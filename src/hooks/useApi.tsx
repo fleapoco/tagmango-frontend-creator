@@ -9,6 +9,7 @@ import {
   HabitSubmissionType,
   HabitType,
   IFetchAPICall,
+  Quiz,
   TaskAnalytics,
   TaskStatus,
   UpdateCharityType,
@@ -208,6 +209,10 @@ const useAPI = () => {
     return http(`/auth/login`, { method: "POST", data });
   };
 
+  const getUserQuizByQuizId = (quizId: string): Promise<Quiz> => {
+    return http(`/quizzes/${quizId}`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -233,6 +238,7 @@ const useAPI = () => {
     updateHabitStatusByUser,
     removeUserHabit,
     authenticateUser,
+    getUserQuizByQuizId,
   };
 };
 

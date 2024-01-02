@@ -160,6 +160,37 @@ export interface HabitSubmissionType {
   habitId: string;
   habitTitle: string;
   habitPoints: number;
-  createdAt?: Date;
-  deletedAt?: Date | null;
+}
+
+export interface Badge {
+  id: string;
+  creatorId: string;
+  badgeId: string;
+}
+
+export interface Option {
+  id: string;
+  text: string;
+}
+
+export interface QuizSubmission {
+  id: string;
+}
+
+export interface Question {
+  id: string;
+  creatorId: string;
+  text: string;
+  options: Option[];
+  imageUrl?: string;
+  submissions: QuizSubmission[];
+}
+
+export interface Quiz {
+  id: string;
+  creatorId: string;
+  name: string;
+  badges: Badge[];
+  points: number;
+  questions: Question[];
 }
