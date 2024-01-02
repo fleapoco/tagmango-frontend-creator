@@ -9,9 +9,11 @@ import {
   HabitSubmissionType,
   HabitType,
   IFetchAPICall,
+  Quiz,
   TaskAnalytics,
   TaskStatus,
   UpdateCharityType,
+  UserDetails,
 } from "@/types";
 import { getCookie } from "cookies-next";
 
@@ -208,6 +210,14 @@ const useAPI = () => {
     return http(`/auth/login`, { method: "POST", data });
   };
 
+  const getUserDetails = (): Promise<UserDetails> => {
+    return http(`/auth/user`);
+  };
+
+  const getUserQuizByQuizId = (quizId: string): Promise<Quiz> => {
+    return http(`/quizzes/${quizId}`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -233,6 +243,8 @@ const useAPI = () => {
     updateHabitStatusByUser,
     removeUserHabit,
     authenticateUser,
+    getUserQuizByQuizId,
+    getUserDetails,
   };
 };
 

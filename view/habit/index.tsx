@@ -78,6 +78,7 @@ export const Habit = () => {
               <div className="border-box">
                 <Calendar
                   onPanelChange={onPanelChange}
+                  cellRender={monthCellRender}
                   style={{ width: "100%", height: "100%" }}
                 />
               </div>
