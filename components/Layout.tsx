@@ -139,13 +139,6 @@ const items: ItemType[] = [
     creator: true,
   },
   {
-    key: '10',
-    label: 'Creator Tasks',
-    icon: <MdAdsClick size={20} />,
-    link: '/creator/tasks',
-    creator: true,
-  },
-  {
     key: '11',
     label: 'Creator Quiz',
     icon: <MdOutlineQuiz size={20} />,
