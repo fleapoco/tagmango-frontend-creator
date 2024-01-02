@@ -9,7 +9,7 @@ import { Dashboard } from "../../view/dashboard";
 export default function Home() {
   const params = useSearchParams();
   const refreshToken = params.get("refreshToken");
-  const { authenticateUser } = useAPI();
+  const { authenticateUser, getUserDetails } = useAPI();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -19,7 +19,11 @@ export default function Home() {
         try {
           const token = await authenticateUser({ token: refreshToken });
           console.log({ token });
-          if (token) setCookie("token", token.jwtToken);
+          if (token) {
+            setCookie("token", token.jwtToken);
+            const user = await getUserDetails();
+            if (user) localStorage.setItem("userdata", JSON.stringify(user));
+          }
         } catch (error) {
         } finally {
           setLoading(false);
