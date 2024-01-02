@@ -20,7 +20,7 @@ const CreatorCertification = () => {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push('/creator/certification/newcertification');
+    router.push('/creator/achievement/newcertification');
   };
   return (
     <>

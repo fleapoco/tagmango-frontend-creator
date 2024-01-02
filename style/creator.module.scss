@@ -63,6 +63,9 @@
           height: 80px;
           border-radius: 6px;
           overflow: hidden;
+          img {
+            object-fit: cover;
+          }
         }
 
         .content-wrap {

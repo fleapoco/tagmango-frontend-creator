@@ -28,18 +28,18 @@ const NewCertification = () => {
         <Row className='p-15'>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title='New Certification' />
+            <PageTitle title='New Degree' />
           </Col>
         </Row>
         <Row gutter={[12, 0]} className='p-r-b-l-15 '>
           <Col span={12}>
             <div className='border-box p-15'>
               <ImageUpload />
-              <FormInput label='Certification Title' placeholder='Add Title' />
+              <FormInput label='Degree Title' placeholder='Add Title' />
               <FormInput
                 label='Add Link'
                 type='link'
-                placeholder='Add Certification Link'
+                placeholder='Add Degree Link'
               />
               <div className='form-group'>
                 <label htmlFor='requirement'>Requirement</label>

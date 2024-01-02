@@ -56,8 +56,8 @@ const data: DataType[] = [
 
 const breadCrumbItems = [
   {
-    title: 'Back to Tasks',
-    link: '/creator/tasks',
+    title: 'Back to Quizzes',
+    link: '/creator/quizzes',
   },
 ];
 
