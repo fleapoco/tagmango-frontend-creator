@@ -250,6 +250,14 @@ const useAPI = () => {
     return http(`/achievements`);
   };
 
+  const createAchievement = (data: {
+    title: string;
+    description: string;
+    thumbnailUrl: string;
+  }): Promise<UserAchievement | APIError> => {
+    return http(`/achievements/create`, { method: "POST", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -283,6 +291,7 @@ const useAPI = () => {
     createDegree,
     getUserAchievements,
     getCreatorAchievements,
+    createAchievement,
   };
 };
 
