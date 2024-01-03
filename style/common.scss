@@ -273,6 +273,10 @@
     background: #f5f8fa;
     padding: 0 !important;
 
+    &:hover {
+      background: #f5f8fa !important;
+    }
+
     & > span {
       padding: 0;
       margin: 0;
