@@ -35,14 +35,24 @@ const NewCertification = () => {
     title: "",
     degreeLink: "",
     description: "",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1610878180933-123728745d22?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    thumbnailUrl: "",
   });
 
   const isValidFormData = (degreeData: DegreeDataType) => {
-    if (!degreeData.title || !degreeData.degreeLink || !degreeData.description)
+    if (
+      !degreeData.title ||
+      !degreeData.degreeLink ||
+      !degreeData.description ||
+      !degreeData.thumbnailUrl
+    )
       return false;
     return true;
+  };
+
+  const handleUpload = (fileUrl: string) => {
+    setDegreeDataType((prev) => {
+      return { ...prev, thumbnailUrl: fileUrl };
+    });
   };
 
   const handleOnChange = (
@@ -92,7 +102,7 @@ const NewCertification = () => {
         <Row gutter={[12, 0]} className="p-r-b-l-15 ">
           <Col span={12}>
             <div className="border-box p-15">
-              <ImageUpload />
+              <ImageUpload handleUpload={handleUpload} />
               <FormInput
                 label="Certification Title"
                 onChange={handleOnChange}
