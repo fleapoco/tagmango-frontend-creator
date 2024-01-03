@@ -56,11 +56,13 @@ const NewCertification = () => {
   };
 
   const handleSubmit = async () => {
-    let data = await createDegree(degreeDataType);
+    try {
+      let data = await createDegree(degreeDataType);
 
-    if (data?.id) {
-      router.push("/creator/degree");
-    }
+      if (data?.id) {
+        router.push("/creator/degree");
+      }
+    } catch (error) {}
   };
 
   return (
