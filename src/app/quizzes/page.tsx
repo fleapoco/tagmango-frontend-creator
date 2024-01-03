@@ -53,18 +53,8 @@ const QuizzesPage = () => {
                 <Col span={8} key={i}>
                   <PrimaryCard title={e.name}>
                     <Title level={5}>{e.questions?.length} Question</Title>
-                    <PrimaryButton
-                      onClick={() => router.push(`/quizzes/${e.id}`)}
-                      text={
-                        <div style={{ display: "flex", gap: "12px" }}>
-                          <span>Play & Earn</span>
-                          <CustomTag title={`${e.points}XP`} color="#87d068" />
-                        </div>
-                      }
-                      variant="secondary"
-                    />
 
-                    {e.submissions.length > 0 && (
+                    {e.submissions.length > 0 ? (
                       <Button className="review-btn">
                         Yo've completed the quiz and earned &nbsp;
                         <span className="s-text">{`${e.submissions.reduce(
@@ -73,10 +63,24 @@ const QuizzesPage = () => {
                           0
                         )}XP`}</span>
                         &nbsp;{" "}
-                        <Link href="/quizzes/reviewanswers">
+                        <Link href={`/quizzes/reviewanswers/${e.id}`}>
                           Review Answers
                         </Link>
                       </Button>
+                    ) : (
+                      <PrimaryButton
+                        onClick={() => router.push(`/quizzes/${e.id}`)}
+                        text={
+                          <div style={{ display: "flex", gap: "12px" }}>
+                            <span>Play & Earn</span>
+                            <CustomTag
+                              title={`${e.points}XP`}
+                              color="#87d068"
+                            />
+                          </div>
+                        }
+                        variant="secondary"
+                      />
                     )}
                   </PrimaryCard>
                 </Col>

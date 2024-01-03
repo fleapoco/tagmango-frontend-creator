@@ -175,6 +175,7 @@ export interface Badge {
 export interface Option {
   id: string;
   text: string;
+  submissions: QuizSubmission[];
 }
 
 export interface QuizSubmission {
@@ -187,6 +188,7 @@ export interface Question {
   creatorId: string;
   text: string;
   options: Option[];
+  points: number;
   imageUrl?: string;
   submissions: QuizSubmission[];
 }
@@ -198,5 +200,6 @@ export interface Quiz {
   badges: Badge[];
   points: number;
   questions: Question[];
+  createdAt?: Date;
   submissions: QuizSubmission[];
 }
