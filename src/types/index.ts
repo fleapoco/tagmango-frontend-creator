@@ -215,3 +215,9 @@ export interface UserDegree {
   updatedAt?: Date | null;
   deletedAt?: Date | null;
 }
+
+export interface APIError {
+  message?: string;
+  error?: string;
+  statusCode?: number;
+}

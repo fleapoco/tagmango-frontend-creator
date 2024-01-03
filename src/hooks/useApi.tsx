@@ -1,4 +1,5 @@
 import {
+  APIError,
   CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
@@ -223,11 +224,11 @@ const useAPI = () => {
     return http(`/quizzes/user`);
   };
 
-  const getUserDegrees = (): Promise<UserDegree[] | Object> => {
+  const getUserDegrees = (): Promise<UserDegree[] | APIError> => {
     return http(`/degrees/user`);
   };
 
-  const getCreatorDegrees = (): Promise<UserDegree[] | Object> => {
+  const getCreatorDegrees = (): Promise<UserDegree[] | APIError> => {
     return http(`/degrees`);
   };
 
@@ -236,7 +237,7 @@ const useAPI = () => {
     degreeLink: string;
     description: string;
     thumbnailUrl: string;
-  }): Promise<UserDegree | Object> => {
+  }): Promise<UserDegree | APIError> => {
     return http(`/degrees/create`, { method: "POST", data });
   };
 
