@@ -203,3 +203,15 @@ export interface Quiz {
   createdAt?: Date;
   submissions: QuizSubmission[];
 }
+
+export interface UserDegree {
+  id: string;
+  creatorId: string;
+  title: string;
+  degreeLink: string;
+  description: string;
+  thumbnailUrl: string;
+  createdAt?: Date;
+  updatedAt?: Date | null;
+  deletedAt?: Date | null;
+}

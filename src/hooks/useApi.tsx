@@ -13,6 +13,7 @@ import {
   TaskAnalytics,
   TaskStatus,
   UpdateCharityType,
+  UserDegree,
   UserDetails,
 } from "@/types";
 import { getCookie } from "cookies-next";
@@ -222,6 +223,23 @@ const useAPI = () => {
     return http(`/quizzes/user`);
   };
 
+  const getUserDegrees = (): Promise<UserDegree[] | Object> => {
+    return http(`/degrees/user`);
+  };
+
+  const getCreatorDegrees = (): Promise<UserDegree[] | Object> => {
+    return http(`/degrees`);
+  };
+
+  const createDegree = (data: {
+    title: string;
+    degreeLink: string;
+    description: string;
+    thumbnailUrl: string;
+  }): Promise<UserDegree | Object> => {
+    return http(`/degrees/create`, { method: "POST", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -250,6 +268,9 @@ const useAPI = () => {
     getUserQuizByQuizId,
     getUserDetails,
     getAllUserQuizzes,
+    getUserDegrees,
+    getCreatorDegrees,
+    createDegree,
   };
 };
 
