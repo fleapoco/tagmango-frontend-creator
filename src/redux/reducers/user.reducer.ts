@@ -7,7 +7,7 @@ const initialState = {
     id: "",
     name: "",
     email: "",
-    roles: [],
+    roles: "",
     profilePicUrl: "",
   },
 };

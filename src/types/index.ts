@@ -101,7 +101,7 @@ export interface CharitiesType {
 
 export interface UserDetails {
   id: string;
-  roles: string[];
+  roles: string;
   name: string;
   email: string;
   profilePicUrl: string;
