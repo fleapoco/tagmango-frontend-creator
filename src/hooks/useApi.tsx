@@ -218,6 +218,10 @@ const useAPI = () => {
     return http(`/quizzes/${quizId}`);
   };
 
+  const getAllUserQuizzes = (): Promise<Quiz[]> => {
+    return http(`/quizzes/user`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -245,6 +249,7 @@ const useAPI = () => {
     authenticateUser,
     getUserQuizByQuizId,
     getUserDetails,
+    getAllUserQuizzes,
   };
 };
 

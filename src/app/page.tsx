@@ -1,40 +1,22 @@
 "use client";
 
-import useAPI from "@/hooks/useApi";
-import { setCookie } from "cookies-next";
-import { notFound, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Dashboard } from "../../view/dashboard";
 
 export default function Home() {
-  const params = useSearchParams();
-  const refreshToken = params.get("refreshToken");
-  const { authenticateUser, getUserDetails } = useAPI();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      if (refreshToken) {
-        try {
-          const token = await authenticateUser({ token: refreshToken });
-          console.log({ token });
-          if (token) {
-            setCookie("token", token.jwtToken);
-            const user = await getUserDetails();
-            if (user) localStorage.setItem("userdata", JSON.stringify(user));
-          }
-        } catch (error) {
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        notFound();
-      }
-    };
-
-    fetchData();
-  }, [refreshToken]);
+    setLoading(true);
+    const userData = localStorage.getItem("userData");
+    if (!userData) {
+      router.push("/not-found");
+      return;
+    }
+    setLoading(false);
+  }, []);
 
   return loading ? <>Loading...</> : <Dashboard />;
 }
