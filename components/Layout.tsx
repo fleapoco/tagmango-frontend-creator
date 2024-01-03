@@ -180,10 +180,10 @@ export default function PageLayout(props: Props) {
   const currentPathname = usePathname();
 
   useEffect(() => {
-    const userdata = localStorage.getItem("userdata");
+    const userData = localStorage.getItem("userData");
 
-    if (userdata) {
-      const user = JSON.parse(userdata);
+    if (userData) {
+      const user = JSON.parse(userData);
       setUserRole(user?.roles);
     }
 
@@ -251,65 +251,63 @@ export default function PageLayout(props: Props) {
                   className="sidebar"
                   style={{ padding: "0 8px", width: "100%", marginLeft: 0 }}
                 >
-                  {userRole === "fan_completed"
-                    ? fanItems.map((item) =>
-                        item.children ? (
-                          <SubMenu
-                            key={item.key}
-                            icon={item.icon}
-                            title={item.label}
-                          >
-                            {item.children.map((subItem) => (
-                              <Menu.Item key={subItem.key}>
-                                {subItem.link ? (
-                                  <Link href={subItem.link}>
-                                    {subItem.label}
-                                  </Link>
-                                ) : (
-                                  <span>{subItem.label}</span>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </SubMenu>
-                        ) : (
-                          <Menu.Item key={item.key} icon={item.icon}>
-                            {item.link ? (
-                              <Link href={item.link}>{item.label}</Link>
-                            ) : (
-                              <span>{item.label}</span>
-                            )}
-                          </Menu.Item>
-                        )
+                  {userRole === "fan_completed" &&
+                    fanItems.map((item) =>
+                      item.children ? (
+                        <SubMenu
+                          key={item.key}
+                          icon={item.icon}
+                          title={item.label}
+                        >
+                          {item.children.map((subItem) => (
+                            <Menu.Item key={subItem.key}>
+                              {subItem.link ? (
+                                <Link href={subItem.link}>{subItem.label}</Link>
+                              ) : (
+                                <span>{subItem.label}</span>
+                              )}
+                            </Menu.Item>
+                          ))}
+                        </SubMenu>
+                      ) : (
+                        <Menu.Item key={item.key} icon={item.icon}>
+                          {item.link ? (
+                            <Link href={item.link}>{item.label}</Link>
+                          ) : (
+                            <span>{item.label}</span>
+                          )}
+                        </Menu.Item>
                       )
-                    : creatorItems.map((item) =>
-                        item.children ? (
-                          <SubMenu
-                            key={item.key}
-                            icon={item.icon}
-                            title={item.label}
-                          >
-                            {item.children.map((subItem) => (
-                              <Menu.Item key={subItem.key}>
-                                {subItem.link ? (
-                                  <Link href={subItem.link}>
-                                    {subItem.label}
-                                  </Link>
-                                ) : (
-                                  <span>{subItem.label}</span>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </SubMenu>
-                        ) : (
-                          <Menu.Item key={item.key} icon={item.icon}>
-                            {item.link ? (
-                              <Link href={item.link}>{item.label}</Link>
-                            ) : (
-                              <span>{item.label}</span>
-                            )}
-                          </Menu.Item>
-                        )
-                      )}
+                    )}
+
+                  {userRole === "creator_completed" &&
+                    creatorItems.map((item) =>
+                      item.children ? (
+                        <SubMenu
+                          key={item.key}
+                          icon={item.icon}
+                          title={item.label}
+                        >
+                          {item.children.map((subItem) => (
+                            <Menu.Item key={subItem.key}>
+                              {subItem.link ? (
+                                <Link href={subItem.link}>{subItem.label}</Link>
+                              ) : (
+                                <span>{subItem.label}</span>
+                              )}
+                            </Menu.Item>
+                          ))}
+                        </SubMenu>
+                      ) : (
+                        <Menu.Item key={item.key} icon={item.icon}>
+                          {item.link ? (
+                            <Link href={item.link}>{item.label}</Link>
+                          ) : (
+                            <span>{item.label}</span>
+                          )}
+                        </Menu.Item>
+                      )
+                    )}
                 </Menu>
               </div>
             </Sider>
