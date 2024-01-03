@@ -14,6 +14,7 @@ import {
   TaskAnalytics,
   TaskStatus,
   UpdateCharityType,
+  UserAchievement,
   UserDegree,
   UserDetails,
 } from "@/types";
@@ -241,6 +242,14 @@ const useAPI = () => {
     return http(`/degrees/create`, { method: "POST", data });
   };
 
+  const getUserAchievements = (): Promise<UserAchievement[] | APIError> => {
+    return http(`/achievements/user`);
+  };
+
+  const getCreatorAchievements = (): Promise<UserAchievement[] | APIError> => {
+    return http(`/achievements`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -272,6 +281,8 @@ const useAPI = () => {
     getUserDegrees,
     getCreatorDegrees,
     createDegree,
+    getUserAchievements,
+    getCreatorAchievements,
   };
 };
 

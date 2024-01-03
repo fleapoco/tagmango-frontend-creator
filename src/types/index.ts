@@ -216,6 +216,17 @@ export interface UserDegree {
   deletedAt?: Date | null;
 }
 
+export interface UserAchievement {
+  id: string;
+  creatorId: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  createdAt?: Date;
+  updatedAt?: Date | null;
+  deletedAt?: Date | null;
+}
+
 export interface APIError {
   message?: string;
   error?: string;
