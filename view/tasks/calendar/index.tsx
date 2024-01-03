@@ -36,7 +36,7 @@ export const CalendarTask = () => {
   console.log({ taskCount });
   const { getTodaysTasks, updateTaskStatus, taskCounts, getTasks } = useAPI();
   const [task, setTasks] = useState<GetTask[]>();
-  const [allTasks, setAllTasks] = useState<GetTask[]>();
+  const [allTasks, setAllTasks] = useState<GetTask[]>([]);
 
   const [debouncedChecked, setDebouncedChecked] = useState<{
     taskId: string;
@@ -49,7 +49,7 @@ export const CalendarTask = () => {
   const fetchTasksWithUniqueGroupFalse = async () => {
     try {
       const data = await getTasks({ uniqueGroup: false });
-      setAllTasks(data);
+      setAllTasks(data ?? []);
     } catch (error) {}
   };
 
