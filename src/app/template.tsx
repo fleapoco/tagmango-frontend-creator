@@ -3,7 +3,7 @@
 import useAPI from "@/hooks/useApi";
 import { setCookie } from "cookies-next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function RootTemplate({
   children,
@@ -13,12 +13,14 @@ export default function RootTemplate({
   let router = useRouter();
   let currentPath = usePathname();
   const params = useSearchParams();
+  const [loading, setLoading] = useState<boolean>(false);
   const refreshToken = params.get("refreshToken");
   const { authenticateUser, getUserDetails } = useAPI();
 
   useEffect(() => {
     console.log();
     const fetchData = async () => {
+      setLoading(true);
       if (refreshToken) {
         try {
           const token = await authenticateUser({ token: refreshToken });
@@ -31,7 +33,10 @@ export default function RootTemplate({
               router.push(currentPath);
             }
           }
-        } catch (error) {}
+        } catch (error) {
+        } finally {
+          setLoading(false);
+        }
       }
     };
 
@@ -39,7 +44,6 @@ export default function RootTemplate({
   }, [refreshToken]);
 
   useEffect(() => {
-    console.log(currentPath);
     if (refreshToken) return;
     if (currentPath.includes("/not-found")) return;
 
