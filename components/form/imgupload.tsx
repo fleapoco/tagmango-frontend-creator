@@ -23,10 +23,11 @@ const beforeUpload = (file: RcFile) => {
 };
 
 interface ImageUploadProps {
-  handleUpload: (fileUrl: string) => void;
+  handleUpload?: (fileUrl: string) => void;
+  message?: string;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ handleUpload }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ handleUpload, message }) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
 
@@ -43,7 +44,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ handleUpload }) => {
       }
 
       if (info.file?.response?.fileUrl)
-        handleUpload(info.file?.response?.fileUrl);
+        if (handleUpload) handleUpload(info.file?.response?.fileUrl);
 
       // Get this url from response in real world.
       getBase64(info.file.originFileObj as RcFile, (url) => {
