@@ -7,7 +7,6 @@ import SubMenu from 'antd/es/menu/SubMenu';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-('use client');
 
 import {
   MdAdsClick,
