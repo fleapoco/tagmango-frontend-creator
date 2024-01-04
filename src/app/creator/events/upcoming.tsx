@@ -13,9 +13,13 @@ const { Title } = Typography;
 
 type UpcomingEventsType = {
   data?: { [key: string]: EventData[] | [] } | null;
+  fetchEventData?: () => void;
 };
 
-export const UpcomingEvents = ({ data }: UpcomingEventsType) => {
+export const UpcomingEvents = ({
+  data,
+  fetchEventData,
+}: UpcomingEventsType) => {
   const [modalVisible, setModalVisible] = useState(false);
   const options: Intl.DateTimeFormatOptions = {
     hour: "2-digit",
@@ -126,7 +130,11 @@ export const UpcomingEvents = ({ data }: UpcomingEventsType) => {
                                     startButtonAction(event?.eventLink)
                                   }
                                 />
-                                <ActionButton />
+                                <ActionButton
+                                  actionFor="event"
+                                  id={event?.id}
+                                  fetchEventData={fetchEventData}
+                                />
                                 {/* Edit workshop Modal */}
                                 <ActionModal
                                   title="Edit Recurring Workshop"

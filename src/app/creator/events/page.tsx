@@ -134,7 +134,10 @@ const CreatorEvent = () => {
               <TabPane tab="Upcoming" key="1">
                 {/* Upcoming Events */}
                 <div className="p-15">
-                  <UpcomingEvents data={groupedUpcoming} />
+                  <UpcomingEvents
+                    data={groupedUpcoming}
+                    fetchEventData={fetchEventData}
+                  />
                 </div>
               </TabPane>
               <TabPane tab="Previous" key="2">

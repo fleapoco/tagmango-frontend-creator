@@ -306,6 +306,10 @@ const useAPI = () => {
     return http(`/events`);
   };
 
+  const deleteEvent = (id?: string) => {
+    return http(`/events/${id}`, { method: "DELETE" });
+  };
+
   return {
     getTasks,
     createTask,
@@ -347,6 +351,7 @@ const useAPI = () => {
     getCreatorDegreeById,
     getCreatorAchievementById,
     getCreatorEvents,
+    deleteEvent,
   };
 };
 
