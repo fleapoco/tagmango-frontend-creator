@@ -6,12 +6,13 @@ import { useRouter } from 'next/navigation';
 import { BreadCrumbNav } from '../../../../../components/common/breadcrumb';
 import { PrimaryButton } from '../../../../../components/common/button';
 import { CustomTag } from '../../../../../components/common/tag';
+import { UserName } from '../../../../../components/common/username';
 import PageTitle from '../../../../../components/pagetitle';
 import style from '../../../../../style/creator.module.scss';
 
 interface DataType {
   key: string;
-  subscriber: string;
+  subscriber: React.ReactNode;
   submissionTime: string;
   status: React.ReactNode;
 }
@@ -49,14 +50,31 @@ const DetailsTaks = () => {
   const data: DataType[] = [
     {
       key: '1',
-      subscriber: 'Chetan Mane',
+      subscriber: (
+        <>
+          <UserName username='Chetan Mane' />
+        </>
+      ),
       submissionTime: '13/10/2023, 6:00PM',
       status: (
         <>
           {/* Pending Task */}
-          <CustomTag title='Pending' className='pending-tag' />
+          <CustomTag title='NOT REVIEWED YET' className='pending-tag' />
+        </>
+      ),
+    },
+    {
+      key: '2',
+      subscriber: (
+        <>
+          <UserName username='Chetan Mane' />
+        </>
+      ),
+      submissionTime: '13/10/2023, 6:00PM',
+      status: (
+        <>
           {/* Completed Tag */}
-          <CustomTag title='Completed' className='completed-tag' />
+          <CustomTag title='REVIEWED' className='completed-tag' />
         </>
       ),
     },
