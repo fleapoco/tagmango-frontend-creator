@@ -233,6 +233,12 @@ const useAPI = () => {
     return http(`/degrees`);
   };
 
+  const getCreatorDegreeById = (
+    id?: string
+  ): Promise<UserDegree | APIError> => {
+    return http(`/degrees/${id}`);
+  };
+
   const createDegree = (data: {
     title: string;
     degreeLink: string;
@@ -240,6 +246,18 @@ const useAPI = () => {
     thumbnailUrl: string;
   }): Promise<UserDegree | APIError> => {
     return http(`/degrees/create`, { method: "POST", data });
+  };
+
+  const updateDegree = (
+    data: {
+      title: string;
+      degreeLink: string;
+      description: string;
+      thumbnailUrl: string;
+    },
+    id?: string | null
+  ): Promise<UserDegree | APIError> => {
+    return http(`/degrees/${id}`, { method: "PATCH", data });
   };
 
   const getUserAchievements = (): Promise<UserAchievement[] | APIError> => {
@@ -250,12 +268,37 @@ const useAPI = () => {
     return http(`/achievements`);
   };
 
+  const getCreatorAchievementById = (
+    id?: string
+  ): Promise<UserAchievement | APIError> => {
+    return http(`/achievements/${id}`);
+  };
+
   const createAchievement = (data: {
     title: string;
     description: string;
     thumbnailUrl: string;
   }): Promise<UserAchievement | APIError> => {
     return http(`/achievements/create`, { method: "POST", data });
+  };
+
+  const updateAchievement = (
+    data: {
+      title: string;
+      description: string;
+      thumbnailUrl: string;
+    },
+    id?: string | null
+  ): Promise<UserAchievement | APIError> => {
+    return http(`/achievements/${id}`, { method: "PATCH", data });
+  };
+
+  const deleteDegree = (id?: string) => {
+    return http(`/degrees/${id}`, { method: "DELETE" });
+  };
+
+  const deleteAchievement = (id?: string) => {
+    return http(`/achievements/${id}`, { method: "DELETE" });
   };
 
   return {
@@ -289,9 +332,15 @@ const useAPI = () => {
     getUserDegrees,
     getCreatorDegrees,
     createDegree,
+    updateDegree,
     getUserAchievements,
     getCreatorAchievements,
     createAchievement,
+    updateAchievement,
+    deleteDegree,
+    deleteAchievement,
+    getCreatorDegreeById,
+    getCreatorAchievementById,
   };
 };
 
