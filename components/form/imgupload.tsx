@@ -22,7 +22,11 @@ const beforeUpload = (file: RcFile) => {
   return isJpgOrPng && isLt2M;
 };
 
-const ImageUpload: React.FC = () => {
+export interface ImgUpload {
+  message?: string;
+}
+
+const ImageUpload: React.FC<ImgUpload> = ({ message }) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
 
@@ -53,6 +57,7 @@ const ImageUpload: React.FC = () => {
       }}
     >
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <h6>{message}</h6>
     </div>
   );
 
