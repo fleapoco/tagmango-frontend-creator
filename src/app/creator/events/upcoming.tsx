@@ -90,6 +90,41 @@ export const UpcomingEvents = () => {
                         <Flex gap={16}>
                           <PrimaryButton text='Start' variant='primary' />
                           <ActionButton />
+                          {/* Edit workshop Modal */}
+                          <ActionModal
+                            title='Edit Recurring Workshop'
+                            className='event-actions-modal'
+                            show={false}
+                            onClose={handleCloseModal}
+                            footer={
+                              <>
+                                <Flex justify='end'>
+                                  <PrimaryButton
+                                    text='Edit this occurrence'
+                                    variant='primary'
+                                  />
+                                  <PrimaryButton
+                                    text='Edit all occurrence'
+                                    variant='primary'
+                                    ghost
+                                  />
+                                  <PrimaryButton
+                                    text='Cancel'
+                                    variant='secondary'
+                                    onClick={handleCloseModal}
+                                  />
+                                </Flex>
+                              </>
+                            }
+                          >
+                            <div className='content-wrapper'>
+                              <h3>You are editing a Recurring Workshop</h3>
+                              <p>
+                                You can edit all the details up to 30 minutes
+                                before the session starts.
+                              </p>
+                            </div>
+                          </ActionModal>
                           {/* Delete workshop Modal */}
                           <ActionModal
                             title='Delete Recurring Workshop'
@@ -102,11 +137,13 @@ export const UpcomingEvents = () => {
                                   <PrimaryButton
                                     text='Delete this occurrence'
                                     variant='primary'
+                                    danger
                                   />
                                   <PrimaryButton
                                     text='Delete all occurrence'
                                     variant='primary'
                                     ghost
+                                    danger
                                   />
                                   <PrimaryButton
                                     text='Cancel'

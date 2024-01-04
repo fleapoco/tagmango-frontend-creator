@@ -19,6 +19,7 @@ interface ButtonProps {
   loading?: boolean;
   disabled?: boolean;
   ghost?: boolean;
+  danger?: boolean;
 }
 
 export const PrimaryButton = ({
@@ -31,6 +32,7 @@ export const PrimaryButton = ({
   size,
   icon,
   ghost,
+  danger,
 }: ButtonProps) => {
   const ChangeType = variant === 'primary' ? 'primary' : 'text';
 
@@ -64,6 +66,7 @@ export const PrimaryButton = ({
         size={size}
         icon={icon}
         ghost={ghost}
+        danger={danger}
       >
         {InfoIcon}
         {text}
