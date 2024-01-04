@@ -90,13 +90,11 @@ export const UpcomingEvents = () => {
                         <Flex gap={16}>
                           <PrimaryButton text='Start' variant='primary' />
                           <ActionButton />
-
-                          <button onClick={handleOpenModal}>Open Modal</button>
-
+                          {/* Delete workshop Modal */}
                           <ActionModal
                             title='Delete Recurring Workshop'
                             className='event-actions-modal'
-                            show={true}
+                            show={false}
                             onClose={handleCloseModal}
                             footer={
                               <>
