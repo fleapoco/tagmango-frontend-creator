@@ -36,7 +36,7 @@ const data: DataType[] = [
         <Avatar shape='square' style={{ backgroundColor: '#fde3cf' }} />
       </>
     ),
-    name: 'Chetan Mane',
+    name: 'Badge 1',
     member: 23,
   },
   {
@@ -46,7 +46,7 @@ const data: DataType[] = [
         <Avatar shape='square' style={{ backgroundColor: '#87d068' }} />
       </>
     ),
-    name: 'Jay Gupta',
+    name: 'Badge 2',
     member: 23,
   },
 ];
