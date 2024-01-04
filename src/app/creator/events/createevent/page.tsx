@@ -5,11 +5,28 @@ import { BreadCrumbNav } from "../../../../../components/common/breadcrumb";
 import { PrimaryButton } from "../../../../../components/common/button";
 import { SwitchToggle } from "../../../../../components/common/switch";
 
+import useAPI from "@/hooks/useApi";
+import { APIError, EventData } from "@/types";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useState } from "react";
 import ImageUpload from "../../../../../components/form/imgupload";
 import { FormInput } from "../../../../../components/form/input";
 import { FormTextArea } from "../../../../../components/form/textarea";
 import PageTitle from "../../../../../components/pagetitle";
 import style from "../../../../../style/creator.module.scss";
+
+type EventDataType = {
+  title: string;
+  description: string;
+  eventLink: string;
+  startDate: string | Date;
+  endDate: string | Date;
+  startTime: string | Date;
+  endTime: string | Date;
+  recurringStatus: boolean;
+  backgroundImageUrl: string;
+  badgeIds: string[];
+};
 
 const CreateEvent = () => {
   const breadCrumbItems = [
@@ -19,8 +36,83 @@ const CreateEvent = () => {
     },
   ];
 
+  const router = useRouter();
+  const { createSingleEvent } = useAPI();
+
+  const [eventDataType, setEventDataType] = useState<EventDataType>({
+    title: "",
+    description: "",
+    eventLink: "",
+    startDate: new Date().toISOString(),
+    endDate: "",
+    startTime: new Date().toISOString(),
+    endTime: new Date().toISOString(),
+    recurringStatus: false,
+    backgroundImageUrl: "",
+    badgeIds: [
+      "122e35d9-d9c7-4909-a1aa-6d302538b585",
+      "8428987e-e34f-46d7-8886-2cb4f852a103",
+      "334382d6-e099-4c43-b559-f09310934d84",
+    ],
+  });
+
+  const isValidFormData = (eventData: EventDataType) => {
+    if (
+      !eventData.title ||
+      !eventData.description ||
+      !eventData.eventLink ||
+      !eventData.startDate ||
+      !eventData.endDate ||
+      !eventData.startTime ||
+      !eventData.endTime ||
+      !eventData.backgroundImageUrl
+    )
+      return false;
+    return true;
+  };
+
+  const handleRecurringChange = (checked: boolean) => {
+    setEventDataType((prev) => {
+      return { ...prev, recurringStatus: checked };
+    });
+  };
+
+  const handleOnChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (e.target.name === "title")
+      setEventDataType((prev) => {
+        return { ...prev, title: e.target.value };
+      });
+    else if (e.target.name === "description")
+      setEventDataType((prev) => {
+        return { ...prev, description: e.target.value };
+      });
+    else if (e.target.name === "eventLink")
+      setEventDataType((prev) => {
+        return { ...prev, eventLink: e.target.value };
+      });
+  };
+
   const handleUpload = (fileUrl: string) => {
-    return;
+    setEventDataType((prev) => {
+      return { ...prev, backgroundImageUrl: fileUrl };
+    });
+  };
+
+  const handleSubmit = async () => {
+    if (!isValidFormData(eventDataType)) alert("Invalid/Missing Input Data");
+
+    try {
+      let data: APIError | EventData = await createSingleEvent(eventDataType);
+
+      if ("statusCode" in data) {
+        alert(data?.message);
+        return;
+      }
+
+      router.push("/creator/events");
+    } catch (error) {}
   };
 
   return (
@@ -38,7 +130,14 @@ const CreateEvent = () => {
             </Row>
 
             <div style={{ paddingTop: "15px" }}>
-              <FormInput placeholder="Add a Title" label="Title" type="text" />
+              <FormInput
+                placeholder="Add a Title"
+                label="Title"
+                type="text"
+                onChange={handleOnChange}
+                name="title"
+                value={eventDataType.title}
+              />
               {/* <FormSelect
                 label='Who can join this Event?'
                 handleChange={function (value: string): void {
@@ -49,13 +148,30 @@ const CreateEvent = () => {
                 placeholder="Add a Event Link"
                 label="Event Link"
                 type="text"
+                onChange={handleOnChange}
+                name="eventLink"
+                value={eventDataType.eventLink}
               />
 
               <div className="form-group schedule-wrapper">
                 <label htmlFor="schedule">Schedule Event</label>
                 <Row gutter={16}>
                   <Col span={10}>
-                    <FormInput placeholder="Date" label="" type="date" />
+                    <FormInput
+                      placeholder="Date"
+                      label=""
+                      type="date"
+                      onDateChange={(date: Date) => {
+                        setEventDataType((prev) => {
+                          return { ...prev, startDate: date.toISOString() };
+                        });
+                        setEventDataType((prev) => {
+                          return { ...prev, endDate: date.toISOString() };
+                        });
+                      }}
+                      name="startDate"
+                      dateTimeValue={eventDataType.startDate}
+                    />
                   </Col>
                   <Col span={14}>
                     <Flex
@@ -68,9 +184,27 @@ const CreateEvent = () => {
                         placeholder="Start Time"
                         label=""
                         type="time"
+                        onTimeChange={(time: Date) => {
+                          setEventDataType((prev) => {
+                            return { ...prev, startTime: time.toISOString() };
+                          });
+                        }}
+                        name="startTime"
+                        dateTimeValue={eventDataType.startTime}
                       />
                       <span style={{ marginBottom: "12px" }}>to</span>
-                      <FormInput placeholder="End Time" label="" type="time" />
+                      <FormInput
+                        placeholder="End Time"
+                        label=""
+                        type="time"
+                        onTimeChange={(time: Date) => {
+                          setEventDataType((prev) => {
+                            return { ...prev, endTime: time.toISOString() };
+                          });
+                        }}
+                        name="endTime"
+                        dateTimeValue={eventDataType.endTime}
+                      />
                     </Flex>
                   </Col>
                 </Row>
@@ -83,7 +217,10 @@ const CreateEvent = () => {
                   className="input-box "
                 >
                   <label htmlFor="">Recurring</label>
-                  <SwitchToggle />
+                  <SwitchToggle
+                    onChange={handleRecurringChange}
+                    value={eventDataType.recurringStatus}
+                  />
                 </Flex>
               </div>
 
@@ -96,13 +233,23 @@ const CreateEvent = () => {
                 </div>
                 <div className="form-group">
                   <label>Description</label>
-                  <FormTextArea placeholder="Event Description" />
+                  <FormTextArea
+                    placeholder="Event Description"
+                    onChange={handleOnChange}
+                    name="description"
+                    value={eventDataType.description}
+                  />
                 </div>
               </div>
 
               <Flex gap="middle" justify="end">
                 <PrimaryButton variant="secondary" text="Cancel" />
-                <PrimaryButton variant="primary" text="Save" />
+                <PrimaryButton
+                  variant="primary"
+                  text="Save"
+                  disabled={!isValidFormData(eventDataType)}
+                  onClick={handleSubmit}
+                />
               </Flex>
             </div>
           </Col>

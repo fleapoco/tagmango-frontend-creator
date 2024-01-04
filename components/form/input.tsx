@@ -29,6 +29,7 @@ interface Props {
   placeholder?: string;
   variant?: "dark";
   value?: string | number;
+  dateTimeValue?: string | Date;
   icon?: React.ReactNode;
   required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => unknown;
@@ -55,7 +56,12 @@ export const FormInput = (props: Props) => {
             disabledDate={(currentDate: dayjs.ConfigType) =>
               currentDate! < dayjs().startOf("day")
             }
-            value={dayjs(props.value)}
+            name={props.name}
+            value={
+              props.dateTimeValue
+                ? dayjs(props.dateTimeValue)
+                : dayjs(props.value)
+            }
             onChange={(date, dateString) => {
               props.onDateChange?.(date, dateString);
             }}
@@ -70,6 +76,8 @@ export const FormInput = (props: Props) => {
             onChange={(time, timeString) => {
               props.onTimeChange?.(time, timeString);
             }}
+            name={props.name}
+            value={dayjs(props.dateTimeValue)}
           />
         ) : props.type === "month" ? (
           <DatePicker

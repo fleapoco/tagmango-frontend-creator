@@ -306,6 +306,21 @@ const useAPI = () => {
     return http(`/events`);
   };
 
+  const createSingleEvent = (data: {
+    title: string;
+    description: string;
+    eventLink: string;
+    startDate: string | Date;
+    endDate: string | Date;
+    startTime: string | Date;
+    endTime: string | Date;
+    recurringStatus: boolean;
+    backgroundImageUrl: string;
+    badgeIds: string[];
+  }): Promise<EventData | APIError> => {
+    return http(`/events/create`, { method: "POST", data });
+  };
+
   const deleteEvent = (id?: string) => {
     return http(`/events/${id}`, { method: "DELETE" });
   };
@@ -352,6 +367,7 @@ const useAPI = () => {
     getCreatorAchievementById,
     getCreatorEvents,
     deleteEvent,
+    createSingleEvent,
   };
 };
 
