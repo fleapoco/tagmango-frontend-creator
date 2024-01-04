@@ -121,13 +121,13 @@ const QuizQuestions = () => {
                       {/* Questions Wrapper */}
                       <Questionbox question={question} />
                       {/* Textarea Box Wrapper Start */}
-                      <div className="textarea-box">
+                      {/* <div className="textarea-box">
                         <TextArea
                           rows={4}
                           placeholder="Write you answer"
                           maxLength={6}
                         />
-                      </div>
+                      </div> */}
                       {/* Buttons Wrapper */}
 
                       <Flex gap="middle" className="btns-wrapper">

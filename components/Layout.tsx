@@ -1,11 +1,13 @@
 'use client';
+
 import useApi from '@/hooks/useApi';
 import type { MenuProps } from 'antd';
 import { Button, Flex, Layout, Menu, Space, Typography } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
 import {
   MdAdsClick,
   MdCastForEducation,
@@ -15,7 +17,11 @@ import {
   MdOutlineQuiz,
 } from 'react-icons/md';
 
+import useAPI from '@/hooks/useApi';
 import { useAppDispatch } from '@/hooks/useRedux';
+import { UserDetails } from '@/types';
+import { setCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
 import { Analytics, CollapseArrow, NotCollapseArrow } from './common/icons';
 import style from '/style/dashboard.module.scss';
 
@@ -177,23 +183,55 @@ interface Props {
 }
 
 export default function PageLayout(props: Props) {
+  let router = useRouter();
+  let currentPath = usePathname();
+  const params = useSearchParams();
+  const refreshToken = params.get('refreshToken');
+  const { authenticateUser, getUserDetails } = useAPI();
+  const [authUser, setAuthUser] = useState<UserDetails | null>(null);
+  const [userRole, setUserRole] = useState<string>('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (refreshToken) {
+        try {
+          const token = await authenticateUser({ token: refreshToken });
+          console.log({ token });
+          if (token) {
+            setCookie('token', token.jwtToken);
+            const user = await getUserDetails();
+            if (user) {
+              setAuthUser(user);
+              localStorage.setItem('userData', JSON.stringify(user));
+              console.log({ user });
+              setUserRole(user.roles);
+              router.push(currentPath);
+            }
+          }
+        } finally {
+        }
+      } else {
+        const userData = localStorage.getItem('userData');
+        if (userData) {
+          const user = JSON.parse(userData);
+          setAuthUser(user);
+          setUserRole(user.roles);
+        }
+      }
+    };
+
+    fetchData();
+  }, [refreshToken]);
+
   // const userDetails = useAppSelector(getUserStored);
   const [collapsed, setCollapsed] = useState(false);
   const dispatch = useAppDispatch();
 
   const { getCharities } = useApi();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [userRole, setUserRole] = useState<string>('');
   const currentPathname = usePathname();
 
   useEffect(() => {
-    const userdata = localStorage.getItem('userdata');
-
-    if (userdata) {
-      const user = JSON.parse(userdata);
-      setUserRole(user?.roles);
-    }
-
     const findSelectedKey = (item: ItemType): string | undefined => {
       if (item.link === currentPathname) {
         return item.key;
@@ -224,108 +262,120 @@ export default function PageLayout(props: Props) {
 
   return (
     <>
-      <div className={`${style['dashboard-wrapper']}`}>
-        <Space direction='vertical' style={{ width: '100%' }}>
-          <Layout className='main-layout'>
-            <Sider
-              className='sidebar-main'
-              collapsible
-              collapsed={collapsed}
-              onCollapse={(value) => setCollapsed(value)}
-            >
-              <Button
-                type='text'
-                icon={collapsed ? <CollapseArrow /> : <NotCollapseArrow />}
-                onClick={() => setCollapsed(!collapsed)}
-                className='collapsed-btn'
-              />
-              <Flex gap='middle' className='user-name-display' align='center'>
-                <div className='avatar-circle'>
-                  <img
-                    src={
-                      'https://tagmango.com/staticassets/avatar-placeholder.png-1612857612139.png'
-                    }
-                    alt='Avatar'
-                  />
-                </div>
-                <h1>Welcome, {'jhwvefhj'}</h1>
-              </Flex>
-              <div className='inner-sidebar'>
-                <Menu
-                  defaultSelectedKeys={['1']}
-                  selectedKeys={selectedKeys}
-                  mode='inline'
-                  className='sidebar'
-                  style={{ padding: '0 8px', width: '100%', marginLeft: 0 }}
+      {authUser ? (
+        <>
+          <div className={`${style['dashboard-wrapper']}`}>
+            <Space direction='vertical' style={{ width: '100%' }}>
+              <Layout className='main-layout'>
+                <Sider
+                  className='sidebar-main'
+                  collapsible
+                  collapsed={collapsed}
+                  onCollapse={(value) => setCollapsed(value)}
                 >
-                  {userRole === 'fan_completed'
-                    ? fanItems.map((item) =>
-                        item.children ? (
-                          <SubMenu
-                            key={item.key}
-                            icon={item.icon}
-                            title={item.label}
-                          >
-                            {item.children.map((subItem) => (
-                              <Menu.Item key={subItem.key}>
-                                {subItem.link ? (
-                                  <Link href={subItem.link}>
-                                    {subItem.label}
-                                  </Link>
-                                ) : (
-                                  <span>{subItem.label}</span>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </SubMenu>
-                        ) : (
-                          <Menu.Item key={item.key} icon={item.icon}>
-                            {item.link ? (
-                              <Link href={item.link}>{item.label}</Link>
-                            ) : (
-                              <span>{item.label}</span>
-                            )}
-                          </Menu.Item>
-                        )
-                      )
-                    : creatorItems.map((item) =>
-                        item.children ? (
-                          <SubMenu
-                            key={item.key}
-                            icon={item.icon}
-                            title={item.label}
-                          >
-                            {item.children.map((subItem) => (
-                              <Menu.Item key={subItem.key}>
-                                {subItem.link ? (
-                                  <Link href={subItem.link}>
-                                    {subItem.label}
-                                  </Link>
-                                ) : (
-                                  <span>{subItem.label}</span>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </SubMenu>
-                        ) : (
-                          <Menu.Item key={item.key} icon={item.icon}>
-                            {item.link ? (
-                              <Link href={item.link}>{item.label}</Link>
-                            ) : (
-                              <span>{item.label}</span>
-                            )}
-                          </Menu.Item>
-                        )
-                      )}
-                </Menu>
-              </div>
-            </Sider>
-            <Layout className='main-contain-layout'>
-              <Content>{props.children}</Content>
-            </Layout>
-          </Layout>
-        </Space>
-      </div>
+                  <Button
+                    type='text'
+                    icon={collapsed ? <CollapseArrow /> : <NotCollapseArrow />}
+                    onClick={() => setCollapsed(!collapsed)}
+                    className='collapsed-btn'
+                  />
+                  <Flex
+                    gap='middle'
+                    className='user-name-display'
+                    align='center'
+                  >
+                    <div className='avatar-circle'>
+                      <img
+                        src={
+                          'https://tagmango.com/staticassets/avatar-placeholder.png-1612857612139.png'
+                        }
+                        alt='Avatar'
+                      />
+                    </div>
+                    <h1>Welcome, {'jhwvefhj'}</h1>
+                  </Flex>
+                  <div className='inner-sidebar'>
+                    <Menu
+                      defaultSelectedKeys={['1']}
+                      selectedKeys={selectedKeys}
+                      mode='inline'
+                      className='sidebar'
+                      style={{ padding: '0 8px', width: '100%', marginLeft: 0 }}
+                    >
+                      {userRole === 'fan_completed' &&
+                        fanItems.map((item) =>
+                          item.children ? (
+                            <SubMenu
+                              key={item.key}
+                              icon={item.icon}
+                              title={item.label}
+                            >
+                              {item.children.map((subItem) => (
+                                <Menu.Item key={subItem.key}>
+                                  {subItem.link ? (
+                                    <Link href={subItem.link}>
+                                      {subItem.label}
+                                    </Link>
+                                  ) : (
+                                    <span>{subItem.label}</span>
+                                  )}
+                                </Menu.Item>
+                              ))}
+                            </SubMenu>
+                          ) : (
+                            <Menu.Item key={item.key} icon={item.icon}>
+                              {item.link ? (
+                                <Link href={item.link}>{item.label}</Link>
+                              ) : (
+                                <span>{item.label}</span>
+                              )}
+                            </Menu.Item>
+                          )
+                        )}
+
+                      {userRole === 'creator_completed' &&
+                        creatorItems.map((item) =>
+                          item.children ? (
+                            <SubMenu
+                              key={item.key}
+                              icon={item.icon}
+                              title={item.label}
+                            >
+                              {item.children.map((subItem) => (
+                                <Menu.Item key={subItem.key}>
+                                  {subItem.link ? (
+                                    <Link href={subItem.link}>
+                                      {subItem.label}
+                                    </Link>
+                                  ) : (
+                                    <span>{subItem.label}</span>
+                                  )}
+                                </Menu.Item>
+                              ))}
+                            </SubMenu>
+                          ) : (
+                            <Menu.Item key={item.key} icon={item.icon}>
+                              {item.link ? (
+                                <Link href={item.link}>{item.label}</Link>
+                              ) : (
+                                <span>{item.label}</span>
+                              )}
+                            </Menu.Item>
+                          )
+                        )}
+                    </Menu>
+                  </div>
+                </Sider>
+                <Layout className='main-contain-layout'>
+                  <Content>{props.children}</Content>
+                </Layout>
+              </Layout>
+            </Space>
+          </div>
+        </>
+      ) : (
+        <>Loading....</>
+      )}
     </>
   );
 }

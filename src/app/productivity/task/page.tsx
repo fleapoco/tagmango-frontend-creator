@@ -39,8 +39,10 @@ const Task = () => {
   const storedTasks: GetTask[] = useAppSelector(getTaskStored);
 
   const _getTasks = async () => {
-    const tasks = await getTasks({ query: debouncedSearchQuery });
-    dispatch(setTasks(tasks));
+    try {
+      const tasks = await getTasks({ query: debouncedSearchQuery });
+      dispatch(setTasks(tasks));
+    } catch (error) {}
   };
 
   const getTaskCounts = async () => {

@@ -40,7 +40,7 @@ export const CompleteTodayTasks = ({
   const taskCount = useAppSelector(getTasksCounts);
   console.log({ taskCount });
   const { getTodaysTasks, updateTaskStatus, taskCounts, getTasks } = useAPI();
-  const [task, setTasks] = useState<GetTask[]>();
+  const [task, setTasks] = useState<GetTask[]>([]);
   const [allTasks, setAllTasks] = useState<GetTask[]>();
 
   const [debouncedChecked, setDebouncedChecked] = useState<{
@@ -114,7 +114,7 @@ export const CompleteTodayTasks = ({
             gutter={[0, 12]}
             style={{ width: '100%', alignItems: 'baseline' }}
           >
-            {task.map((e) => (
+            {task?.map((e) => (
               <Col span={24} key={e.id}>
                 <PrimaryCard>
                   <Space
