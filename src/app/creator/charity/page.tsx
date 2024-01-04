@@ -1,102 +1,22 @@
 'use client';
-import useAPI from '@/hooks/useApi';
-import { useAppDispatch } from '@/hooks/useRedux';
-import { setCharity } from '@/redux/reducers/charity.reducer';
-import { CharitiesType } from '@/types';
-import { Col, DatePicker, Row, message } from 'antd';
-import dayjs from 'dayjs';
+import { Col, DatePicker, Row, Tabs } from 'antd';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 import { PrimaryButton } from '../../../../components/common/button';
-import { DisplayGraph } from '../../../../components/common/graph';
+import { PrimaryCard } from '../../../../components/common/card';
 import { AddIcon } from '../../../../components/common/icons';
 import PageTitle from '../../../../components/pagetitle';
 import style from '../../../../style/task.module.scss';
-import { Charity } from '../../../../view/charity';
+import MyCharityTable from './mycharity';
 
 const { RangePicker } = DatePicker;
-
+const { TabPane } = Tabs;
 export interface ChartData {
   series: number[];
   labels: string[];
 }
 
 const CharityPage = () => {
-  const dispatch = useAppDispatch();
-  const { getCharities, deleteCharity, getCharitiesGraphData } = useAPI();
-  const [chartData, setChartData] = useState<ChartData>({
-    series: [],
-    labels: [],
-  });
-  const [charities, setCharities] = useState<CharitiesType[]>([]);
-
-  // const [charity, setCharity] = useState<CharitiesType>(initialCharitiesState);
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [filterDate, setFilterDate] = useState<string>('');
-
-  const [dateRange, setDateRange] = useState<[string, string]>(['', '']);
-
-  const handleDateChangeCallback = (
-    dates: dayjs.Dayjs,
-    dateStrings: [string, string]
-  ) => {
-    console.log({ dateStrings });
-    // Perform actions with selected dates, e.g., update state or make API calls
-    setDateRange(dateStrings);
-  };
-
-  const graphData = async () => {
-    try {
-      const data = await getCharitiesGraphData({
-        startMonth: dateRange.at(0),
-        endMonth: dateRange.at(1),
-      });
-      console.log(data);
-      setChartData({
-        series: data.amount.map((e) => Number(e)),
-        labels: data.months,
-      });
-    } catch (error) {}
-  };
-
-  console.log({ chartData });
-
-  // const chartData = {
-  //   series: [30, 40, 45, 50, 49, 60, 70, 91, 125],
-  //   labels: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  // };
-
-  console.log({ filterDate });
-
-  const _getCharities = async () => {
-    try {
-      const charities = await getCharities({ createdAt: filterDate });
-      setCharities(charities);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    _getCharities();
-  }, [filterDate]);
-
-  useEffect(() => {
-    graphData();
-  }, [dateRange]);
-
-  const handleDeleteCharity = async (id: string) => {
-    try {
-      await deleteCharity(id);
-      message.success('charity deleted');
-      _getCharities();
-    } catch (error) {}
-  };
-
-  const handleUpdateCharityButton = (record: CharitiesType) => {
-    dispatch(setCharity(record));
-    router.push('/charity/addcharity?type=update');
-  };
-
   const router = useRouter();
 
   const handleButtonClick = () => {
@@ -124,44 +44,46 @@ const CharityPage = () => {
             />
           </Col>
         </Row>
-
-        <div className='p-r-b-l-15'>
-          <Row gutter={[0, 12]}>
-            <Col span={24}>
-              <DisplayGraph
-                chartData={chartData}
-                title='Charity Tracker'
-                onDateChange={(
-                  dates: dayjs.Dayjs,
-                  dateStrings: [string, string]
-                ) => handleDateChangeCallback(dates, dateStrings)}
-                type={'area'}
-              />
-            </Col>
+        {/* Task Total Count Section */}
+        <div className='gray-box task-count-wrapper p-15'>
+          <Row gutter={[12, 0]} className=' '>
+            {[
+              {
+                taskName: 'Overall Charity',
+                count: 25000,
+              },
+            ].map((ele, i) => (
+              <Col key={i} span={6} className='count-card'>
+                <PrimaryCard title={ele.taskName}>
+                  <span style={{ margin: 0 }}>
+                    ₹{ele.count.toLocaleString('en-IN')}
+                  </span>
+                </PrimaryCard>
+              </Col>
+            ))}
           </Row>
         </div>
 
-        <Row gutter={[24, 0]} className='filter-wrapper p-15'>
-          <Col span={6}>
-            <div className='form-group' style={{ marginBottom: 0 }}>
-              <label htmlFor='' style={{ paddingTop: 0 }}>
-                Filter By Date
-              </label>
-              <RangePicker />
-            </div>
+        <div className='p-r-b-l-15'>
+          <Row gutter={[0, 12]}>
+            <Col span={24}>Graph</Col>
+          </Row>
+        </div>
+
+        <Row>
+          <Col span={24}>
+            <Tabs defaultActiveKey='1'>
+              <TabPane tab='My Charity' key='1'>
+                {/* Upcoming Events */}
+
+                <MyCharityTable />
+              </TabPane>
+              <TabPane tab={`${'User'}'s Charity`} key='2'>
+                <div className='previous-wrapper'>2</div>
+              </TabPane>
+            </Tabs>
           </Col>
         </Row>
-        <Charity
-          data={charities}
-          handleDelete={(id) => handleDeleteCharity(id)}
-          handlePagination={function (page: number, pageSize: number): void {
-            throw new Error('Function not implemented.');
-          }}
-          CountData={0}
-          dataPerPage={0}
-          currentPage={0}
-          handleUpdate={(record) => handleUpdateCharityButton(record)}
-        />
       </div>
     </>
   );
