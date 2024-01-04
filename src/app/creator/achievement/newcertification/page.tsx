@@ -112,7 +112,7 @@ const NewCertification = () => {
     if (!isValidFormData) alert("Invalid/Missing Input Data");
 
     try {
-			if (achievementId) {
+      if (achievementId) {
         await updateAchievementAction();
         return;
       }
@@ -137,19 +137,26 @@ const NewCertification = () => {
         <Row style={{ padding: "15px 0" }}>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title="New Achievement" />
+            <PageTitle
+              title={achievementId ? "Edit Achievement" : "New Achievement"}
+            />
           </Col>
         </Row>
         <Row gutter={[12, 0]}>
           <Col span={12}>
             <div className="border-box p-15">
-              <ImageUpload handleUpload={handleUpload} existImageUrl={achievementId ? achievementDataType.thumbnailUrl : ""} />
+              <ImageUpload
+                handleUpload={handleUpload}
+                existImageUrl={
+                  achievementId ? achievementDataType.thumbnailUrl : ""
+                }
+              />
               <FormInput
                 label="Achievement Title"
                 placeholder="Add Title"
                 onChange={handleOnChange}
                 name="title"
-								value={achievementDataType.title}
+                value={achievementDataType.title}
               />
               <div className="form-group">
                 <label htmlFor="requirement">Requirement</label>
@@ -157,7 +164,7 @@ const NewCertification = () => {
                   placeholder="Description"
                   onChange={handleOnChange}
                   name="description"
-									value={achievementDataType.description}
+                  value={achievementDataType.description}
                 />
               </div>
               <Flex gap={"middle"} justify="end">

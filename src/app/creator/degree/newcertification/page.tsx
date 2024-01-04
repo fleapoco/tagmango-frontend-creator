@@ -144,7 +144,7 @@ const NewCertification = () => {
         <Row style={{ padding: "15px 0" }}>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title="New Degree" />
+            <PageTitle title={degreeId ? "Edit Degree" : "New Degree"} />
           </Col>
         </Row>
         <Row gutter={[12, 0]}>
