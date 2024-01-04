@@ -2,13 +2,14 @@
 
 import { Col, Flex, Row, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { ActionButton } from '../../../../components/common/actionbutton';
-
+import { UserName } from '../../../../components/common/username';
 import { FormInput } from '../../../../components/form/input';
 import { FormSelect } from '../../../../components/form/select';
+
 interface DataType {
   key: string;
   date: React.ReactNode;
+  user: React.ReactNode;
   category: string;
   amount: number;
   organization: string;
@@ -18,8 +19,14 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Date',
     dataIndex: 'date',
-    key: 'date',
+    key: 'name',
     width: 200,
+  },
+  {
+    title: 'User',
+    dataIndex: 'user',
+    key: 'user',
+    width: 350,
   },
   {
     title: 'Category',
@@ -42,38 +49,24 @@ const columns: ColumnsType<DataType> = [
     key: 'organization',
     width: 300,
   },
-  {
-    title: '',
-    key: 'action',
-    render: (record) => <ActionButton />,
-  },
 ];
 
 const data: DataType[] = [
   {
     key: '1',
     date: '07/12/2023',
-    category: 'Food Relief',
-    amount: 4000,
-    organization: 'Ketro India',
-  },
-  {
-    key: '1',
-    date: '16/12/2023',
-    category: 'Food Relief',
-    amount: 4000,
-    organization: 'Ketro India',
-  },
-  {
-    key: '1',
-    date: '04/12/2023',
+    user: (
+      <>
+        <UserName username={'Sayantan Chandra'} />
+      </>
+    ),
     category: 'Food Relief',
     amount: 4000,
     organization: 'Ketro India',
   },
 ];
 
-const MyCharityTable = () => {
+const UsersCharity = () => {
   return (
     <>
       <div className='filter-options p-15'>
@@ -99,4 +92,4 @@ const MyCharityTable = () => {
   );
 };
 
-export default MyCharityTable;
+export default UsersCharity;

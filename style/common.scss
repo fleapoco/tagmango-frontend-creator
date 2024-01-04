@@ -204,6 +204,16 @@
     }
   }
 }
+.filter-options {
+  .form-group {
+    margin-bottom: 0;
+  }
+  .ant-select,
+  .ant-input {
+    min-width: 250px;
+    max-width: 250px;
+  }
+}
 
 .site-btn {
   height: 36px !important;

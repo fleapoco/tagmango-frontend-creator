@@ -8,6 +8,7 @@ import { AddIcon } from '../../../../components/common/icons';
 import PageTitle from '../../../../components/pagetitle';
 import style from '../../../../style/task.module.scss';
 import MyCharityTable from './mycharity';
+import UsersCharity from './usercharity';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -64,7 +65,7 @@ const CharityPage = () => {
           </Row>
         </div>
 
-        <div className='p-r-b-l-15'>
+        <div className='p-15'>
           <Row gutter={[0, 12]}>
             <Col span={24}>Graph</Col>
           </Row>
@@ -79,7 +80,7 @@ const CharityPage = () => {
                 <MyCharityTable />
               </TabPane>
               <TabPane tab={`${'User'}'s Charity`} key='2'>
-                <div className='previous-wrapper'>2</div>
+                <UsersCharity />
               </TabPane>
             </Tabs>
           </Col>
