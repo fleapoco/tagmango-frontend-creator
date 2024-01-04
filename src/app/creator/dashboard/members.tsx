@@ -1,9 +1,8 @@
 'use client';
 
-import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Col, Flex, Row, Table } from 'antd';
+import { Avatar, Col, Row, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { UserAvatar } from '../../../../components/common/avatar';
+import { UserName } from '../../../../components/common/username';
 import { FormSelect } from '../../../../components/form/select';
 
 interface DataType {
@@ -43,10 +42,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <UserAvatar shape='circle' username='C' />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -66,10 +62,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <UserAvatar shape='circle' username='C' />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -89,10 +82,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <UserAvatar shape='circle' username='C' />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -112,10 +102,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <UserAvatar shape='circle' username='C' />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -135,10 +122,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <UserAvatar shape='circle' username='C' />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -158,10 +142,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <UserAvatar shape='circle' username='C' />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -181,10 +162,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -204,10 +182,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (

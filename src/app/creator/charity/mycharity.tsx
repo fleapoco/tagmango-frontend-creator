@@ -80,8 +80,8 @@ const MyCharityTable = () => {
         <Row>
           <Col span={18}>
             <Flex gap={16} align='center' style={{ width: '100%' }}>
-              <FormInput placeholder='search' />
-              Space
+              <FormInput placeholder='S	earch' />
+              Filter By
               <FormSelect
                 handleChange={function (value: string): void {
                   throw new Error('Function not implemented.');

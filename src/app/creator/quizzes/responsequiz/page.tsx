@@ -2,6 +2,7 @@
 
 import { Col, Row, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { useRouter } from 'next/navigation';
 import { BreadCrumbNav } from '../../../../../components/common/breadcrumb';
 import { PrimaryButton } from '../../../../../components/common/button';
 import { CustomTag } from '../../../../../components/common/tag';
@@ -15,53 +16,64 @@ interface DataType {
   status: React.ReactNode;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Subscriber',
-    dataIndex: 'subscriber',
-    key: 'name',
-  },
-  {
-    title: 'Submission Time',
-    dataIndex: 'submissionTime',
-    key: 'age',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'address',
-  },
-  {
-    title: '',
-    key: 'action',
-    render: (record) => <PrimaryButton text='Review Now' variant='secondary' />,
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: '1',
-    subscriber: 'Chetan Mane',
-    submissionTime: '13/10/2023, 6:00PM',
-    status: (
-      <>
-        {/* Pending Task */}
-        <CustomTag title='Pending' color='#FFFF00' className='pending-tag' />
-        {/* Completed Tag */}
-        <CustomTag title='Completed' color='#87d068' />
-      </>
-    ),
-  },
-];
-
-const breadCrumbItems = [
-  {
-    title: 'Back to Quizzes',
-    link: '/creator/quizzes',
-  },
-];
-
 const DetailsTaks = () => {
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'Subscriber',
+      dataIndex: 'subscriber',
+      key: 'name',
+    },
+    {
+      title: 'Submission Time',
+      dataIndex: 'submissionTime',
+      key: 'age',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'address',
+    },
+    {
+      title: '',
+      key: 'action',
+      render: (record) => (
+        <PrimaryButton
+          text='Review Now'
+          variant='secondary'
+          onClick={() => handleButtonClick(record.key)}
+        />
+      ),
+    },
+  ];
+
+  const data: DataType[] = [
+    {
+      key: '1',
+      subscriber: 'Chetan Mane',
+      submissionTime: '13/10/2023, 6:00PM',
+      status: (
+        <>
+          {/* Pending Task */}
+          <CustomTag title='Pending' className='pending-tag' />
+          {/* Completed Tag */}
+          <CustomTag title='Completed' className='completed-tag' />
+        </>
+      ),
+    },
+  ];
+
+  const router = useRouter();
+
+  const handleButtonClick = (key: string): void => {
+    router.push('/creator/quizzes/submittedquiz');
+  };
+
+  const breadCrumbItems = [
+    {
+      title: 'Back to Quizzes',
+      link: '/creator/quizzes',
+    },
+  ];
   return (
     <>
       <div

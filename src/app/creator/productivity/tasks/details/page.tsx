@@ -49,9 +49,9 @@ const data: DataType[] = [
     status: (
       <>
         {/* Pending Task */}
-        <CustomTag title='Pending' color='#FFFF00' className='pending-tag' />
+        <CustomTag title='Pending' className='pending-tag' />
         {/* Completed Tag */}
-        <CustomTag title='Completed' color='#87d068' />
+        <CustomTag title='Completed' className='completed-tag' />
       </>
     ),
   },
@@ -60,7 +60,7 @@ const data: DataType[] = [
 const breadCrumbItems = [
   {
     title: 'Back to Tasks',
-    link: '/creator/tasks',
+    link: '/creator/productivity/tasks',
   },
 ];
 
@@ -74,7 +74,7 @@ const DetailsTaks = () => {
         <Row className='p-15'>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title='Chetan Mane Tasks' />
+            <PageTitle title={`${'Chetan Mane'}'s Tasks`} />
           </Col>
         </Row>
         <Row gutter={[12, 0]} className='p-r-b-l-15 '>
@@ -82,14 +82,21 @@ const DetailsTaks = () => {
             {
               taskName: 'Total Tasks Pending',
               count: 34,
+              status: 'pending',
             },
             {
               taskName: 'Total Tasks completed',
               count: 2,
+              status: 'completed',
             },
           ].map((ele, i) => (
             <Col key={i} span={6} className='count-card'>
-              <PrimaryCard title={ele.taskName}>
+              <PrimaryCard
+                title={ele.taskName}
+                className={
+                  ele.status == 'completed' ? 'completed-card' : 'pending-card'
+                }
+              >
                 <span style={{ margin: 0 }}>{ele.count}</span>
               </PrimaryCard>
             </Col>
