@@ -15,6 +15,11 @@ export const CertificationCard = ({
   degree,
   achievement,
 }: CertificationCardObject) => {
+  const handleApplyButtonClick = (link: string | undefined) => {
+    if (!link) return;
+    window.open(link, "_blank");
+  };
+
   return (
     <>
       {degree && (
@@ -28,7 +33,11 @@ export const CertificationCard = ({
             description={
               <div className="events-card-description">
                 <p>{degree?.description}</p>
-                <PrimaryButton text="Apply Now" variant="primary" />
+                <PrimaryButton
+                  text="Apply Now"
+                  variant="primary"
+                  onClick={() => handleApplyButtonClick(degree?.degreeLink)}
+                />
               </div>
             }
           />
@@ -48,7 +57,13 @@ export const CertificationCard = ({
             description={
               <div className="events-card-description">
                 <p>{achievement?.description}</p>
-                <PrimaryButton text="Apply Now" variant="primary" />
+                <PrimaryButton
+                  text="Apply Now"
+                  variant="primary"
+                  onClick={() =>
+                    handleApplyButtonClick(achievement?.achievementLink)
+                  }
+                />
               </div>
             }
           />
