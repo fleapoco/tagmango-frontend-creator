@@ -7,8 +7,8 @@ import { SwitchToggle } from "../../../../../components/common/switch";
 
 import useAPI from "@/hooks/useApi";
 import { APIError, EventData } from "@/types";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
 import ImageUpload from "../../../../../components/form/imgupload";
 import { FormInput } from "../../../../../components/form/input";
 import { FormTextArea } from "../../../../../components/form/textarea";
@@ -19,13 +19,13 @@ type EventDataType = {
   title: string;
   description: string;
   eventLink: string;
-  startDate: string | Date;
-  endDate: string | Date;
-  startTime: string | Date;
-  endTime: string | Date;
-  recurringStatus: boolean;
+  startDate: string | Date | number | null;
+  endDate: string | Date | number | null;
+  startTime: string | Date | number | null;
+  endTime: string | Date | number | null;
+  recurringStatus?: boolean;
   backgroundImageUrl: string;
-  badgeIds: string[];
+  badgeIds?: string[];
 };
 
 const CreateEvent = () => {
@@ -37,7 +37,9 @@ const CreateEvent = () => {
   ];
 
   const router = useRouter();
-  const { createSingleEvent } = useAPI();
+  const { createSingleEvent, getCreatorEventById, updateEvent } = useAPI();
+  const params = useSearchParams();
+  const eventId = params.get("id");
 
   const [eventDataType, setEventDataType] = useState<EventDataType>({
     title: "",
@@ -56,6 +58,12 @@ const CreateEvent = () => {
     ],
   });
 
+  useEffect(() => {
+    if (eventId) {
+      fetchEventById(eventId);
+    }
+  }, [eventId]);
+
   const isValidFormData = (eventData: EventDataType) => {
     if (
       !eventData.title ||
@@ -69,6 +77,27 @@ const CreateEvent = () => {
     )
       return false;
     return true;
+  };
+
+  const fetchEventById = async (id: string) => {
+    if (!id) return;
+    try {
+      let data: APIError | EventData = await getCreatorEventById(id);
+
+      if ("title" in data) {
+        setEventDataType({
+          title: data.title,
+          description: data.description,
+          eventLink: data.eventLink,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          startTime: data.startTime,
+          endTime: data.endTime,
+          recurringStatus: data.recurringStatus,
+          backgroundImageUrl: data.backgroundImageUrl,
+        });
+      }
+    } catch (error) {}
   };
 
   const handleRecurringChange = (checked: boolean) => {
@@ -100,10 +129,31 @@ const CreateEvent = () => {
     });
   };
 
+  const updateEventAction = async () => {
+    try {
+      let data: APIError | EventData = await updateEvent(
+        eventDataType,
+        eventId
+      );
+
+      if ("statusCode" in data) {
+        alert(data?.message);
+        return;
+      }
+
+      router.push("/creator/events");
+    } catch (error) {}
+  };
+
   const handleSubmit = async () => {
     if (!isValidFormData(eventDataType)) alert("Invalid/Missing Input Data");
 
     try {
+      if (eventId) {
+        await updateEventAction();
+        return;
+      }
+
       let data: APIError | EventData = await createSingleEvent(eventDataType);
 
       if ("statusCode" in data) {
@@ -125,7 +175,7 @@ const CreateEvent = () => {
             {/* Page Title */}
             <Row justify={"space-between"} style={{ alignItems: "center" }}>
               <Col span={24}>
-                <PageTitle title="Create Event" />
+                <PageTitle title={eventId ? "Edit Event" : "Create Event"} />
               </Col>
             </Row>
 
@@ -229,7 +279,12 @@ const CreateEvent = () => {
                 <h4>About Event</h4>
                 <div className="form-group">
                   <label htmlFor="header-img">Header Image</label>
-                  <ImageUpload handleUpload={handleUpload} />
+                  <ImageUpload
+                    handleUpload={handleUpload}
+                    existImageUrl={
+                      eventId ? eventDataType.backgroundImageUrl : ""
+                    }
+                  />
                 </div>
                 <div className="form-group">
                   <label>Description</label>
@@ -243,7 +298,11 @@ const CreateEvent = () => {
               </div>
 
               <Flex gap="middle" justify="end">
-                <PrimaryButton variant="secondary" text="Cancel" />
+                <PrimaryButton
+                  variant="secondary"
+                  text="Cancel"
+                  onClick={() => router.back()}
+                />
                 <PrimaryButton
                   variant="primary"
                   text="Save"

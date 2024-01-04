@@ -306,19 +306,41 @@ const useAPI = () => {
     return http(`/events`);
   };
 
+  const getCreatorEventById = (id?: string): Promise<EventData | APIError> => {
+    return http(`/events/${id}`);
+  };
+
   const createSingleEvent = (data: {
     title: string;
     description: string;
     eventLink: string;
-    startDate: string | Date;
-    endDate: string | Date;
-    startTime: string | Date;
-    endTime: string | Date;
-    recurringStatus: boolean;
+    startDate: string | Date | number | null;
+    endDate: string | Date | number | null;
+    startTime: string | Date | number | null;
+    endTime: string | Date | number | null;
+    recurringStatus?: boolean;
     backgroundImageUrl: string;
-    badgeIds: string[];
+    badgeIds?: string[];
   }): Promise<EventData | APIError> => {
     return http(`/events/create`, { method: "POST", data });
+  };
+
+  const updateEvent = (
+    data: {
+      title: string;
+      description: string;
+      eventLink: string;
+      startDate: string | Date | number | null;
+      endDate: string | Date | number | null;
+      startTime: string | Date | number | null;
+      endTime: string | Date | number | null;
+      recurringStatus?: boolean;
+      backgroundImageUrl: string;
+      badgeIds?: string[];
+    },
+    id?: string | null
+  ): Promise<EventData | APIError> => {
+    return http(`/events/update/${id}`, { method: "PATCH", data });
   };
 
   const deleteEvent = (id?: string) => {
@@ -368,6 +390,8 @@ const useAPI = () => {
     getCreatorEvents,
     deleteEvent,
     createSingleEvent,
+    getCreatorEventById,
+    updateEvent,
   };
 };
 

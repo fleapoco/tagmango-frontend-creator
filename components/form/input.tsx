@@ -29,7 +29,7 @@ interface Props {
   placeholder?: string;
   variant?: "dark";
   value?: string | number;
-  dateTimeValue?: string | Date;
+  dateTimeValue?: string | Date | number | null;
   icon?: React.ReactNode;
   required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => unknown;

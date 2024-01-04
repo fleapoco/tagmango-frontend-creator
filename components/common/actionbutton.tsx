@@ -29,6 +29,10 @@ export const ActionButton = ({
     router.push(`/creator/achievement/newcertification?id=${id}`);
   };
 
+  const editEventAction = async () => {
+    router.push(`/creator/events/createevent?id=${id}`);
+  };
+
   const deleteDegreeAction = async () => {
     try {
       let res = await deleteDegree(id);
@@ -66,6 +70,7 @@ export const ActionButton = ({
     if (!id) return;
     if (actionFor === "degree") editDegreeAction();
     else if (actionFor === "achievement") editAchievementAction();
+    else if (actionFor === "event") editEventAction();
   };
 
   const handleDelete = () => {
