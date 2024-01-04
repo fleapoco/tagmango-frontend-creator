@@ -3,8 +3,8 @@
 import useAPI from '@/hooks/useApi';
 import { APIError, UserDegree } from '@/types';
 import { Col, Flex, Row } from 'antd';
-import { useRouter } from 'next/navigation';
-import { ChangeEvent, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { BreadCrumbNav } from '../../../../../components/common/breadcrumb';
 import { PrimaryButton } from '../../../../../components/common/button';
 import ImageUpload from '../../../../../components/form/imgupload';
@@ -29,7 +29,9 @@ type DegreeDataType = {
 
 const NewCertification = () => {
   const router = useRouter();
-  const { createDegree } = useAPI();
+  const { createDegree, getCreatorDegreeById, updateDegree } = useAPI();
+  const params = useSearchParams();
+  const degreeId = params.get('id');
 
   const [degreeDataType, setDegreeDataType] = useState<DegreeDataType>({
     title: '',
@@ -37,6 +39,12 @@ const NewCertification = () => {
     description: '',
     thumbnailUrl: '',
   });
+
+  useEffect(() => {
+    if (degreeId) {
+      fetchDegreeById(degreeId);
+    }
+  }, [degreeId]);
 
   const isValidFormData = (degreeData: DegreeDataType) => {
     if (
@@ -47,6 +55,27 @@ const NewCertification = () => {
     )
       return false;
     return true;
+  };
+
+  const fetchDegreeById = async (id: string) => {
+    if (!id) return;
+    try {
+      let data: APIError | UserDegree = await getCreatorDegreeById(id);
+
+      if (
+        'title' in data &&
+        'degreeLink' in data &&
+        'description' in data &&
+        'thumbnailUrl' in data
+      ) {
+        setDegreeDataType({
+          title: data.title,
+          degreeLink: data.degreeLink,
+          description: data.description,
+          thumbnailUrl: data.thumbnailUrl,
+        });
+      }
+    } catch (error) {}
   };
 
   const handleUpload = (fileUrl: string) => {
@@ -72,10 +101,31 @@ const NewCertification = () => {
       });
   };
 
+  const updateDegreeAction = async () => {
+    try {
+      let data: APIError | UserDegree = await updateDegree(
+        degreeDataType,
+        degreeId
+      );
+
+      if ('statusCode' in data) {
+        alert(data?.message);
+        return;
+      }
+
+      router.push('/creator/degree');
+    } catch (error) {}
+  };
+
   const handleSubmit = async () => {
     if (!isValidFormData) alert('Invalid/Missing Input Data');
 
     try {
+      if (degreeId) {
+        await updateDegreeAction();
+        return;
+      }
+
       let data: APIError | UserDegree = await createDegree(degreeDataType);
 
       if ('error' in data) {
@@ -94,18 +144,22 @@ const NewCertification = () => {
         <Row style={{ padding: '15px 0' }}>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title='New Degree' />
+            <PageTitle title={degreeId ? 'Edit Degree' : 'New Degree'} />
           </Col>
         </Row>
         <Row gutter={[12, 0]}>
           <Col span={12}>
             <div className='border-box p-15'>
-              <ImageUpload handleUpload={handleUpload} />
+              <ImageUpload
+                handleUpload={handleUpload}
+                existImageUrl={degreeId ? degreeDataType.thumbnailUrl : ''}
+              />
               <FormInput
                 label='Degree Title'
                 onChange={handleOnChange}
                 placeholder='Add Title'
                 name='title'
+                value={degreeDataType.title}
               />
               <FormInput
                 label='Add Link'
@@ -113,6 +167,7 @@ const NewCertification = () => {
                 onChange={handleOnChange}
                 placeholder='Add Certification Link'
                 name='degreeLink'
+                value={degreeDataType.degreeLink}
               />
               <div className='form-group'>
                 <label htmlFor='requirement'>Requirement</label>
@@ -120,6 +175,7 @@ const NewCertification = () => {
                   placeholder='Description'
                   onChange={handleOnChange}
                   name='description'
+                  value={degreeDataType.description}
                 />
               </div>
               <Flex gap={'middle'} justify='end'>

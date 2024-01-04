@@ -14,6 +14,7 @@ const { Meta } = Card;
 
 import { Typography } from 'antd';
 import Link from 'next/link';
+import { ActionButton } from '../../../../components/common/actionbutton';
 import { PrimaryCard } from '../../../../components/common/card';
 import { CustomTag } from '../../../../components/common/tag';
 
@@ -69,7 +70,7 @@ const CreatorCertification = () => {
                         color='blue'
                         className='total-submitted-tag'
                       />
-                      <PrimaryButton text='' variant='info' />
+                      <ActionButton />
                     </Flex>
                   </Col>
                 </Row>

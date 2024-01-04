@@ -1,7 +1,8 @@
 'use client';
 
-import { Avatar, Table } from 'antd';
+import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { UserAvatar } from '../../../../components/common/avatar';
 
 interface DataType {
   key: string;
@@ -33,7 +34,7 @@ const data: DataType[] = [
     key: '1',
     logo: (
       <>
-        <Avatar shape='square' style={{ backgroundColor: '#fde3cf' }} />
+        <UserAvatar shape='square' />
       </>
     ),
     name: 'Badge 1',
@@ -43,7 +44,7 @@ const data: DataType[] = [
     key: '2',
     logo: (
       <>
-        <Avatar shape='square' style={{ backgroundColor: '#87d068' }} />
+        <UserAvatar shape='square' />
       </>
     ),
     name: 'Badge 2',
@@ -59,12 +60,7 @@ export const DashboardBadges = () => {
           <h4>Badges</h4>
         </div>
       </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ pageSize: 5 }}
-        scroll={{ x: 1200 }}
-      />
+      <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
     </>
   );
 };

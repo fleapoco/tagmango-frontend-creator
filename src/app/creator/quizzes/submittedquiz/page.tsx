@@ -10,8 +10,8 @@ import { AnswerTable } from './table';
 
 const breadCrumbItems = [
   {
-    title: 'Back to Tasks',
-    link: '/creator/quizzes/responsequiz',
+    title: 'Back to Quiz',
+    link: '/creator/quizzes',
   },
 ];
 

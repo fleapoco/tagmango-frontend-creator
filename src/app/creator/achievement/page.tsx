@@ -1,6 +1,6 @@
 'use client';
 
-import { Col, Row } from 'antd';
+import { Col, Row, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
 import style from '../../../../style/task.module.scss';
 
@@ -14,10 +14,11 @@ const { Meta } = Card;
 
 import useAPI from '@/hooks/useApi';
 import { UserAchievement } from '@/types';
-import { Typography } from 'antd';
+
 import { useEffect, useState } from 'react';
 import { ActionButton } from '../../../../components/common/actionbutton';
-const { Title } = Typography;
+
+const { Paragraph } = Typography;
 
 const CreatorCertification = () => {
   const router = useRouter();
@@ -79,7 +80,11 @@ const CreatorCertification = () => {
                         src={achievement?.thumbnailUrl}
                       />
                       <div className='cover-over-img'>
-                        <ActionButton />
+                        <ActionButton
+                          actionFor='achievement'
+                          id={achievement?.id}
+                          fetchCreatorAchievements={fetchCreatorAchievements}
+                        />
                       </div>
                     </>
                   }
@@ -88,9 +93,19 @@ const CreatorCertification = () => {
                     title={achievement?.title}
                     description={
                       <div className='events-card-description'>
-                        <p style={{ marginBottom: 0 }}>
+                        <Paragraph
+                          style={{ margin: 0 }}
+                          ellipsis={{
+                            rows: 2,
+                            expandable: true,
+                            onEllipsis: (ellipsis) => {
+                              console.log('Ellipsis changed:', ellipsis);
+                            },
+                          }}
+                          title={`${achievement?.description}`}
+                        >
                           {achievement?.description}
-                        </p>
+                        </Paragraph>
                       </div>
                     }
                   />

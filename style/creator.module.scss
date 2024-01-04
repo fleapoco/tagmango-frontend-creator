@@ -110,8 +110,15 @@
   .ant-tag {
     text-transform: uppercase;
   }
-  .pending-tag {
-    color: #050505 !important;
+  .ant-tag.pending-tag {
+    border: 2px solid #ffe58f;
+    background: #fffbe6;
+    color: #d48806 !important;
+  }
+  .ant-tag.completed-tag {
+    border: 2px solid #b7eb8f;
+    background: #f6ffed;
+    color: #389e0d !important;
   }
 }
 

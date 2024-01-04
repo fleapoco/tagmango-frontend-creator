@@ -17,6 +17,7 @@ import {
   MdOutlineQuiz,
 } from 'react-icons/md';
 
+import Loading from '@/app/loading';
 import useAPI from '@/hooks/useApi';
 import { useAppDispatch } from '@/hooks/useRedux';
 import { UserDetails } from '@/types';
@@ -374,7 +375,9 @@ export default function PageLayout(props: Props) {
           </div>
         </>
       ) : (
-        <>Loading....</>
+        <>
+          <Loading />
+        </>
       )}
     </>
   );

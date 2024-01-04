@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import useAPI from '@/hooks/useApi';
-import { APIError, UserAchievement } from '@/types';
-import { Col, Flex, Row } from 'antd';
-import { useRouter } from 'next/navigation';
-import { ChangeEvent, useState } from 'react';
-import { BreadCrumbNav } from '../../../../../components/common/breadcrumb';
-import { PrimaryButton } from '../../../../../components/common/button';
-import ImageUpload from '../../../../../components/form/imgupload';
-import { FormInput } from '../../../../../components/form/input';
-import { FormTextArea } from '../../../../../components/form/textarea';
-import PageTitle from '../../../../../components/pagetitle';
-import style from '../../../../../style/creator.module.scss';
+import useAPI from "@/hooks/useApi";
+import { APIError, UserAchievement } from "@/types";
+import { Col, Flex, Row } from "antd";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
+import { BreadCrumbNav } from "../../../../../components/common/breadcrumb";
+import { PrimaryButton } from "../../../../../components/common/button";
+import ImageUpload from "../../../../../components/form/imgupload";
+import { FormInput } from "../../../../../components/form/input";
+import { FormTextArea } from "../../../../../components/form/textarea";
+import PageTitle from "../../../../../components/pagetitle";
+import style from "../../../../../style/creator.module.scss";
 
 const breadCrumbItems = [
   {
-    title: 'Back to Achievement',
-    link: '/creator/achievement',
+    title: "Back to Achievement",
+    link: "/creator/achievement",
   },
 ];
 
@@ -28,14 +28,23 @@ type AchievementDataType = {
 
 const NewCertification = () => {
   const router = useRouter();
-  const { createAchievement } = useAPI();
+  const { createAchievement, getCreatorAchievementById, updateAchievement } =
+    useAPI();
+  const params = useSearchParams();
+  const achievementId = params.get("id");
 
   const [achievementDataType, setAchievementDataType] =
     useState<AchievementDataType>({
-      title: '',
-      description: '',
-      thumbnailUrl: '',
+      title: "",
+      description: "",
+      thumbnailUrl: "",
     });
+
+  useEffect(() => {
+    if (achievementId) {
+      fetchAchievementById(achievementId);
+    }
+  }, [achievementId]);
 
   const isValidFormData = (achievementData: AchievementDataType) => {
     if (
@@ -47,6 +56,23 @@ const NewCertification = () => {
     return true;
   };
 
+  const fetchAchievementById = async (id: string) => {
+    if (!id) return;
+    try {
+      let data: APIError | UserAchievement = await getCreatorAchievementById(
+        id
+      );
+
+      if ("title" in data && "description" in data && "thumbnailUrl" in data) {
+        setAchievementDataType({
+          title: data.title,
+          description: data.description,
+          thumbnailUrl: data.thumbnailUrl,
+        });
+      }
+    } catch (error) {}
+  };
+
   const handleUpload = (fileUrl: string) => {
     setAchievementDataType((prev) => {
       return { ...prev, thumbnailUrl: fileUrl };
@@ -56,70 +82,100 @@ const NewCertification = () => {
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    if (e.target.name === 'title')
+    if (e.target.name === "title")
       setAchievementDataType((prev) => {
         return { ...prev, title: e.target.value };
       });
-    else if (e.target.name === 'description')
+    else if (e.target.name === "description")
       setAchievementDataType((prev) => {
         return { ...prev, description: e.target.value };
       });
   };
 
-  const handleSubmit = async () => {
-    if (!isValidFormData) alert('Invalid/Missing Input Data');
-
+  const updateAchievementAction = async () => {
     try {
-      let data: APIError | UserAchievement = await createAchievement(
-        achievementDataType
+      let data: APIError | UserAchievement = await updateAchievement(
+        achievementDataType,
+        achievementId
       );
 
-      if ('error' in data) {
+      if ("statusCode" in data) {
         alert(data?.message);
         return;
       }
 
-      router.push('/creator/achievement');
+      router.push("/creator/achievement");
+    } catch (error) {}
+  };
+
+  const handleSubmit = async () => {
+    if (!isValidFormData) alert("Invalid/Missing Input Data");
+
+    try {
+      if (achievementId) {
+        await updateAchievementAction();
+        return;
+      }
+
+      let data: APIError | UserAchievement = await createAchievement(
+        achievementDataType
+      );
+
+      if ("error" in data) {
+        alert(data?.message);
+        return;
+      }
+
+      router.push("/creator/achievement");
     } catch (error) {}
   };
 
   return (
     <>
-      <div className={`${style['creator-task-details-form']} `}>
+      <div className={`${style["creator-task-details-form"]} `}>
         {/* Page Title */}
-        <Row style={{ padding: '15px 0' }}>
+        <Row style={{ padding: "15px 0" }}>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title='New Achievement' />
+            <PageTitle
+              title={achievementId ? "Edit Achievement" : "New Achievement"}
+            />
           </Col>
         </Row>
         <Row gutter={[12, 0]}>
           <Col span={12}>
-            <div className='border-box p-15'>
-              <ImageUpload handleUpload={handleUpload} />
-              <FormInput
-                label='Achievement Title'
-                placeholder='Add Title'
-                onChange={handleOnChange}
-                name='title'
+            <div className="border-box p-15">
+              <ImageUpload
+                handleUpload={handleUpload}
+                existImageUrl={
+                  achievementId ? achievementDataType.thumbnailUrl : ""
+                }
               />
-              <div className='form-group'>
-                <label htmlFor='requirement'>Requirement</label>
+              <FormInput
+                label="Achievement Title"
+                placeholder="Add Title"
+                onChange={handleOnChange}
+                name="title"
+                value={achievementDataType.title}
+              />
+              <div className="form-group">
+                <label htmlFor="requirement">Requirement</label>
                 <FormTextArea
-                  placeholder='Description'
+                  placeholder="Description"
                   onChange={handleOnChange}
-                  name='description'
+                  name="description"
+                  value={achievementDataType.description}
                 />
               </div>
-              <Flex gap={'middle'} justify='end'>
+              <Flex gap={"middle"} justify="end">
                 <PrimaryButton
-                  text='Cancel'
-                  variant='secondary'
+                  text="Cancel"
+                  variant="secondary"
                   onClick={() => router.back()}
                 />
                 <PrimaryButton
-                  text='Save'
-                  variant='primary'
+                  text="Save"
+                  variant="primary"
                   disabled={!isValidFormData(achievementDataType)}
                   onClick={handleSubmit}
                 />

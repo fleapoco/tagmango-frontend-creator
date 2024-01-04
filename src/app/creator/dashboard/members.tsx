@@ -1,8 +1,8 @@
 'use client';
 
-import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Col, Flex, Row, Table } from 'antd';
+import { Avatar, Col, Row, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { UserName } from '../../../../components/common/username';
 import { FormSelect } from '../../../../components/form/select';
 
 interface DataType {
@@ -42,10 +42,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -65,10 +62,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -88,10 +82,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -111,10 +102,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -134,10 +122,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -157,10 +142,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -180,10 +162,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -203,10 +182,7 @@ const data: DataType[] = [
     rank: 1,
     user: (
       <>
-        <Flex gap={15} align='center' className='avatar-name'>
-          <Avatar size={40} icon={<UserOutlined />} />
-          <h5>Chetan Mane</h5>
-        </Flex>
+        <UserName username='Fleapo Team' />
       </>
     ),
     badge: (
@@ -244,12 +220,7 @@ export const DashboardMembers = () => {
           </Row>
         </div>
       </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ pageSize: 5 }}
-        scroll={{ x: 1200 }}
-      />
+      <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
     </>
   );
 };

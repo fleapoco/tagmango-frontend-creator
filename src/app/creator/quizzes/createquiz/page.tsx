@@ -74,7 +74,7 @@ const CreatorCreateQuiz = () => {
                           <MdDelete size={22} />
                         </div>
                       </Flex>
-                      <ImageUpload message='Add Media (Optional )' />
+                      <ImageUpload />
                       <Card title={'asdfsafd'} className='answers-write-box'>
                         <FormTextArea placeholder={'Add an answer'} />
                       </Card>

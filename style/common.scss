@@ -204,6 +204,16 @@
     }
   }
 }
+.filter-options {
+  .form-group {
+    margin-bottom: 0;
+  }
+  .ant-select,
+  .ant-input {
+    min-width: 250px;
+    max-width: 250px;
+  }
+}
 
 .site-btn {
   height: 36px !important;
@@ -259,7 +269,7 @@
       }
     }
   }
-  &.sdark-btn {
+  &.dark-btn {
     background-color: #0f2137 !important;
 
     span {
@@ -308,6 +318,23 @@
       position: absolute;
       top: 15px;
       right: 15px;
+    }
+  }
+  .completed-card {
+    border: 2px solid #b7eb8f;
+    background: #f6ffed;
+
+    span {
+      color: #389e0d;
+    }
+  }
+
+  .pending-card {
+    border: 2px solid #ffe58f;
+    background: #fffbe6;
+
+    span {
+      color: #d48806;
     }
   }
 }
