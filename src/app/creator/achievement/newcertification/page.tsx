@@ -21,9 +21,7 @@ const NewCertification = () => {
   const router = useRouter();
   return (
     <>
-      <div
-        className={`${style['creator-task-details-form']} common-panel-wrapper`}
-      >
+      <div className={`${style['creator-task-details-form']} `}>
         {/* Page Title */}
         <Row className='p-15'>
           <Col span={24}>

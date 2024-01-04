@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Col, Popconfirm, Popover, Row } from 'antd';
+import { Col, Row } from 'antd';
 import { useRouter } from 'next/navigation';
 import style from '../../../../style/task.module.scss';
 
@@ -13,6 +13,7 @@ import { Card } from 'antd';
 const { Meta } = Card;
 
 import { Typography } from 'antd';
+import { ActionButton } from '../../../../components/common/actionbutton';
 
 const { Title } = Typography;
 
@@ -58,40 +59,7 @@ const CreatorCertification = () => {
                     src='https://images.unsplash.com/photo-1610878180933-123728745d22?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
                   />
                   <div className='cover-over-img'>
-                    <Popover
-                      placement='top'
-                      className='action-btn'
-                      content={
-                        <>
-                          <Button
-                            type='text'
-                            style={{
-                              width: '100%',
-                              textAlign: 'left',
-                              marginBottom: '8px',
-                            }}
-                          >
-                            Edit
-                          </Button>
-
-                          <Popconfirm
-                            title='Are you sure to delete?'
-                            okText='Yes'
-                            cancelText='No'
-                          >
-                            <Button
-                              style={{ width: '100%', textAlign: 'left' }}
-                              type='text'
-                            >
-                              Delete
-                            </Button>
-                          </Popconfirm>
-                        </>
-                      }
-                      trigger='click'
-                    >
-                      <PrimaryButton text='' variant='info' horizontal />
-                    </Popover>
+                    <ActionButton />
                   </div>
                 </>
               }
