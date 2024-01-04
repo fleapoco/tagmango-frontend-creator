@@ -2,13 +2,26 @@
 import { Col, DatePicker, Flex, List, Row, Typography } from 'antd';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { ActionButton } from '../../../../components/common/actionbutton';
 import { PrimaryButton } from '../../../../components/common/button';
 import { AddIcon } from '../../../../components/common/icons';
+import { ActionModal } from '../../../../components/common/modal';
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
 
 export const UpcomingEvents = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
   const router = useRouter();
 
   const HangleButttonClick = () => {
@@ -76,7 +89,44 @@ export const UpcomingEvents = () => {
                       <div className='event-action'>
                         <Flex gap={16}>
                           <PrimaryButton text='Start' variant='primary' />
-                          <PrimaryButton variant='info' />
+                          <ActionButton />
+
+                          <button onClick={handleOpenModal}>Open Modal</button>
+
+                          <ActionModal
+                            title='Delete Recurring Workshop'
+                            className='event-actions-modal'
+                            show={true}
+                            onClose={handleCloseModal}
+                            footer={
+                              <>
+                                <Flex justify='end'>
+                                  <PrimaryButton
+                                    text='Delete this occurrence'
+                                    variant='primary'
+                                  />
+                                  <PrimaryButton
+                                    text='Delete all occurrence'
+                                    variant='primary'
+                                    ghost
+                                  />
+                                  <PrimaryButton
+                                    text='Cancel'
+                                    variant='secondary'
+                                    onClick={handleCloseModal}
+                                  />
+                                </Flex>
+                              </>
+                            }
+                          >
+                            <div className='content-wrapper'>
+                              <h3>Deleted workshop can'be retrieved later</h3>
+                              <p>
+                                You can delete this workshop up to 30 minutes
+                                before the session starts
+                              </p>
+                            </div>
+                          </ActionModal>
                         </Flex>
                       </div>
                     </Col>

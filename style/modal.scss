@@ -1,0 +1,41 @@
+.ant-modal-mask {
+  background-color: rgba(244, 244, 244, 0.4) !important;
+}
+.modal-wrapper {
+  color: #050505;
+  .ant-modal-close {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+  }
+  .ant-modal-header {
+    margin-bottom: 24px;
+  }
+  .ant-modal-title {
+    font-size: 20px;
+    line-height: 1.4;
+    font-weight: 600;
+    margin: 0 !important;
+  }
+  .ant-modal-content {
+    padding: 20px 16px;
+  }
+  .ant-modal-footer {
+    margin-top: 20px;
+  }
+}
+.event-actions-modal {
+  .content-wrapper {
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 6px 0;
+    }
+    p {
+      margin: 0;
+      font-size: 14px;
+      color: rgba(0, 7, 19, 0.6235294118);
+      font-weight: 400;
+    }
+  }
+}

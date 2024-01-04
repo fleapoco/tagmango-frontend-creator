@@ -5,13 +5,20 @@ import { MdMoreVert, MdOutlineMoreHoriz } from 'react-icons/md';
 
 interface ButtonProps {
   text?: React.ReactNode;
-  variant: 'primary' | 'secondary' | 'info' | 'dark' | 'completed';
+  variant:
+    | 'primary'
+    | 'secondary'
+    | 'info'
+    | 'dark'
+    | 'completed'
+    | 'primary-border';
   horizontal?: boolean;
   size?: 'small';
   icon?: React.ReactNode;
   onClick?: () => void;
   loading?: boolean;
   disabled?: boolean;
+  ghost?: boolean;
 }
 
 export const PrimaryButton = ({
@@ -23,6 +30,7 @@ export const PrimaryButton = ({
   disabled = false,
   size,
   icon,
+  ghost,
 }: ButtonProps) => {
   const ChangeType = variant === 'primary' ? 'primary' : 'text';
 
@@ -55,6 +63,7 @@ export const PrimaryButton = ({
         onClick={onClick}
         size={size}
         icon={icon}
+        ghost={ghost}
       >
         {InfoIcon}
         {text}
