@@ -87,7 +87,7 @@ const NewCertification = () => {
     <>
       <div className={`${style['creator-task-details-form']} `}>
         {/* Page Title */}
-        <Row className='p-15'>
+        <Row style={{ padding: '15px 0' }}>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
             <PageTitle title='New Achievement' />
@@ -98,7 +98,7 @@ const NewCertification = () => {
             <div className='border-box p-15'>
               <ImageUpload handleUpload={handleUpload} />
               <FormInput
-                label='Certification Title'
+                label='Achievement Title'
                 placeholder='Add Title'
                 onChange={handleOnChange}
                 name='title'

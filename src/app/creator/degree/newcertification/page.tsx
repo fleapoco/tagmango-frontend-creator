@@ -102,7 +102,7 @@ const NewCertification = () => {
             <div className='border-box p-15'>
               <ImageUpload handleUpload={handleUpload} />
               <FormInput
-                label='Certification Title'
+                label='Degree Title'
                 onChange={handleOnChange}
                 placeholder='Add Title'
                 name='title'
