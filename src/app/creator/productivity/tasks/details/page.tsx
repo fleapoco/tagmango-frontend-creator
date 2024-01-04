@@ -50,6 +50,16 @@ const data: DataType[] = [
       <>
         {/* Pending Task */}
         <CustomTag title='Pending' className='pending-tag' />
+      </>
+    ),
+  },
+  {
+    key: '2',
+    task: 'Task name here',
+    category: 'Selling',
+    deadline: '08/12/2023 by 6:00PM',
+    status: (
+      <>
         {/* Completed Tag */}
         <CustomTag title='Completed' className='completed-tag' />
       </>
