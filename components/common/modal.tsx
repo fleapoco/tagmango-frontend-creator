@@ -1,13 +1,13 @@
-import { Modal } from 'antd';
-import { useEffect, useState } from 'react';
+import { Modal } from "antd";
+import { useEffect, useState } from "react";
 
 export interface ModalProps {
   title: string;
   children: React.ReactNode;
   show: boolean;
-  className: string;
+  className?: string;
   onClose: () => void;
-  footer: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
 export const ActionModal: React.FC<ModalProps> = ({

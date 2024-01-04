@@ -2,7 +2,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Upload, message } from "antd";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   const reader = new FileReader();
@@ -25,11 +25,20 @@ const beforeUpload = (file: RcFile) => {
 interface ImageUploadProps {
   handleUpload?: (fileUrl: string) => void;
   message?: string;
+  existImageUrl?: string;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ handleUpload, message }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  handleUpload,
+  message,
+  existImageUrl,
+}) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
+
+  useEffect(() => {
+    if (existImageUrl) setImageUrl(existImageUrl);
+  }, [existImageUrl]);
 
   const handleChange: UploadProps["onChange"] = (
     info: UploadChangeParam<UploadFile>
