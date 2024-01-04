@@ -15,6 +15,11 @@ export default function Home() {
       router.push("/not-found");
       return;
     }
+    let user = JSON.parse(userData);
+    if (user?.roles === "creator_completed") {
+      router.push("/creator/dashboard");
+      return;
+    }
     setLoading(false);
   }, []);
 
