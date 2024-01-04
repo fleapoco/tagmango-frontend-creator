@@ -23,7 +23,7 @@ const CreatorCertification = () => {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push('/creator/quizzes/responsequiz');
+    router.push('/creator/quizzes/createquiz');
   };
   return (
     <>
@@ -58,7 +58,9 @@ const CreatorCertification = () => {
                     </Flex>
                   </Col>
                   <Col span={8} style={{ textAlign: 'center' }}>
-                    <Link href={'#'}>Total Responses : 140</Link>
+                    <Link href={'/creator/quizzes/responsequiz'}>
+                      Total Responses : 140
+                    </Link>
                   </Col>
                   <Col span={8} className='action-btn'>
                     <Flex justify='end' gap={10}>

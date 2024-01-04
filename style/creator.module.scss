@@ -145,3 +145,66 @@
     }
   }
 }
+.quizzes-create-creator-page :global {
+  .answers-write-box {
+    width: 100%;
+
+    .ant-card-body {
+      overflow: hidden;
+      padding: 0;
+
+      textarea {
+        border: 0;
+        border-top: 1px solid #f0f0f0;
+        border-radius: 0;
+        padding: 15px;
+      }
+    }
+  }
+  .creator-quiz-card {
+    margin-bottom: 16px;
+
+    .header-wrapper {
+      position: relative;
+      .label-tag {
+        position: absolute;
+        left: -10px;
+        top: 20px;
+
+        .q-label {
+          font-size: 14px;
+          padding: 5px 10px;
+          background: #fafafa;
+        }
+        .ant-tag {
+          color: rgba(0, 0, 0, 0.88) !important;
+        }
+      }
+      .actions-box-wrapper {
+        margin-bottom: 20px;
+        .action-box {
+          width: 40px;
+          height: 40px;
+          border-radius: 4px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 1px solid #ced0d4;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .action-buttons {
+      padding: 0 16px;
+    }
+
+    .ant-list-item {
+      border-bottom: 0;
+    }
+    .ant-radio-wrapper {
+      width: 20px !important;
+      width: 100%;
+    }
+  }
+}

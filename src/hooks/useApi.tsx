@@ -1,4 +1,5 @@
 import {
+  APIError,
   CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
@@ -13,6 +14,8 @@ import {
   TaskAnalytics,
   TaskStatus,
   UpdateCharityType,
+  UserAchievement,
+  UserDegree,
   UserDetails,
 } from "@/types";
 import { getCookie } from "cookies-next";
@@ -222,6 +225,39 @@ const useAPI = () => {
     return http(`/quizzes/user`);
   };
 
+  const getUserDegrees = (): Promise<UserDegree[] | APIError> => {
+    return http(`/degrees/user`);
+  };
+
+  const getCreatorDegrees = (): Promise<UserDegree[] | APIError> => {
+    return http(`/degrees`);
+  };
+
+  const createDegree = (data: {
+    title: string;
+    degreeLink: string;
+    description: string;
+    thumbnailUrl: string;
+  }): Promise<UserDegree | APIError> => {
+    return http(`/degrees/create`, { method: "POST", data });
+  };
+
+  const getUserAchievements = (): Promise<UserAchievement[] | APIError> => {
+    return http(`/achievements/user`);
+  };
+
+  const getCreatorAchievements = (): Promise<UserAchievement[] | APIError> => {
+    return http(`/achievements`);
+  };
+
+  const createAchievement = (data: {
+    title: string;
+    description: string;
+    thumbnailUrl: string;
+  }): Promise<UserAchievement | APIError> => {
+    return http(`/achievements/create`, { method: "POST", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -250,6 +286,12 @@ const useAPI = () => {
     getUserQuizByQuizId,
     getUserDetails,
     getAllUserQuizzes,
+    getUserDegrees,
+    getCreatorDegrees,
+    createDegree,
+    getUserAchievements,
+    getCreatorAchievements,
+    createAchievement,
   };
 };
 
