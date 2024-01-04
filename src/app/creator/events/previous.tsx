@@ -1,57 +1,76 @@
-'use client';
-import { Col, DatePicker, Flex, List, Row, Typography } from 'antd';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+"use client";
+import { EventData } from "@/types";
+import { Col, DatePicker, Flex, List, Row, Typography } from "antd";
+import { useRouter } from "next/navigation";
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
 
-export const PreviousEvents = () => {
+type PreviousEventsType = {
+  data?: EventData[] | [] | null;
+};
+
+export const PreviousEvents = ({ data }: PreviousEventsType) => {
   const router = useRouter();
+  const options: Intl.DateTimeFormatOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  };
 
   const HangleButttonClick = () => {
-    router.push('/creator/events/createevent');
+    router.push("/creator/events/createevent");
   };
   return (
     <>
-      <div className='upcoming-events-list' style={{ paddingTop: '3px' }}>
-        <List itemLayout='horizontal'>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <List.Item className='list-item'>
-              <div style={{ width: '100%' }}>
-                <div className='event-details-wrapper'>
-                  <Row
-                    gutter={[15, 0]}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <Col span={6}>
-                      <div className='date-time-count'>
-                        <Title level={4}>06:00 PM - 07:00 PM</Title>
-                        <Title level={5}>Occurrence 1 of 4</Title>
-                      </div>
-                    </Col>
-                    <Col span={18}>
-                      <Flex className='event-details' gap={16} align='center'>
-                        <div className='img-box'>
-                          <Image
-                            src={'/Image.jpg'}
-                            layout='fill'
-                            alt='Event Image'
-                          />
+      <div className="upcoming-events-list" style={{ paddingTop: "3px" }}>
+        <List itemLayout="horizontal">
+          {data &&
+            data.map((event: EventData) => (
+              <List.Item className="list-item" key={event?.id}>
+                <div style={{ width: "100%" }}>
+                  <div className="event-details-wrapper">
+                    <Row
+                      gutter={[15, 0]}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <Col span={6}>
+                        <div className="date-time-count">
+                          {event?.startTime && event?.endTime && (
+                            <Title level={4}>
+                              {new Date(event?.startTime).toLocaleTimeString(
+                                "en-US",
+                                options
+                              )}{" "}
+                              -{" "}
+                              {new Date(event?.endTime).toLocaleTimeString(
+                                "en-US",
+                                options
+                              )}
+                            </Title>
+                          )}
+                          <Title level={5}>Occurrence 1 of 1</Title>
                         </div>
-                        <div className='content-wrap'>
-                          <Title level={5}>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Omnis. Lorem, ipsum dolor sit amet consectetur
-                          </Title>
-                        </div>
-                      </Flex>
-                    </Col>
-                  </Row>
+                      </Col>
+                      <Col span={18}>
+                        <Flex className="event-details" gap={16} align="center">
+                          <div className="img-box">
+                            <img
+                              src={event?.backgroundImageUrl}
+                              style={{ objectFit: "fill" }}
+                              alt={event?.title}
+                            />
+                          </div>
+                          <div className="content-wrap">
+                            <Title level={5}>{event?.description}</Title>
+                          </div>
+                        </Flex>
+                      </Col>
+                    </Row>
+                  </div>
                 </div>
-              </div>
-            </List.Item>
-          ))}
+              </List.Item>
+            ))}
         </List>
       </div>
     </>

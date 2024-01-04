@@ -3,6 +3,7 @@ import {
   CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
+  EventData,
   GetAnalyticsGraphDataTypes,
   GetEventType,
   GetTask,
@@ -301,6 +302,10 @@ const useAPI = () => {
     return http(`/achievements/${id}`, { method: "DELETE" });
   };
 
+  const getCreatorEvents = (): Promise<EventData | APIError> => {
+    return http(`/events`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -341,6 +346,7 @@ const useAPI = () => {
     deleteAchievement,
     getCreatorDegreeById,
     getCreatorAchievementById,
+    getCreatorEvents,
   };
 };
 
