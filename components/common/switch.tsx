@@ -1,13 +1,18 @@
-import { Switch } from 'antd';
+import { Switch } from "antd";
 
-const onChange = (checked: boolean) => {
-  console.log(`switch to ${checked}`);
+// const onChange = (checked: boolean) => {
+//   console.log(`switch to ${checked}`);
+// };
+
+type SwitchToggleType = {
+  onChange?: (checked: boolean) => void;
+  value?: boolean;
 };
 
-export const SwitchToggle = () => {
+export const SwitchToggle = ({ onChange, value }: SwitchToggleType) => {
   return (
     <>
-      <Switch defaultChecked onChange={onChange} />
+      <Switch checked={value} onChange={onChange} />
     </>
   );
 };

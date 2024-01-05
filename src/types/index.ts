@@ -220,11 +220,32 @@ export interface UserAchievement {
   id: string;
   creatorId: string;
   title: string;
+  achievementLink?: string;
   description: string;
   thumbnailUrl: string;
   createdAt?: Date;
   updatedAt?: Date | null;
   deletedAt?: Date | null;
+}
+
+export interface EventData {
+  id: string;
+  creatorId: string;
+  title: string;
+  description: string;
+  eventLink: string;
+  location?: string | null;
+  startDate: string | Date | number | null;
+  endDate: string | Date | number | null;
+  startTime: string | Date | number | null;
+  endTime: string | Date | number | null;
+  points?: string | null;
+  recurringStatus: boolean;
+  backgroundImageUrl: string;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+  deletedAt?: Date | null;
+  badges?: Array<Object> | null;
 }
 
 export interface APIError {
