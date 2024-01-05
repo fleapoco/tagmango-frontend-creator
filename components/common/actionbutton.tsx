@@ -8,7 +8,8 @@ interface ActionButtonPropType {
   id?: string;
   fetchCreatorDegrees?: () => void;
   fetchCreatorAchievements?: () => void;
-  fetchEventData?: () => void;
+  handleEventEdit?: (id: string) => void;
+  handleEventDelete?: (id: string) => void;
 }
 
 export const ActionButton = ({
@@ -16,10 +17,11 @@ export const ActionButton = ({
   id,
   fetchCreatorDegrees,
   fetchCreatorAchievements,
-  fetchEventData,
+  handleEventEdit,
+  handleEventDelete,
 }: ActionButtonPropType) => {
   const router = useRouter();
-  const { deleteDegree, deleteAchievement, deleteEvent } = useAPI();
+  const { deleteDegree, deleteAchievement } = useAPI();
 
   const editDegreeAction = async () => {
     router.push(`/creator/degree/newcertification?id=${id}`);
@@ -30,7 +32,7 @@ export const ActionButton = ({
   };
 
   const editEventAction = async () => {
-    router.push(`/creator/events/createevent?id=${id}`);
+    if (handleEventEdit && id) handleEventEdit(id);
   };
 
   const deleteDegreeAction = async () => {
@@ -56,14 +58,7 @@ export const ActionButton = ({
   };
 
   const deleteEventAction = async () => {
-    try {
-      let res = await deleteEvent(id);
-      if (res) alert(res?.message);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      if (fetchEventData) fetchEventData();
-    }
+    if (handleEventDelete && id) handleEventDelete(id);
   };
 
   const handleEdit = () => {

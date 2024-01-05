@@ -1,4 +1,5 @@
 "use client";
+import useAPI from "@/hooks/useApi";
 import { EventData } from "@/types";
 import { Col, DatePicker, Flex, List, Row, Typography } from "antd";
 import { useRouter } from "next/navigation";
@@ -20,29 +21,69 @@ export const UpcomingEvents = ({
   data,
   fetchEventData,
 }: UpcomingEventsType) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
+  const { deleteEvent } = useAPI();
+  const [currentModalEventId, setCurrentModalEventId] = useState("");
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const options: Intl.DateTimeFormatOptions = {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
   };
 
-  const handleOpenModal = () => {
-    setModalVisible(true);
+  const handleEditOpenModal = (id: string) => {
+    setCurrentModalEventId(id);
+    setEditModalVisible(true);
   };
 
-  const handleCloseModal = () => {
-    setModalVisible(false);
+  const handleDeleteOpenModal = (id: string) => {
+    setCurrentModalEventId(id);
+    setDeleteModalVisible(true);
   };
 
-  const router = useRouter();
+  const handleEditCloseModal = () => {
+    setCurrentModalEventId("");
+    setEditModalVisible(false);
+  };
+
+  const handleDeleteCloseModal = () => {
+    setCurrentModalEventId("");
+    setDeleteModalVisible(false);
+  };
 
   const startButtonAction = (link: string | undefined) => {
     if (!link) return;
     window.open(link, "_blank");
   };
 
-  const HangleButttonClick = () => {
+  const editEventAction = async (id: string) => {
+    router.push(`/creator/events/createevent?id=${id}`);
+  };
+
+  const deleteEventAction = async (id: string) => {
+    try {
+      let res = await deleteEvent(id);
+      if (res) alert(res?.message);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      if (fetchEventData) fetchEventData();
+      handleDeleteCloseModal();
+    }
+  };
+
+  const handleEdit = () => {
+    if (!currentModalEventId) return;
+    editEventAction(currentModalEventId);
+  };
+
+  const handleDelete = () => {
+    if (!currentModalEventId) return;
+    deleteEventAction(currentModalEventId);
+  };
+
+  const HandleButtonClick = () => {
     router.push("/creator/events/createevent");
   };
   return (
@@ -57,7 +98,7 @@ export const UpcomingEvents = ({
             text="Create Event"
             icon={<AddIcon />}
             variant="primary"
-            onClick={HangleButttonClick}
+            onClick={HandleButtonClick}
           />
         </Col>
       </Row>
@@ -132,30 +173,38 @@ export const UpcomingEvents = ({
                                   <ActionButton
                                     actionFor="event"
                                     id={event?.id}
-                                    fetchEventData={fetchEventData}
+                                    handleEventEdit={handleEditOpenModal}
+                                    handleEventDelete={handleDeleteOpenModal}
                                   />
                                   {/* Edit workshop Modal */}
                                   <ActionModal
-                                    title="Edit Recurring Workshop"
+                                    title={
+                                      event.recurringStatus
+                                        ? "Edit Recurring Workshop"
+                                        : "Edit Single Workshop"
+                                    }
                                     className="event-actions-modal"
-                                    show={false}
-                                    onClose={handleCloseModal}
+                                    show={editModalVisible}
+                                    onClose={handleEditCloseModal}
                                     footer={
                                       <>
                                         <Flex justify="end">
                                           <PrimaryButton
                                             text="Edit this occurrence"
                                             variant="primary"
+                                            onClick={handleEdit}
                                           />
                                           <PrimaryButton
+                                            disabled={!event.recurringStatus}
                                             text="Edit all occurrence"
                                             variant="primary"
+                                            onClick={handleEdit}
                                             ghost
                                           />
                                           <PrimaryButton
                                             text="Cancel"
                                             variant="secondary"
-                                            onClick={handleCloseModal}
+                                            onClick={handleEditCloseModal}
                                           />
                                         </Flex>
                                       </>
@@ -163,7 +212,11 @@ export const UpcomingEvents = ({
                                   >
                                     <div className="content-wrapper">
                                       <h3>
-                                        You are editing a Recurring Workshop
+                                        You are editing a{" "}
+                                        {event.recurringStatus
+                                          ? "Recurring"
+                                          : "Single"}{" "}
+                                        Workshop
                                       </h3>
                                       <p>
                                         You can edit all the details up to 30
@@ -173,28 +226,35 @@ export const UpcomingEvents = ({
                                   </ActionModal>
                                   {/* Delete workshop Modal */}
                                   <ActionModal
-                                    title="Delete Recurring Workshop"
+                                    title={
+                                      event.recurringStatus
+                                        ? "Delete Recurring Workshop"
+                                        : "Delete Single Workshop"
+                                    }
                                     className="event-actions-modal"
-                                    show={false}
-                                    onClose={handleCloseModal}
+                                    show={deleteModalVisible}
+                                    onClose={handleDeleteCloseModal}
                                     footer={
                                       <>
                                         <Flex justify="end">
                                           <PrimaryButton
                                             text="Delete this occurrence"
                                             variant="primary"
+                                            onClick={handleDelete}
                                             danger
                                           />
                                           <PrimaryButton
+                                            disabled={!event.recurringStatus}
                                             text="Delete all occurrence"
                                             variant="primary"
+                                            onClick={handleDelete}
                                             ghost
                                             danger
                                           />
                                           <PrimaryButton
                                             text="Cancel"
                                             variant="secondary"
-                                            onClick={handleCloseModal}
+                                            onClick={handleDeleteCloseModal}
                                           />
                                         </Flex>
                                       </>
