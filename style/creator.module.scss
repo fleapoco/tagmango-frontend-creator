@@ -251,11 +251,15 @@
         .q-label {
           font-size: 14px;
           padding: 5px 10px;
-          background: #fafafa;
+          background: #f2f3f7;
         }
         .ant-tag {
           color: rgba(0, 0, 0, 0.88) !important;
         }
+      }
+      .media-image-quiz .image-uploader .ant-upload.ant-upload-select {
+        aspect-ratio: 1 / 2;
+        max-height: 200px;
       }
       .actions-box-wrapper {
         margin-bottom: 20px;

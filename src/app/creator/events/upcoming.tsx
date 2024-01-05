@@ -90,10 +90,10 @@ export const UpcomingEvents = ({
     <>
       {/* Select Time And Button */}
       <Row>
-        <Col span={12}>
+        <Col span={6}>
           <RangePicker picker='time' />
         </Col>
-        <Col span={12} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Col span={18} style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <PrimaryButton
             text='Create Event'
             icon={<AddIcon />}

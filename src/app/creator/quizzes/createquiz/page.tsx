@@ -6,9 +6,9 @@ import { BreadCrumbNav } from '../../../../../components/common/breadcrumb';
 import { PrimaryButton } from '../../../../../components/common/button';
 import { AddIcon } from '../../../../../components/common/icons';
 import { CustomTag } from '../../../../../components/common/tag';
+import TextEditor from '../../../../../components/common/texteditor';
 import ImageUpload from '../../../../../components/form/imgupload';
 import { FormInput } from '../../../../../components/form/input';
-import { FormTextArea } from '../../../../../components/form/textarea';
 import PageTitle from '../../../../../components/pagetitle';
 import style from '../../../../../style/creator.module.scss';
 
@@ -38,9 +38,7 @@ const CreatorCreateQuiz = () => {
   ];
   return (
     <>
-      <div
-        className={`${style['quizzes-create-creator-page']} common-panel-wrapper`}
-      >
+      <div className={`${style['quizzes-create-creator-page']}`}>
         {/* Page Title */}
         <Row className='p-15'>
           <Col span={24}>
@@ -48,9 +46,9 @@ const CreatorCreateQuiz = () => {
             <PageTitle title='Create Quiz' />
           </Col>
         </Row>
-        <Row>
+        <Row className='p-r-b-l-15 '>
           <Col span={16}>
-            <div className='p-15'>
+            <div>
               <div className='creator-quiz-card'>
                 <Card
                   style={{ width: '100%' }}
@@ -75,12 +73,15 @@ const CreatorCreateQuiz = () => {
                           <MdDelete size={22} />
                         </div>
                       </Flex>
-                      <ImageUpload />
-                      <Card title={'asdfsafd'} className='answers-write-box'>
-                        <FormTextArea placeholder={'Add an answer'} />
-                      </Card>
+                      {/* Upload Media For Question Start */}
+                      <div className='media-image-quiz'>
+                        <ImageUpload />
+                      </div>
+                      {/* Create Question Box Start*/}
+                      <TextEditor />
                     </div>
                   }
+                  // Footer Buttons Start
                   actions={[
                     <Flex
                       justify='flex-end'
@@ -97,6 +98,7 @@ const CreatorCreateQuiz = () => {
                     </Flex>,
                   ]}
                 >
+                  {/* Write Answers Box Start */}
                   <div className='card-main-content'>
                     <div className='create-questions-list-wrapper'>
                       <h4>Answers</h4>
@@ -113,12 +115,7 @@ const CreatorCreateQuiz = () => {
                               style={{ width: '100%' }}
                             >
                               <Radio className='radio-list' />
-                              <Card
-                                title={'asdfsafd'}
-                                className='answers-write-box'
-                              >
-                                <FormTextArea placeholder={'Add an answer'} />
-                              </Card>
+                              <TextEditor />
                             </Flex>
                           </List.Item>
                         ))}
