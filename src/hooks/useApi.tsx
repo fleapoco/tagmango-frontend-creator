@@ -2,6 +2,8 @@ import {
   APIError,
   CategoryType,
   CharitiesType,
+  CreatorAllUsersTasks,
+  CreatorsUserTasks,
   DataAnalyticsTypes,
   EventData,
   GetAnalyticsGraphDataTypes,
@@ -347,6 +349,16 @@ const useAPI = () => {
     return http(`/events/${id}`, { method: "DELETE" });
   };
 
+  const getCreatorTasks = (): Promise<CreatorAllUsersTasks[] | APIError> => {
+    return http(`/tasks/creator`);
+  };
+
+  const getCreatorTaskByUserId = (
+    id?: string
+  ): Promise<CreatorsUserTasks | APIError> => {
+    return http(`/tasks/creator/${id}`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -392,6 +404,8 @@ const useAPI = () => {
     createSingleEvent,
     getCreatorEventById,
     updateEvent,
+    getCreatorTasks,
+    getCreatorTaskByUserId,
   };
 };
 
