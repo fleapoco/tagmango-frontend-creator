@@ -24,11 +24,7 @@ export const ActionModal: React.FC<ModalProps> = ({
     onClose();
   };
 
-  useEffect(() => {
-    if (!show) {
-      onClose();
-    }
-  }, [show, onClose]);
+  useEffect(() => {}, [show, onClose]);
 
   return (
     <>

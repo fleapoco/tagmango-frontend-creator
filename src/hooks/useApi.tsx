@@ -3,6 +3,7 @@ import {
   CategoryType,
   CharitiesType,
   DataAnalyticsTypes,
+  EventData,
   GetAnalyticsGraphDataTypes,
   GetEventType,
   GetTask,
@@ -301,6 +302,51 @@ const useAPI = () => {
     return http(`/achievements/${id}`, { method: "DELETE" });
   };
 
+  const getCreatorEvents = (): Promise<EventData | APIError> => {
+    return http(`/events`);
+  };
+
+  const getCreatorEventById = (id?: string): Promise<EventData | APIError> => {
+    return http(`/events/${id}`);
+  };
+
+  const createSingleEvent = (data: {
+    title: string;
+    description: string;
+    eventLink: string;
+    startDate: string | Date | number | null;
+    endDate: string | Date | number | null;
+    startTime: string | Date | number | null;
+    endTime: string | Date | number | null;
+    recurringStatus?: boolean;
+    backgroundImageUrl: string;
+    badgeIds?: string[];
+  }): Promise<EventData | APIError> => {
+    return http(`/events/create`, { method: "POST", data });
+  };
+
+  const updateEvent = (
+    data: {
+      title: string;
+      description: string;
+      eventLink: string;
+      startDate: string | Date | number | null;
+      endDate: string | Date | number | null;
+      startTime: string | Date | number | null;
+      endTime: string | Date | number | null;
+      recurringStatus?: boolean;
+      backgroundImageUrl: string;
+      badgeIds?: string[];
+    },
+    id?: string | null
+  ): Promise<EventData | APIError> => {
+    return http(`/events/update/${id}`, { method: "PATCH", data });
+  };
+
+  const deleteEvent = (id?: string) => {
+    return http(`/events/${id}`, { method: "DELETE" });
+  };
+
   return {
     getTasks,
     createTask,
@@ -341,6 +387,11 @@ const useAPI = () => {
     deleteAchievement,
     getCreatorDegreeById,
     getCreatorAchievementById,
+    getCreatorEvents,
+    deleteEvent,
+    createSingleEvent,
+    getCreatorEventById,
+    updateEvent,
   };
 };
 

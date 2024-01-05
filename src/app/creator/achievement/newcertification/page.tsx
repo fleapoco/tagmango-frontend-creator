@@ -22,6 +22,7 @@ const breadCrumbItems = [
 
 type AchievementDataType = {
   title: string;
+  achievementLink?: string;
   description: string;
   thumbnailUrl: string;
 };
@@ -36,6 +37,7 @@ const NewCertification = () => {
   const [achievementDataType, setAchievementDataType] =
     useState<AchievementDataType>({
       title: "",
+      achievementLink: "",
       description: "",
       thumbnailUrl: "",
     });
@@ -66,6 +68,7 @@ const NewCertification = () => {
       if ("title" in data && "description" in data && "thumbnailUrl" in data) {
         setAchievementDataType({
           title: data.title,
+          achievementLink: data.achievementLink,
           description: data.description,
           thumbnailUrl: data.thumbnailUrl,
         });
@@ -85,6 +88,10 @@ const NewCertification = () => {
     if (e.target.name === "title")
       setAchievementDataType((prev) => {
         return { ...prev, title: e.target.value };
+      });
+    else if (e.target.name === "achievementLink")
+      setAchievementDataType((prev) => {
+        return { ...prev, achievementLink: e.target.value };
       });
     else if (e.target.name === "description")
       setAchievementDataType((prev) => {
@@ -157,6 +164,14 @@ const NewCertification = () => {
                 onChange={handleOnChange}
                 name="title"
                 value={achievementDataType.title}
+              />
+              <FormInput
+                label="Achievement Link"
+                type="link"
+                onChange={handleOnChange}
+                placeholder="Add Achievement Link"
+                name="achievementLink"
+                value={achievementDataType.achievementLink}
               />
               <div className="form-group">
                 <label htmlFor="requirement">Requirement</label>
