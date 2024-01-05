@@ -7,6 +7,7 @@ import { PrimaryButton } from '../../../../../components/common/button';
 import { AddIcon } from '../../../../../components/common/icons';
 import { CustomTag } from '../../../../../components/common/tag';
 import ImageUpload from '../../../../../components/form/imgupload';
+import { FormInput } from '../../../../../components/form/input';
 import { FormTextArea } from '../../../../../components/form/textarea';
 import PageTitle from '../../../../../components/pagetitle';
 import style from '../../../../../style/creator.module.scss';
@@ -81,7 +82,17 @@ const CreatorCreateQuiz = () => {
                     </div>
                   }
                   actions={[
-                    <Flex justify='flex-end' className='action-buttons'>
+                    <Flex
+                      justify='flex-end'
+                      align='center'
+                      gap={16}
+                      className='action-buttons remove-from-group'
+                    >
+                      <FormInput
+                        addonAfter='XP'
+                        type='text'
+                        placeholder='Points'
+                      />
                       <PrimaryButton text='Save' variant='primary' />
                     </Flex>,
                   ]}

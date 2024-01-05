@@ -72,6 +72,11 @@
     border-left: 2px solid hsla(0, 0%, 62.4%, 0.15) !important;
   }
 }
+.remove-from-group {
+  .form-group {
+    margin-bottom: 0;
+  }
+}
 .ant-dropdown {
   width: 100%;
   padding: 0;
@@ -345,4 +350,27 @@
   z-index: 999;
   left: 0;
   top: 0;
+}
+.ant-popover {
+  z-index: 999;
+}
+.points-input {
+  margin-bottom: 16px;
+  .form-group {
+    margin-bottom: 0;
+  }
+  .site-btn {
+    width: 40px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    span {
+      margin-inline-end: 0 !important;
+    }
+    span {
+      &:last-child {
+        display: none;
+      }
+    }
+  }
 }

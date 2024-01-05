@@ -1,11 +1,12 @@
-import useAPI from "@/hooks/useApi";
-import { Button, Popconfirm, Popover } from "antd";
-import { useRouter } from "next/navigation";
-import { PrimaryButton } from "./button";
+import useAPI from '@/hooks/useApi';
+import { Button, Popconfirm, Popover } from 'antd';
+import { useRouter } from 'next/navigation';
+import { PrimaryButton } from './button';
 
 interface ActionButtonPropType {
   actionFor?: string;
   id?: string;
+  confirm?: boolean;
   fetchCreatorDegrees?: () => void;
   fetchCreatorAchievements?: () => void;
   handleEventEdit?: (id: string) => void;
@@ -15,6 +16,7 @@ interface ActionButtonPropType {
 export const ActionButton = ({
   actionFor,
   id,
+  confirm = true,
   fetchCreatorDegrees,
   fetchCreatorAchievements,
   handleEventEdit,
@@ -63,52 +65,65 @@ export const ActionButton = ({
 
   const handleEdit = () => {
     if (!id) return;
-    if (actionFor === "degree") editDegreeAction();
-    else if (actionFor === "achievement") editAchievementAction();
-    else if (actionFor === "event") editEventAction();
+    if (actionFor === 'degree') editDegreeAction();
+    else if (actionFor === 'achievement') editAchievementAction();
+    else if (actionFor === 'event') editEventAction();
   };
 
   const handleDelete = () => {
     if (!id) return;
-    if (actionFor === "degree") deleteDegreeAction();
-    else if (actionFor === "achievement") deleteAchievementAction();
-    else if (actionFor === "event") deleteEventAction();
+    if (actionFor === 'degree') deleteDegreeAction();
+    else if (actionFor === 'achievement') deleteAchievementAction();
+    else if (actionFor === 'event') deleteEventAction();
   };
 
   return (
     <>
       <Popover
-        placement="top"
-        className="action-btn"
+        placement='top'
+        className='action-btn'
         content={
           <>
             <Button
-              type="text"
+              type='text'
               style={{
-                width: "100%",
-                textAlign: "left",
-                marginBottom: "8px",
+                width: '100%',
+                textAlign: 'left',
+                marginBottom: '8px',
               }}
               onClick={handleEdit}
             >
               Edit
             </Button>
 
-            <Popconfirm
-              title="Are you sure to delete?"
-              okText="Yes"
-              cancelText="No"
-              onConfirm={handleDelete}
-            >
-              <Button style={{ width: "100%", textAlign: "left" }} type="text">
+            {confirm ? (
+              <Popconfirm
+                title='Are you sure to delete?'
+                okText='Yes'
+                cancelText='No'
+                onConfirm={handleDelete}
+              >
+                <Button
+                  style={{ width: '100%', textAlign: 'left' }}
+                  type='text'
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
+            ) : (
+              <Button
+                style={{ width: '100%', textAlign: 'left' }}
+                type='text'
+                onClick={handleDelete}
+              >
                 Delete
               </Button>
-            </Popconfirm>
+            )}
           </>
         }
-        trigger="click"
+        trigger='click'
       >
-        <PrimaryButton text="" variant="info" horizontal />
+        <PrimaryButton text='' variant='info' horizontal />
       </Popover>
     </>
   );

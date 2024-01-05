@@ -248,6 +248,53 @@ export interface EventData {
   badges?: Array<Object> | null;
 }
 
+export interface CreatorAllUsersTasks {
+  id: string;
+  name: string;
+  completed: number;
+  pending: number;
+}
+
+export interface CreatorsUserTasks {
+  id: string;
+  name: string;
+  completed: number;
+  pending: number;
+  tasks: [
+    {
+      id: string;
+      groupId: string;
+      userName: string;
+      userId: string;
+      userCreatorId: string;
+      title: string;
+      type: string;
+      points: number;
+      startDate: string | Date;
+      endDate?: string | Date | null;
+      startTime: string | Date;
+      endTime: string | Date | null;
+      status: string;
+      frequency: string;
+      firstDayOfTheWeek?: string | null;
+      secondDayOfTheWeek?: string | null;
+      dayOfTheMonth?: string | null;
+      createdAt?: string | null;
+      updatedAt?: string | null;
+      deletedAt?: string | null;
+      category: {
+        id: string;
+        creatorId: string;
+        title: string;
+        type: string;
+        createdAt?: string | null;
+        updatedAt?: string | null;
+        deletedAt?: string | null;
+      };
+    }
+  ];
+}
+
 export interface APIError {
   message?: string;
   error?: string;
