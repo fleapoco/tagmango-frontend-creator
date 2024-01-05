@@ -14,6 +14,7 @@ import {
   MdDashboard,
   MdDatasetLinked,
   MdEmojiEvents,
+  MdOutlineHandshake,
   MdOutlineQuiz,
 } from 'react-icons/md';
 
@@ -86,7 +87,7 @@ const fanItems: ItemType[] = [
   {
     key: '4',
     label: 'Charity',
-    icon: <Analytics />,
+    icon: <MdOutlineHandshake />,
     link: '/charity',
     creator: false,
   },
@@ -151,7 +152,7 @@ const creatorItems: ItemType[] = [
   {
     key: '10',
     label: 'Charity',
-    icon: <MdEmojiEvents size={20} />,
+    icon: <MdOutlineHandshake size={20} />,
     link: '/creator/charity',
     creator: true,
   },
