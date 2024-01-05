@@ -274,6 +274,9 @@
 
     .action-buttons {
       padding: 0 16px;
+      .site-btn {
+        height: 40px !important;
+      }
     }
 
     .ant-list-item {

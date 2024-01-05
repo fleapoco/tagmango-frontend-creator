@@ -9,13 +9,13 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import {
-  MdAdsClick,
   MdCastForEducation,
   MdDashboard,
   MdDatasetLinked,
   MdEmojiEvents,
   MdOutlineHandshake,
   MdOutlineQuiz,
+  MdOutlineStairs,
 } from 'react-icons/md';
 
 import Loading from '@/app/loading';
@@ -108,7 +108,7 @@ const fanItems: ItemType[] = [
   {
     key: '7',
     label: 'Achievement',
-    icon: <MdAdsClick size={20} />,
+    icon: <MdOutlineStairs size={20} />,
     link: '/achievement',
     creator: false,
   },
@@ -173,7 +173,7 @@ const creatorItems: ItemType[] = [
   {
     key: '13',
     label: 'Achievement',
-    icon: <MdCastForEducation size={20} />,
+    icon: <MdOutlineStairs size={20} />,
     link: '/creator/achievement',
     creator: true,
   },
