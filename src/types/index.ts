@@ -295,6 +295,15 @@ export interface CreatorsUserTasks {
   ];
 }
 
+export interface CreatorCharitiesType {
+  id: string;
+  organizationName: string;
+  userName?: string;
+  amount: number;
+  date: string | Date;
+  category: CategoryType | null;
+}
+
 export interface APIError {
   message?: string;
   error?: string;

@@ -1,14 +1,18 @@
-'use client';
-import { Col, DatePicker, Row, Tabs } from 'antd';
-import { useRouter } from 'next/navigation';
+"use client";
+import { Col, DatePicker, Row, Tabs } from "antd";
+import { useRouter } from "next/navigation";
 
-import { PrimaryButton } from '../../../../components/common/button';
-import { PrimaryCard } from '../../../../components/common/card';
-import { AddIcon } from '../../../../components/common/icons';
-import PageTitle from '../../../../components/pagetitle';
-import style from '../../../../style/task.module.scss';
-import MyCharityTable from './mycharity';
-import UsersCharity from './usercharity';
+import useAPI from "@/hooks/useApi";
+import { CreatorCharitiesType } from "@/types";
+import { useEffect, useState } from "react";
+import { PrimaryButton } from "../../../../components/common/button";
+import { PrimaryCard } from "../../../../components/common/card";
+import { AddIcon } from "../../../../components/common/icons";
+import { UserName } from "../../../../components/common/username";
+import PageTitle from "../../../../components/pagetitle";
+import style from "../../../../style/task.module.scss";
+import MyCharityTable from "./mycharity";
+import UsersCharity from "./usercharity";
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -17,47 +21,145 @@ export interface ChartData {
   labels: string[];
 }
 
+interface MyCharityDataType {
+  key: string;
+  date: React.ReactNode;
+  category: string;
+  amount: number;
+  organization: string;
+}
+
+interface UsersCharityDataType {
+  key: string;
+  date: React.ReactNode;
+  user: React.ReactNode;
+  category: string;
+  amount: number;
+  organization: string;
+}
+
 const CharityPage = () => {
   const router = useRouter();
+  const { getCreatorMyCharities, getCreatorUsersCharities } = useAPI();
+  const [myCharitiesStartDate, setMyCharitiesStartDate] = useState("");
+  const [myCharitiesEndDate, setMyCharitiesEndDate] = useState("");
+  const [usersCharitiesStartDate, setUsersCharitiesStartDate] = useState("");
+  const [usersCharitiesEndDate, setUsersCharitiesEndDate] = useState("");
+  const [myCharitiesData, setMyCharitiesData] = useState<MyCharityDataType[]>(
+    []
+  );
+  const [usersCharitiesData, setUsersCharitiesData] = useState<
+    UsersCharityDataType[]
+  >([]);
+
+  useEffect(() => {
+    fetchMyCharities();
+    fetchUsersCharities();
+  }, [
+    myCharitiesStartDate,
+    myCharitiesEndDate,
+    usersCharitiesStartDate,
+    usersCharitiesEndDate,
+  ]);
+
+  const fetchMyCharities = async () => {
+    try {
+      const data = await getCreatorMyCharities({
+        startDate: myCharitiesStartDate,
+        endDate: myCharitiesEndDate,
+      });
+      if (data && Array.isArray(data))
+        setMyCharitiesData(transformMyCharityData(data));
+    } catch (error) {}
+  };
+
+  const transformMyCharityData = (
+    data: CreatorCharitiesType[]
+  ): MyCharityDataType[] => {
+    return data.map((item) => ({
+      key: item.id,
+      date: formatDate(item.date),
+      category: item.category ? item.category.title : "",
+      amount: item.amount,
+      organization: item.organizationName,
+    }));
+  };
+
+  // Function to format the date in "MM/DD/YYYY" string format
+  const formatDate = (inputDate: string | Date): string => {
+    const date = new Date(inputDate);
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const year = date.getFullYear().toString();
+    return `${month}/${day}/${year}`;
+  };
+
+  const fetchUsersCharities = async () => {
+    try {
+      const data = await getCreatorUsersCharities({
+        startDate: usersCharitiesStartDate,
+        endDate: usersCharitiesEndDate,
+      });
+      if (data && Array.isArray(data))
+        setUsersCharitiesData(transformUserCharityData(data));
+    } catch (error) {}
+  };
+
+  const transformUserCharityData = (
+    data: CreatorCharitiesType[]
+  ): UsersCharityDataType[] => {
+    return data.map((item) => ({
+      key: item.id,
+      date: formatDate(item.date),
+      user: (
+        <>
+          <UserName username={item.userName ? item.userName : ""} />
+        </>
+      ),
+      category: item.category ? item.category.title : "",
+      amount: item.amount,
+      organization: item.organizationName,
+    }));
+  };
 
   const handleButtonClick = () => {
-    router.push('/creator/charity/addcharity');
+    router.push("/creator/charity/addcharity");
   };
 
   return (
     <>
-      <div className={`${style['charity-page']} common-panel-wrapper`}>
+      <div className={`${style["charity-page"]} common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={'space-between'}
-          style={{ alignItems: 'center' }}
-          className='p-15'
+          justify={"space-between"}
+          style={{ alignItems: "center" }}
+          className="p-15"
         >
           <Col span={12}>
-            <PageTitle title='Charity' />
+            <PageTitle title="Charity" />
           </Col>
-          <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
+          <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
             <PrimaryButton
-              text='Add Data'
+              text="Add Data"
               icon={<AddIcon />}
-              variant='primary'
+              variant="primary"
               onClick={handleButtonClick}
             />
           </Col>
         </Row>
         {/* Task Total Count Section */}
-        <div className='gray-box task-count-wrapper p-15'>
-          <Row gutter={[12, 0]} className=' '>
+        <div className="gray-box task-count-wrapper p-15">
+          <Row gutter={[12, 0]} className=" ">
             {[
               {
-                taskName: 'Overall Charity',
+                taskName: "Overall Charity",
                 count: 25000,
               },
             ].map((ele, i) => (
-              <Col key={i} span={6} className='count-card'>
+              <Col key={i} span={6} className="count-card">
                 <PrimaryCard title={ele.taskName}>
                   <span style={{ margin: 0 }}>
-                    ₹{ele.count.toLocaleString('en-IN')}
+                    ₹{ele.count.toLocaleString("en-IN")}
                   </span>
                 </PrimaryCard>
               </Col>
@@ -65,7 +167,7 @@ const CharityPage = () => {
           </Row>
         </div>
 
-        <div className='p-15'>
+        <div className="p-15">
           <Row gutter={[0, 12]}>
             <Col span={24}>Graph</Col>
           </Row>
@@ -73,14 +175,14 @@ const CharityPage = () => {
 
         <Row>
           <Col span={24}>
-            <Tabs defaultActiveKey='1'>
-              <TabPane tab='My Charity' key='1'>
+            <Tabs defaultActiveKey="1">
+              <TabPane tab="My Charity" key="1">
                 {/* Upcoming Events */}
 
-                <MyCharityTable />
+                <MyCharityTable data={myCharitiesData} />
               </TabPane>
-              <TabPane tab={`${'User'}'s Charity`} key='2'>
-                <UsersCharity />
+              <TabPane tab={`${"User"}'s Charity`} key="2">
+                <UsersCharity data={usersCharitiesData} />
               </TabPane>
             </Tabs>
           </Col>

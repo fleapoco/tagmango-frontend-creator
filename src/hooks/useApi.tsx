@@ -3,6 +3,7 @@ import {
   CategoryType,
   CharitiesType,
   CreatorAllUsersTasks,
+  CreatorCharitiesType,
   CreatorsUserTasks,
   DataAnalyticsTypes,
   EventData,
@@ -359,6 +360,36 @@ const useAPI = () => {
     return http(`/tasks/creator/${id}`);
   };
 
+  const getCreatorMyCharities = ({
+    startDate,
+    endDate,
+  }: {
+    startDate?: string | undefined;
+    endDate?: string | undefined;
+  }): Promise<CreatorCharitiesType[] | APIError> => {
+    const params = new URLSearchParams();
+    if (startDate) params.append("startDate", startDate);
+    if (endDate) params.append("endDate", endDate);
+    const queryString = params?.toString();
+    const endPoint = `/charities${queryString ? `?${queryString}` : ""}`;
+    return http(endPoint, { method: "GET" });
+  };
+
+  const getCreatorUsersCharities = ({
+    startDate,
+    endDate,
+  }: {
+    startDate?: string;
+    endDate?: string;
+  }): Promise<CreatorCharitiesType[] | APIError> => {
+    const params = new URLSearchParams();
+    if (startDate) params.append("startDate", startDate);
+    if (endDate) params.append("endDate", endDate);
+    const queryString = params?.toString();
+    const endPoint = `/charities/users${queryString ? `?${queryString}` : ""}`;
+    return http(endPoint, { method: "GET" });
+  };
+
   return {
     getTasks,
     createTask,
@@ -406,6 +437,8 @@ const useAPI = () => {
     updateEvent,
     getCreatorTasks,
     getCreatorTaskByUserId,
+    getCreatorMyCharities,
+    getCreatorUsersCharities,
   };
 };
 
