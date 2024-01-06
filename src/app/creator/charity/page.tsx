@@ -45,6 +45,9 @@ const CharityPage = () => {
   const [myCharitiesEndDate, setMyCharitiesEndDate] = useState("");
   const [usersCharitiesStartDate, setUsersCharitiesStartDate] = useState("");
   const [usersCharitiesEndDate, setUsersCharitiesEndDate] = useState("");
+  const [myCharityTotalAmount, setMyCharityTotalAmount] = useState<number>(0);
+  const [usersCharityTotalAmount, setUsersCharityTotalAmount] =
+    useState<number>(0);
   const [myCharitiesData, setMyCharitiesData] = useState<MyCharityDataType[]>(
     []
   );
@@ -68,8 +71,14 @@ const CharityPage = () => {
         startDate: myCharitiesStartDate,
         endDate: myCharitiesEndDate,
       });
-      if (data && Array.isArray(data))
+      if (data && Array.isArray(data)) {
+        const totalAmount: number = data.reduce(
+          (accumulator, currentCharity) => accumulator + currentCharity.amount,
+          0
+        );
+        setMyCharityTotalAmount(totalAmount);
         setMyCharitiesData(transformMyCharityData(data));
+      }
     } catch (error) {}
   };
 
@@ -100,8 +109,14 @@ const CharityPage = () => {
         startDate: usersCharitiesStartDate,
         endDate: usersCharitiesEndDate,
       });
-      if (data && Array.isArray(data))
+      if (data && Array.isArray(data)) {
+        const totalAmount: number = data.reduce(
+          (accumulator, currentCharity) => accumulator + currentCharity.amount,
+          0
+        );
+        setUsersCharityTotalAmount(totalAmount);
         setUsersCharitiesData(transformUserCharityData(data));
+      }
     } catch (error) {}
   };
 
@@ -153,7 +168,7 @@ const CharityPage = () => {
             {[
               {
                 taskName: "Overall Charity",
-                count: 25000,
+                count: myCharityTotalAmount + usersCharityTotalAmount,
               },
             ].map((ele, i) => (
               <Col key={i} span={6} className="count-card">
