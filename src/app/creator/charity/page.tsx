@@ -3,7 +3,7 @@ import { Col, DatePicker, Row, Tabs } from "antd";
 import { useRouter } from "next/navigation";
 
 import useAPI from "@/hooks/useApi";
-import { CreatorCharitiesType } from "@/types";
+import { CategoryType, CreatorCharitiesType } from "@/types";
 import { useEffect, useState } from "react";
 import { PrimaryButton } from "../../../../components/common/button";
 import { PrimaryCard } from "../../../../components/common/card";
@@ -23,8 +23,8 @@ export interface ChartData {
 
 interface MyCharityDataType {
   key: string;
-  date: React.ReactNode;
-  category: string;
+  date: string;
+  category: CategoryType | null;
   amount: number;
   organization: string;
 }
@@ -78,8 +78,8 @@ const CharityPage = () => {
   ): MyCharityDataType[] => {
     return data.map((item) => ({
       key: item.id,
-      date: formatDate(item.date),
-      category: item.category ? item.category.title : "",
+      date: item.date,
+      category: item.category,
       amount: item.amount,
       organization: item.organizationName,
     }));
@@ -179,7 +179,10 @@ const CharityPage = () => {
               <TabPane tab="My Charity" key="1">
                 {/* Upcoming Events */}
 
-                <MyCharityTable data={myCharitiesData} />
+                <MyCharityTable
+                  data={myCharitiesData}
+                  fetchMyCharities={fetchMyCharities}
+                />
               </TabPane>
               <TabPane tab={`${"User"}'s Charity`} key="2">
                 <UsersCharity data={usersCharitiesData} />

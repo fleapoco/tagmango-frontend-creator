@@ -300,7 +300,7 @@ export interface CreatorCharitiesType {
   organizationName: string;
   userName?: string;
   amount: number;
-  date: string | Date;
+  date: string;
   category: CategoryType | null;
 }
 
