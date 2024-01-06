@@ -4,9 +4,11 @@ import { useRouter } from "next/navigation";
 
 import useAPI from "@/hooks/useApi";
 import { CategoryType, CreatorCharitiesType } from "@/types";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { PrimaryButton } from "../../../../components/common/button";
 import { PrimaryCard } from "../../../../components/common/card";
+import { DisplayGraph } from "../../../../components/common/graph";
 import { AddIcon } from "../../../../components/common/icons";
 import { UserName } from "../../../../components/common/username";
 import PageTitle from "../../../../components/pagetitle";
@@ -40,7 +42,11 @@ interface UsersCharityDataType {
 
 const CharityPage = () => {
   const router = useRouter();
-  const { getCreatorMyCharities, getCreatorUsersCharities } = useAPI();
+  const {
+    getCreatorMyCharities,
+    getCreatorUsersCharities,
+    getCharitiesGraphData,
+  } = useAPI();
   const [myCharitiesStartDate, setMyCharitiesStartDate] = useState("");
   const [myCharitiesEndDate, setMyCharitiesEndDate] = useState("");
   const [usersCharitiesStartDate, setUsersCharitiesStartDate] = useState("");
@@ -54,6 +60,11 @@ const CharityPage = () => {
   const [usersCharitiesData, setUsersCharitiesData] = useState<
     UsersCharityDataType[]
   >([]);
+  const [chartData, setChartData] = useState<ChartData>({
+    series: [],
+    labels: [],
+  });
+  const [dateRange, setDateRange] = useState<[string, string]>(["", ""]);
 
   useEffect(() => {
     fetchMyCharities();
@@ -64,6 +75,24 @@ const CharityPage = () => {
     usersCharitiesStartDate,
     usersCharitiesEndDate,
   ]);
+
+  useEffect(() => {
+    graphData();
+  }, [dateRange]);
+
+  const graphData = async () => {
+    try {
+      const data = await getCharitiesGraphData({
+        startMonth: dateRange.at(0),
+        endMonth: dateRange.at(1),
+      });
+      // console.log(data);
+      setChartData({
+        series: data.amount.map((e) => Number(e)),
+        labels: data.months,
+      });
+    } catch (error) {}
+  };
 
   const fetchMyCharities = async () => {
     try {
@@ -137,6 +166,15 @@ const CharityPage = () => {
     }));
   };
 
+  const handleDateChangeCallback = (
+    dates: dayjs.Dayjs,
+    dateStrings: [string, string]
+  ) => {
+    // console.log({ dateStrings });
+    // Perform actions with selected dates, e.g., update state or make API calls
+    setDateRange(dateStrings);
+  };
+
   const handleButtonClick = () => {
     router.push("/creator/charity/addcharity");
   };
@@ -184,7 +222,17 @@ const CharityPage = () => {
 
         <div className="p-15">
           <Row gutter={[0, 12]}>
-            <Col span={24}>Graph</Col>
+            <Col span={24}>
+              <DisplayGraph
+                chartData={chartData}
+                title="Charity Tracker"
+                onDateChange={(
+                  dates: dayjs.Dayjs,
+                  dateStrings: [string, string]
+                ) => handleDateChangeCallback(dates, dateStrings)}
+                type={"area"}
+              />
+            </Col>
           </Row>
         </div>
 
