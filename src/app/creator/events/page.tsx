@@ -26,9 +26,9 @@ const CreatorEvent = () => {
     Tomorrow: [],
   });
 
-  useEffect(() => {
-    fetchEventData();
-  }, []);
+  // useEffect(() => {
+  //   fetchEventData();
+  // }, []);
 
   // Filter events into upcoming and previous based on the start time
   useEffect(() => {
@@ -105,9 +105,15 @@ const CreatorEvent = () => {
     setGroupedUpcoming(grouped);
   }, [upcoming]);
 
-  const fetchEventData = async () => {
+  const fetchEventData = async (
+    startDate?: string | null,
+    endDate?: string | null
+  ) => {
     try {
-      let data = await getCreatorEvents();
+      let data = await getCreatorEvents({
+        startDate: startDate,
+        endDate: endDate,
+      });
       if (data && Array.isArray(data)) {
         setEventsData(data);
       }

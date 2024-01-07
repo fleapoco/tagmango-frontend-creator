@@ -2,8 +2,9 @@
 import useAPI from "@/hooks/useApi";
 import { EventData } from "@/types";
 import { Col, DatePicker, Flex, List, Row, Typography } from "antd";
+import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActionButton } from "../../../../components/common/actionbutton";
 import { PrimaryButton } from "../../../../components/common/button";
 import { AddIcon } from "../../../../components/common/icons";
@@ -14,7 +15,7 @@ const { Title } = Typography;
 
 type UpcomingEventsType = {
   data?: { [key: string]: EventData[] | [] } | null;
-  fetchEventData?: () => void;
+  fetchEventData?: (startDate?: string | null, endDate?: string | null) => void;
 };
 
 export const UpcomingEvents = ({
@@ -23,6 +24,8 @@ export const UpcomingEvents = ({
 }: UpcomingEventsType) => {
   const router = useRouter();
   const { deleteEvent } = useAPI();
+  const [eventStartDate, setEventStartDate] = useState<string | null>(null);
+  const [eventEndDate, setEventEndDate] = useState<string | null>(null);
   const [currentModalEventId, setCurrentModalEventId] = useState("");
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -31,6 +34,10 @@ export const UpcomingEvents = ({
     minute: "2-digit",
     hour12: true,
   };
+
+  useEffect(() => {
+    if (fetchEventData) fetchEventData(eventStartDate, eventEndDate);
+  }, [eventStartDate, eventEndDate]);
 
   const handleEditOpenModal = (id: string) => {
     setCurrentModalEventId(id);
@@ -83,6 +90,16 @@ export const UpcomingEvents = ({
     deleteEventAction(currentModalEventId);
   };
 
+  const handleDateChange = (dates: [Dayjs | null, Dayjs | null] | null) => {
+    if (dates && dates.length === 2) {
+      setEventStartDate(dates[0]?.toISOString() || null);
+      setEventEndDate(dates[1]?.toISOString() || null);
+    } else {
+      setEventStartDate(null);
+      setEventEndDate(null);
+    }
+  };
+
   const HandleButtonClick = () => {
     router.push("/creator/events/createevent");
   };
@@ -91,7 +108,13 @@ export const UpcomingEvents = ({
       {/* Select Time And Button */}
       <Row>
         <Col span={6}>
-          <RangePicker />
+          <RangePicker
+            value={[
+              eventStartDate ? dayjs(eventStartDate) : null,
+              eventEndDate ? dayjs(eventEndDate) : null,
+            ]}
+            onChange={handleDateChange}
+          />
         </Col>
         <Col span={18} style={{ display: "flex", justifyContent: "flex-end" }}>
           <PrimaryButton

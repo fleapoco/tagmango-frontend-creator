@@ -305,8 +305,19 @@ const useAPI = () => {
     return http(`/achievements/${id}`, { method: "DELETE" });
   };
 
-  const getCreatorEvents = (): Promise<EventData | APIError> => {
-    return http(`/events`);
+  const getCreatorEvents = ({
+    startDate,
+    endDate,
+  }: {
+    startDate?: string | undefined | null;
+    endDate?: string | undefined | null;
+  }): Promise<EventData | APIError> => {
+    const params = new URLSearchParams();
+    if (startDate) params.append("startDate", startDate);
+    if (endDate) params.append("endDate", endDate);
+    const queryString = params?.toString();
+    const endPoint = `/events${queryString ? `?${queryString}` : ""}`;
+    return http(endPoint, { method: "GET" });
   };
 
   const getCreatorEventById = (id?: string): Promise<EventData | APIError> => {
