@@ -1,12 +1,17 @@
 "use client";
 
-import { Col, Flex, Row, Table } from "antd";
+import { Col, DatePicker, Row, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { FormInput } from "../../../../components/form/input";
-import { FormSelect } from "../../../../components/form/select";
+import dayjs, { Dayjs } from "dayjs";
+import { useEffect, useState } from "react";
+const { RangePicker } = DatePicker;
 
 interface UsersCharityType {
   data?: DataType[];
+  fetchUsersCharities?: (
+    usersCharitiesStartDate?: string | null,
+    usersCharitiesEndDate?: string | null
+  ) => void;
 }
 
 interface DataType {
@@ -54,13 +59,35 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const UsersCharity = ({ data }: UsersCharityType) => {
+const UsersCharity = ({ data, fetchUsersCharities }: UsersCharityType) => {
+  const [usersCharitiesStartDate, setUsersCharitiesStartDate] = useState<
+    string | null
+  >(null);
+  const [usersCharitiesEndDate, setUsersCharitiesEndDate] = useState<
+    string | null
+  >(null);
+
+  useEffect(() => {
+    if (fetchUsersCharities)
+      fetchUsersCharities(usersCharitiesStartDate, usersCharitiesEndDate);
+  }, [usersCharitiesStartDate, usersCharitiesEndDate]);
+
+  const handleDateChange = (dates: [Dayjs | null, Dayjs | null] | null) => {
+    if (dates && dates.length === 2) {
+      setUsersCharitiesStartDate(dates[0]?.toISOString() || null);
+      setUsersCharitiesEndDate(dates[1]?.toISOString() || null);
+    } else {
+      setUsersCharitiesStartDate(null);
+      setUsersCharitiesEndDate(null);
+    }
+  };
+
   return (
     <>
       <div className="filter-options p-15">
         <Row>
           <Col span={18}>
-            <Flex gap={16} align="center" style={{ width: "100%" }}>
+            {/* <Flex gap={16} align="center" style={{ width: "100%" }}>
               <FormInput placeholder="Search" />
               Filter By
               <FormSelect
@@ -68,10 +95,17 @@ const UsersCharity = ({ data }: UsersCharityType) => {
                   throw new Error("Function not implemented.");
                 }}
               />
-            </Flex>
+            </Flex> */}
           </Col>
           <Col span={6}>
-            <FormInput placeholder="Select Date" type="date" />
+            {/* <FormInput placeholder="Select Date" type="date" /> */}
+            <RangePicker
+              value={[
+                usersCharitiesStartDate ? dayjs(usersCharitiesStartDate) : null,
+                usersCharitiesEndDate ? dayjs(usersCharitiesEndDate) : null,
+              ]}
+              onChange={handleDateChange}
+            />
           </Col>
         </Row>
       </div>

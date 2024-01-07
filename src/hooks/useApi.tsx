@@ -364,8 +364,8 @@ const useAPI = () => {
     startDate,
     endDate,
   }: {
-    startDate?: string | undefined;
-    endDate?: string | undefined;
+    startDate?: string | undefined | null;
+    endDate?: string | undefined | null;
   }): Promise<CreatorCharitiesType[] | APIError> => {
     const params = new URLSearchParams();
     if (startDate) params.append("startDate", startDate);
@@ -379,8 +379,8 @@ const useAPI = () => {
     startDate,
     endDate,
   }: {
-    startDate?: string;
-    endDate?: string;
+    startDate?: string | undefined | null;
+    endDate?: string | undefined | null;
   }): Promise<CreatorCharitiesType[] | APIError> => {
     const params = new URLSearchParams();
     if (startDate) params.append("startDate", startDate);

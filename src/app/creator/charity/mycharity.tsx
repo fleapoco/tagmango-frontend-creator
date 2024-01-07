@@ -1,22 +1,24 @@
 "use client";
 
-import { Button, Col, Flex, Popconfirm, Popover, Row, Table } from "antd";
+import { Button, Col, DatePicker, Popconfirm, Popover, Row, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
 import useAPI from "@/hooks/useApi";
 import { useAppDispatch } from "@/hooks/useRedux";
 import { setCharity } from "@/redux/reducers/charity.reducer";
 import { CategoryType } from "@/types";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PrimaryButton } from "../../../../components/common/button";
-import { FormInput } from "../../../../components/form/input";
-import { FormSelect } from "../../../../components/form/select";
+const { RangePicker } = DatePicker;
 
 interface MyCharityTableType {
   data?: DataType[];
-  fetchMyCharities?: () => void;
+  fetchMyCharities?: (
+    myCharitiesStartDate?: string | null,
+    myCharitiesEndDate?: string | null
+  ) => void;
 }
 
 interface DataType {
@@ -30,12 +32,23 @@ interface DataType {
 const MyCharityTable = ({ data, fetchMyCharities }: MyCharityTableType) => {
   const dispatch = useAppDispatch();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
+  const [myCharitiesStartDate, setMyCharitiesStartDate] = useState<
+    string | null
+  >(null);
+  const [myCharitiesEndDate, setMyCharitiesEndDate] = useState<string | null>(
+    null
+  );
   const router = useRouter();
   const { deleteCharity } = useAPI();
 
   const handlePopoverOpen = (index: number) => {
     setOpenPopoverIndex(index === openPopoverIndex ? null : index);
   };
+
+  useEffect(() => {
+    if (fetchMyCharities)
+      fetchMyCharities(myCharitiesStartDate, myCharitiesEndDate);
+  }, [myCharitiesStartDate, myCharitiesEndDate]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -56,6 +69,16 @@ const MyCharityTable = ({ data, fetchMyCharities }: MyCharityTableType) => {
     };
     dispatch(setCharity(data));
     router.push("/creator/charity/addcharity?type=update");
+  };
+
+  const handleDateChange = (dates: [Dayjs | null, Dayjs | null] | null) => {
+    if (dates && dates.length === 2) {
+      setMyCharitiesStartDate(dates[0]?.toISOString() || null);
+      setMyCharitiesEndDate(dates[1]?.toISOString() || null);
+    } else {
+      setMyCharitiesStartDate(null);
+      setMyCharitiesEndDate(null);
+    }
   };
 
   const columns: ColumnsType<DataType> = [
@@ -150,7 +173,7 @@ const MyCharityTable = ({ data, fetchMyCharities }: MyCharityTableType) => {
       <div className="filter-options p-15">
         <Row>
           <Col span={18}>
-            <Flex gap={16} align="center" style={{ width: "100%" }}>
+            {/* <Flex gap={16} align="center" style={{ width: "100%" }}>
               <FormInput placeholder="S	earch" />
               Filter By
               <FormSelect
@@ -158,10 +181,17 @@ const MyCharityTable = ({ data, fetchMyCharities }: MyCharityTableType) => {
                   throw new Error("Function not implemented.");
                 }}
               />
-            </Flex>
+            </Flex> */}
           </Col>
           <Col span={6}>
-            <FormInput placeholder="Select Date" type="date" />
+            {/* <FormInput placeholder="Select Date" type="date" /> */}
+            <RangePicker
+              value={[
+                myCharitiesStartDate ? dayjs(myCharitiesStartDate) : null,
+                myCharitiesEndDate ? dayjs(myCharitiesEndDate) : null,
+              ]}
+              onChange={handleDateChange}
+            />
           </Col>
         </Row>
       </div>

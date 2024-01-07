@@ -47,10 +47,6 @@ const CharityPage = () => {
     getCreatorUsersCharities,
     getCharitiesGraphData,
   } = useAPI();
-  const [myCharitiesStartDate, setMyCharitiesStartDate] = useState("");
-  const [myCharitiesEndDate, setMyCharitiesEndDate] = useState("");
-  const [usersCharitiesStartDate, setUsersCharitiesStartDate] = useState("");
-  const [usersCharitiesEndDate, setUsersCharitiesEndDate] = useState("");
   const [myCharityTotalAmount, setMyCharityTotalAmount] = useState<number>(0);
   const [usersCharityTotalAmount, setUsersCharityTotalAmount] =
     useState<number>(0);
@@ -65,16 +61,6 @@ const CharityPage = () => {
     labels: [],
   });
   const [dateRange, setDateRange] = useState<[string, string]>(["", ""]);
-
-  useEffect(() => {
-    fetchMyCharities();
-    fetchUsersCharities();
-  }, [
-    myCharitiesStartDate,
-    myCharitiesEndDate,
-    usersCharitiesStartDate,
-    usersCharitiesEndDate,
-  ]);
 
   useEffect(() => {
     graphData();
@@ -94,7 +80,10 @@ const CharityPage = () => {
     } catch (error) {}
   };
 
-  const fetchMyCharities = async () => {
+  const fetchMyCharities = async (
+    myCharitiesStartDate?: string | null,
+    myCharitiesEndDate?: string | null
+  ) => {
     try {
       const data = await getCreatorMyCharities({
         startDate: myCharitiesStartDate,
@@ -132,7 +121,10 @@ const CharityPage = () => {
     return `${month}/${day}/${year}`;
   };
 
-  const fetchUsersCharities = async () => {
+  const fetchUsersCharities = async (
+    usersCharitiesStartDate?: string | null,
+    usersCharitiesEndDate?: string | null
+  ) => {
     try {
       const data = await getCreatorUsersCharities({
         startDate: usersCharitiesStartDate,
@@ -248,7 +240,10 @@ const CharityPage = () => {
                 />
               </TabPane>
               <TabPane tab={`${"User"}'s Charity`} key="2">
-                <UsersCharity data={usersCharitiesData} />
+                <UsersCharity
+                  data={usersCharitiesData}
+                  fetchUsersCharities={fetchUsersCharities}
+                />
               </TabPane>
             </Tabs>
           </Col>
