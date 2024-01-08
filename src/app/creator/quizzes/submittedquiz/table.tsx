@@ -4,7 +4,6 @@ import { Flex, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { IoMdCheckmark } from 'react-icons/io';
 import { PrimaryButton } from '../../../../../components/common/button';
-import { CustomTag } from '../../../../../components/common/tag';
 import { FormInput } from '../../../../../components/form/input';
 
 interface DataType {
@@ -41,11 +40,11 @@ export const AnswerTable = () => {
       key: '1',
       sno: 1,
       questions: <Questionbox question={{} as any} />,
-      pointassigned: <CustomTag title='20 XP' color='#87d068' />,
+      pointassigned: '20XP',
       pointearned: (
         <>
           <Flex vertical gap={10} justify='start' align='start'>
-            <CustomTag title='20 XP' color='#87d068' />
+            20XP
             <RemarkBox />
           </Flex>
         </>
@@ -55,7 +54,7 @@ export const AnswerTable = () => {
       key: '2',
       sno: 2,
       questions: <RemarkBox title='Box Title' />,
-      pointassigned: <CustomTag title='20 XP' color='#87d068' />,
+      pointassigned: '20XP',
       pointearned: (
         <>
           <div>

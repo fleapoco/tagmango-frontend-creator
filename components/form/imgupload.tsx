@@ -1,5 +1,5 @@
-import { LoadingOutlined } from '@ant-design/icons';
-import { Upload, message } from 'antd';
+import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Button, Upload, message } from 'antd';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import React, { useEffect, useState } from 'react';
@@ -38,6 +38,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
 
+  const handleDelete = (imageUrl: string) => {
+    // Add logic to delete the image
+    setImageUrl(null as any);
+  };
   useEffect(() => {
     if (existImageUrl) setImageUrl(existImageUrl);
   }, [existImageUrl]);
@@ -117,11 +121,28 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           onPreview={onPreview}
         >
           {imageUrl ? (
-            <img src={imageUrl} alt='avatar' style={{ width: '100%' }} />
+            <>
+              <img src={imageUrl} alt='avatar' style={{ width: '100%' }} />
+            </>
           ) : (
             uploadButton
           )}
         </Upload>
+        {imageUrl ? (
+          <div className='upload-hover-overlay'>
+            <div className='upload-hover-buttons'>
+              <Button
+                shape='circle'
+                size='large'
+                onClick={() => handleDelete(imageUrl)}
+              >
+                <DeleteOutlined size={60} />
+              </Button>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </>
   );
