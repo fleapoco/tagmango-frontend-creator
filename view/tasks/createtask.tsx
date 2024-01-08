@@ -281,6 +281,7 @@ export const CreateTask = () => {
                         <FormInput
                           label="End Date"
                           type="date"
+                          minDate={createTaskFormData.startDate}
                           value={createTaskFormData.endDate ?? ""}
                           onDateChange={(date, dateString) =>
                             setCreateTaskFormData({
