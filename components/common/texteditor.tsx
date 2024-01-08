@@ -1,19 +1,24 @@
 "use-client";
 
-const JoditEditor = dynamic(() => import("jodit-react"), {
+const Editor = dynamic(() => import("jodit-react"), {
   ssr: false,
 });
 
 import dynamic from "next/dynamic";
 import { useRef, useState } from "react";
 
-const TextEditor = ({
-  onChange,
-}: {
-  onChange: (newContent: string) => void;
-}) => {
+interface TextEditorProps {
+  onChange: (content: string) => void;
+}
+
+const TextEditor: React.FC<TextEditorProps> = ({ onChange }) => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
+
+  const handleContentChange = (newContent: string) => {
+    setContent(newContent);
+    onChange(newContent);
+  };
 
   const config2 = {
     useSearch: false,
@@ -73,14 +78,15 @@ const TextEditor = ({
   };
 
   return (
-    <JoditEditor
-      ref={editor}
+    <Editor
+      // ref={editor}
       value={content}
       config={config2}
       // tabIndex={1}  -- Commented as it doesn't exist and build failed
-      onBlur={(newContent) => setContent(newContent)}
+      // onBlur={(newContent) => setContent(newContent)}
       // buttons={false}  -- Commented as it doesn't exist and build failed
-      onChange={(newContent) => onChange(newContent)}
+      // onChange={(newContent) => {}}
+      onChange={handleContentChange}
     />
   );
 };

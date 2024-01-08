@@ -188,6 +188,7 @@ export interface QuizSubmission {
 export interface Question {
   id: string;
   creatorId: string;
+  quizId?: string;
   text: string;
   options: Option[];
   points: number;
