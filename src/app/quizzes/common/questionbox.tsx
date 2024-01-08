@@ -13,9 +13,13 @@ export const Questionbox = ({ question }: { question: Question }) => {
               <li
                 key={option.id}
                 className={
-                  option.submissions.at(0)?.score !== 0
+                  option.submissions.length &&
+                  option.submissions?.[0]?.score !== 0
+                    ? "right-question"
+                    : option.submissions.length &&
+                      option.submissions?.[0]?.score === 0
                     ? "wrong-answer"
-                    : "right-question"
+                    : ""
                 }
               >
                 <Radio className="q-name-list">{option.text}</Radio>

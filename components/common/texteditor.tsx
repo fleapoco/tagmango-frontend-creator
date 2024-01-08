@@ -7,7 +7,11 @@ const JoditEditor = dynamic(() => import("jodit-react"), {
 import dynamic from "next/dynamic";
 import { useRef, useState } from "react";
 
-const TextEditor = () => {
+const TextEditor = ({
+  onChange,
+}: {
+  onChange: (newContent: string) => void;
+}) => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
@@ -76,7 +80,7 @@ const TextEditor = () => {
       // tabIndex={1}  -- Commented as it doesn't exist and build failed
       onBlur={(newContent) => setContent(newContent)}
       // buttons={false}  -- Commented as it doesn't exist and build failed
-      onChange={(newContent) => {}}
+      onChange={(newContent) => onChange(newContent)}
     />
   );
 };

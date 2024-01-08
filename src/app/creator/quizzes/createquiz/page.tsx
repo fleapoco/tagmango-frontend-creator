@@ -1,6 +1,9 @@
 "use client";
 
-import { Card, Col, Flex, List, Radio, Row, Typography } from "antd";
+import useApi from "@/hooks/useApi";
+import { Card, Col, Flex, List, Radio, Row, Spin, Typography } from "antd";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { MdCreate, MdDelete, MdSettingsSuggest } from "react-icons/md";
 import { BreadCrumbNav } from "../../../../../components/common/breadcrumb";
 import { PrimaryButton } from "../../../../../components/common/button";
@@ -30,13 +33,69 @@ const data = [
 ];
 
 const CreatorCreateQuiz = () => {
+  const { getUserQuizByQuizId } = useApi();
+
+  const [loadQuiz, setLoadQuiz] = useState<boolean>(false);
+  const params = useSearchParams();
+  const quizId = params.get("quizId");
+  const [quiz, setQuiz] = useState<{ name: string }>({ name: "" });
+
+  const [question, setQuestion] = useState<{
+    quizId: string;
+    imageUrl: string;
+    text: string;
+    points: number;
+  }>({
+    quizId: "",
+    text: "",
+    imageUrl: "",
+    points: 0,
+  });
+
   const breadCrumbItems = [
     {
       title: "Back to Quiz",
       link: "/quizzes",
     },
   ];
-  return (
+
+  const fetchQuiz = async () => {
+    setLoadQuiz(true);
+    try {
+      const data = await getUserQuizByQuizId(quizId!);
+      setQuiz({ ...quiz, name: data.name });
+    } catch (error) {
+    } finally {
+      setLoadQuiz(false);
+    }
+  };
+
+  // const [questionText, setQuestionText] = useState();
+
+  // const handleUpload = (fileUrl: string) => {
+  //   setEventDataType((prev) => {
+  //     return { ...prev, backgroundImageUrl: fileUrl };
+  //   });
+  // };
+
+  useEffect(() => {
+    if (quizId) fetchQuiz();
+  }, [quizId]);
+
+  const handleUpload = (fileUrl: string) => {
+    console.log(fileUrl);
+    setQuestion({ ...question, imageUrl: fileUrl });
+  };
+
+  console.log(question);
+
+  return loadQuiz ? (
+    <>
+      <Spin size="large" spinning={loadQuiz} fullscreen>
+        {undefined}
+      </Spin>
+    </>
+  ) : (
     <>
       <div className={`${style["quizzes-create-creator-page"]}`}>
         {/* Page Title */}
@@ -46,10 +105,17 @@ const CreatorCreateQuiz = () => {
             <PageTitle title="Create Quiz" />
           </Col>
         </Row>
+
         <Row className="p-r-b-l-15 ">
           <Col span={16}>
             <div>
               <div className="creator-quiz-card">
+                <FormInput
+                  disabled={true}
+                  type="text"
+                  value={quiz.name}
+                  placeholder="Quiz Title"
+                />
                 <Card
                   style={{ width: "100%" }}
                   cover={
@@ -75,10 +141,12 @@ const CreatorCreateQuiz = () => {
                       </Flex>
                       {/* Upload Media For Question Start */}
                       <div className="media-image-quiz">
-                        <ImageUpload />
+                        <ImageUpload handleUpload={handleUpload} />
                       </div>
                       {/* Create Question Box Start*/}
-                      {/* <TextEditor /> */}
+                      <TextEditor
+                        onChange={(e) => setQuestion({ ...question, text: e })}
+                      />
                     </div>
                   }
                   // Footer Buttons Start
@@ -102,10 +170,10 @@ const CreatorCreateQuiz = () => {
                   <div className="card-main-content">
                     <div className="create-questions-list-wrapper">
                       <h4>Answers</h4>
-                      <p>
+                      {/* <p>
                         Lorem, ipsum dolor sit amet consectetur adipisicing
                         elit. Vel, reiciendis!
-                      </p>
+                      </p> */}
                       <List>
                         {[1, 2, 3].map((i) => (
                           <List.Item key={i}>
@@ -115,22 +183,20 @@ const CreatorCreateQuiz = () => {
                               style={{ width: "100%" }}
                             >
                               <Radio className="radio-list" />
-                              <TextEditor />
+                              <TextEditor
+                                onChange={function (newContent: string): void {
+                                  throw new Error("Function not implemented.");
+                                }}
+                              />
                             </Flex>
                           </List.Item>
                         ))}
-                        <List.Item>
-                          <PrimaryButton
-                            text="Add Answer"
-                            variant="secondary"
-                            icon={<AddIcon />}
-                          />
-                        </List.Item>
                       </List>
                     </div>
                   </div>
                 </Card>
               </div>
+
               <PrimaryButton
                 text="Add New Answer"
                 variant="secondary"
