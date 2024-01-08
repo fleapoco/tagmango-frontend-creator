@@ -168,7 +168,9 @@ export const UpcomingEvents = ({
                                       ).toLocaleTimeString("en-US", options)}
                                     </Title>
                                   )}
-                                  <Title level={5}>Occurrence 1 of 1</Title>
+                                  {event.recurringStatus && (
+                                    <Title level={5}>Occurrence 1 of 1</Title>
+                                  )}
                                 </div>
                               </Col>
                               <Col span={12}>
