@@ -1,8 +1,8 @@
 "use client";
 
-import { Col, DatePicker, Flex, Row, Select, TimePicker } from "antd";
+import { Col, DatePicker, Flex, Row, Select, Spin, TimePicker } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { BreadCrumbNav } from "../../../../../components/common/breadcrumb";
 import { PrimaryButton } from "../../../../../components/common/button";
@@ -52,12 +52,16 @@ const CreateEvent = () => {
   const params = useSearchParams();
   const eventId = params.get("id");
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [repeatEvery, setRepeatEvery] = useState<string>("week");
+  const [repeatOn, setRepeatOn] = useState<string[]>([]);
+
   const [eventDataType, setEventDataType] = useState<EventDataType>({
     title: "",
     description: "",
     eventLink: "",
     startDate: new Date().toISOString(),
-    endDate: "",
+    endDate: new Date().toISOString(),
     startTime: new Date().toISOString(),
     endTime: new Date().toISOString(),
     recurringStatus: false,
@@ -74,6 +78,32 @@ const CreateEvent = () => {
       fetchEventById(eventId);
     }
   }, [eventId]);
+
+  function formatEndDateToCustomString(endDate: string | Date | number | null) {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    if (endDate) {
+      let date = new Date(endDate);
+      const day = date.getDate();
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+
+      return `${month} ${day}, ${year}`;
+    }
+  }
 
   const isValidFormData = (eventData: EventDataType) => {
     if (
@@ -93,6 +123,7 @@ const CreateEvent = () => {
   const fetchEventById = async (id: string) => {
     if (!id) return;
     try {
+      setIsLoading(true);
       let data: APIError | EventData = await getCreatorEventById(id);
 
       if ("title" in data) {
@@ -108,13 +139,48 @@ const CreateEvent = () => {
           backgroundImageUrl: data.backgroundImageUrl,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRecurringChange = (checked: boolean) => {
+    if (checked && eventDataType.startDate) {
+      let currentDate = new Date(eventDataType.startDate);
+      const oneMonthLaterDate = new Date(currentDate);
+      oneMonthLaterDate.setMonth(currentDate.getMonth() + 1);
+
+      setEventDataType((prev) => {
+        return {
+          ...prev,
+          endDate: oneMonthLaterDate.toISOString(),
+        };
+      });
+
+      setRepeatOn([getCurrentDay(currentDate)]);
+    } else {
+      setEventDataType((prev) => {
+        return {
+          ...prev,
+          endDate: eventDataType.startDate,
+        };
+      });
+      setRepeatOn([]);
+    }
     setEventDataType((prev) => {
       return { ...prev, recurringStatus: checked };
     });
+  };
+
+  const handleRepeatOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    if (repeatOn.includes(value)) {
+      setRepeatOn(repeatOn.filter((day) => day !== value));
+    } else {
+      setRepeatOn([...repeatOn, value]);
+    }
   };
 
   const handleOnChange = (
@@ -132,6 +198,24 @@ const CreateEvent = () => {
       setEventDataType((prev) => {
         return { ...prev, eventLink: e.target.value };
       });
+  };
+
+  const getCurrentDay = (date: string | Date) => {
+    const currentDate = new Date(date);
+    const currentDayIndex = currentDate.getDay();
+
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const currentDay = daysOfWeek[currentDayIndex];
+
+    return currentDay;
   };
 
   const handleUpload = (fileUrl: string) => {
@@ -178,68 +262,89 @@ const CreateEvent = () => {
 
   return (
     <>
-      <div className={`${style["creator-event-form"]}`}>
-        <Row style={{ paddingTop: "16px" }}>
-          <Col span={16} className="border-box">
-            <BreadCrumbNav item={breadCrumbItems} />
-            {/* Page Title */}
-            <Row justify={"space-between"} style={{ alignItems: "center" }}>
-              <Col span={24}>
-                <PageTitle title={eventId ? "Edit Event" : "Create Event"} />
-              </Col>
-            </Row>
-            <div style={{ paddingTop: "15px" }}>
-              <FormInput
-                placeholder="Add a Title"
-                label="Title"
-                type="text"
-                onChange={handleOnChange}
-                name="title"
-                value={eventDataType.title}
-              />
-              {/* <FormSelect
+      <Spin size="large" spinning={isLoading}>
+        <div className={`${style["creator-event-form"]}`}>
+          <Row style={{ paddingTop: "16px" }}>
+            <Col span={16} className="border-box">
+              <BreadCrumbNav item={breadCrumbItems} />
+              {/* Page Title */}
+              <Row justify={"space-between"} style={{ alignItems: "center" }}>
+                <Col span={24}>
+                  <PageTitle title={eventId ? "Edit Event" : "Create Event"} />
+                </Col>
+              </Row>
+              <div style={{ paddingTop: "15px" }}>
+                <FormInput
+                  placeholder="Add a Title"
+                  label="Title"
+                  type="text"
+                  onChange={handleOnChange}
+                  name="title"
+                  value={eventDataType.title}
+                />
+                {/* <FormSelect
                 label='Who can join this Event?'
                 handleChange={function (value: string): void {
                   throw new Error('Function not implemented.');
                 }}
               /> */}
-              <FormInput
-                placeholder="Add a Event Link"
-                label="Event Link"
-                type="text"
-                onChange={handleOnChange}
-                name="eventLink"
-                value={eventDataType.eventLink}
-              />
+                <FormInput
+                  placeholder="Add a Event Link"
+                  label="Event Link"
+                  type="text"
+                  onChange={handleOnChange}
+                  name="eventLink"
+                  value={eventDataType.eventLink}
+                />
 
-              <div className="form-group schedule-wrapper">
-                <label htmlFor="schedule">Schedule Event</label>
-                <Row gutter={16}>
-                  <Col span={10}>
-                    <FormInput
-                      placeholder="Date"
-                      label=""
-                      type="date"
-                      onDateChange={(date: Date) => {
-                        setEventDataType((prev) => {
-                          return { ...prev, startDate: date.toISOString() };
-                        });
-                        setEventDataType((prev) => {
-                          return { ...prev, endDate: date.toISOString() };
-                        });
-                      }}
-                      name="startDate"
-                      dateTimeValue={eventDataType.startDate}
-                    />
-                  </Col>
-                  <Col span={14}>
-                    <Flex
-                      align="center"
-                      justify="space-between"
-                      gap={16}
-                      style={{ width: "100%" }}
-                    >
-                      {/* <FormInput
+                <div className="form-group schedule-wrapper">
+                  <label htmlFor="schedule">Schedule Event</label>
+                  <Row gutter={16}>
+                    <Col span={10}>
+                      <FormInput
+                        placeholder="Date"
+                        label=""
+                        type="date"
+                        onDateChange={(date: Date) => {
+                          setEventDataType((prev) => {
+                            return { ...prev, startDate: date.toISOString() };
+                          });
+
+                          if (!eventDataType.recurringStatus) {
+                            setEventDataType((prev) => {
+                              return { ...prev, endDate: date.toISOString() };
+                            });
+                          } else {
+                            const currentDate = new Date(date);
+                            const oneMonthLaterDate = new Date(date);
+                            oneMonthLaterDate.setMonth(
+                              currentDate.getMonth() + 1
+                            );
+
+                            setEventDataType((prev) => {
+                              return {
+                                ...prev,
+                                endDate: oneMonthLaterDate.toISOString(),
+                              };
+                            });
+
+                            if (repeatOn.length <= 1) {
+                              setRepeatOn([getCurrentDay(currentDate)]);
+                            }
+                          }
+                        }}
+                        name="startDate"
+                        dateTimeValue={eventDataType.startDate}
+                      />
+                    </Col>
+                    <Col span={14}>
+                      <Flex
+                        align="center"
+                        justify="space-between"
+                        gap={16}
+                        style={{ width: "100%" }}
+                      >
+                        {/* <FormInput
                         placeholder='Start Time'
                         label=''
                         type='time'
@@ -251,19 +356,23 @@ const CreateEvent = () => {
                         name='startTime'
                         dateTimeValue={eventDataType.startTime}
                       /> */}
-                      <TimePicker
-                        value={dayjs(eventDataType.startTime)}
-                        placeholder="Start Time"
-                        onChange={(time) => {
-                          if (time) {
-                            setEventDataType((prev) => {
-                              return { ...prev, startTime: time.toISOString() };
-                            });
-                          }
-                        }}
-                      />
-                      <span>to</span>
-                      {/* <FormInput
+                        <TimePicker
+                          value={dayjs(eventDataType.startTime)}
+                          format="h:mm A"
+                          placeholder="Start Time"
+                          onChange={(time) => {
+                            if (time) {
+                              setEventDataType((prev) => {
+                                return {
+                                  ...prev,
+                                  startTime: time.toISOString(),
+                                };
+                              });
+                            }
+                          }}
+                        />
+                        <span>to</span>
+                        {/* <FormInput
                         placeholder='End Time'
                         label=''
                         type='time'
@@ -276,131 +385,156 @@ const CreateEvent = () => {
                         dateTimeValue={eventDataType.endTime}
                       /> */}
 
-                      <TimePicker
-                        value={dayjs(eventDataType.endTime)}
-                        placeholder="End Time"
-                        onChange={(time) => {
-                          if (time) {
-                            setEventDataType((prev) => {
-                              return { ...prev, endTime: time.toISOString() };
-                            });
-                          }
-                        }}
+                        <TimePicker
+                          value={dayjs(eventDataType.endTime)}
+                          format="h:mm A"
+                          placeholder="End Time"
+                          onChange={(time) => {
+                            if (time) {
+                              setEventDataType((prev) => {
+                                return { ...prev, endTime: time.toISOString() };
+                              });
+                            }
+                          }}
+                        />
+                      </Flex>
+                    </Col>
+                  </Row>
+                </div>
+
+                {/* Recurring Box */}
+                <div className="recurring-box">
+                  <div className="recurring-header form-group">
+                    <Flex gap={2} align="center" justify="space-between">
+                      <div>
+                        <label htmlFor="">Recurring</label>
+
+                        {eventDataType.recurringStatus && (
+                          <Link href={"#"}>
+                            {`${repeatEvery === "week" ? "Weekly" : "Daily"} ${
+                              repeatEvery === "week"
+                                ? `on ${repeatOn.join(" ")}`
+                                : ""
+                            } until ${formatEndDateToCustomString(
+                              eventDataType.endDate
+                            )}`}
+                          </Link>
+                        )}
+                      </div>
+                      <SwitchToggle
+                        onChange={handleRecurringChange}
+                        value={eventDataType.recurringStatus}
                       />
                     </Flex>
-                  </Col>
-                </Row>
-              </div>
-
-              {/* Recurring Box */}
-              <div className="recurring-box">
-                <div className="recurring-header form-group">
-                  <Flex gap={2} align="center" justify="space-between">
-                    <div>
-                      <label htmlFor="">Recurring</label>
-
-                      {eventDataType.recurringStatus && (
-                        <Link href={"#"}>
-                          Weekly on Friday until Feb 05, 2024
-                        </Link>
-                      )}
-                    </div>
-                    <SwitchToggle
-                      onChange={handleRecurringChange}
-                      value={eventDataType.recurringStatus}
-                    />
-                  </Flex>
-                </div>
-                {eventDataType.recurringStatus && (
-                  <div className="recurring-content">
-                    <Row
-                      gutter={15}
-                      style={{ alignItems: "center", rowGap: 30 }}
-                    >
-                      <Col span={8}>
-                        <span>Repeat every</span>
-                      </Col>
-                      <Col span={16}>
-                        <Select
-                          defaultValue="week"
-                          style={{ width: "auto" }}
-                          bordered={false}
-                          options={[
-                            { value: "week", label: "week" },
-                            { value: "monday", label: "monday" },
-                            { value: "sunday", label: "sunday" },
-                          ]}
-                        />
-                      </Col>
-                      <Col span={8}>
-                        <span>Repeat on</span>
-                      </Col>
-                      <Col span={16}>
-                        <div className="radio-group">
-                          <label htmlFor="Monday">
-                            <input
-                              type="checkbox"
-                              name="Monday"
-                              value="Monday"
-                              id="Monday"
-                            />
-                            <div>M</div>
-                          </label>
-                          <label htmlFor="Tuesday">
-                            <input
-                              type="checkbox"
-                              name="Tuesday"
-                              value="Tuesday"
-                              id="Tuesday"
-                            />
-                            <div>T</div>
-                          </label>
-                          <label htmlFor="Wednesday">
-                            <input
-                              type="checkbox"
-                              name="Wednesday"
-                              value="Wednesday"
-                              id="Wednesday"
-                            />
-                            <div>W</div>
-                          </label>
-                          <label htmlFor="Thursday">
-                            <input
-                              type="checkbox"
-                              name="Thursday"
-                              value="Thursday"
-                              id="Thursday"
-                            />
-                            <div>T</div>
-                          </label>
-                          <label htmlFor="Friday">
-                            <input
-                              type="checkbox"
-                              name="Friday"
-                              value="Friday"
-                              id="Friday"
-                            />
-                            <div>F</div>
-                          </label>
-                          <label htmlFor="Saturday">
-                            <input
-                              type="checkbox"
-                              name="Saturday"
-                              value="Saturday"
-                              id="Saturday"
-                            />
-                            <div>S</div>
-                          </label>
-                          <label htmlFor="Sunday">
-                            <input
-                              type="checkbox"
-                              name="Sunday"
-                              value="Sunday"
-                              id="Sunday"
-                            />
-                            <div>S</div>
-                          </label>
-                          {/* <label htmlFor=''>
+                  </div>
+                  {eventDataType.recurringStatus && (
+                    <div className="recurring-content">
+                      <Row
+                        gutter={15}
+                        style={{ alignItems: "center", rowGap: 30 }}
+                      >
+                        <Col span={8}>
+                          <span>Repeat every</span>
+                        </Col>
+                        <Col span={16}>
+                          <Select
+                            defaultValue="week"
+                            value={repeatEvery}
+                            onChange={(value) => setRepeatEvery(value)}
+                            style={{ width: "auto" }}
+                            bordered={false}
+                            options={[
+                              { value: "week", label: "week" },
+                              { value: "day", label: "day" },
+                            ]}
+                          />
+                        </Col>
+                        {repeatEvery === "week" && (
+                          <Col span={8}>
+                            <span>Repeat on</span>
+                          </Col>
+                        )}
+                        {repeatEvery === "week" && (
+                          <Col span={16}>
+                            <div className="radio-group">
+                              <label htmlFor="Monday">
+                                <input
+                                  type="checkbox"
+                                  name="Monday"
+                                  value="Monday"
+                                  id="Monday"
+                                  checked={repeatOn.includes("Monday")}
+                                  onChange={handleRepeatOnChange}
+                                />
+                                <div>M</div>
+                              </label>
+                              <label htmlFor="Tuesday">
+                                <input
+                                  type="checkbox"
+                                  name="Tuesday"
+                                  value="Tuesday"
+                                  id="Tuesday"
+                                  checked={repeatOn.includes("Tuesday")}
+                                  onChange={handleRepeatOnChange}
+                                />
+                                <div>T</div>
+                              </label>
+                              <label htmlFor="Wednesday">
+                                <input
+                                  type="checkbox"
+                                  name="Wednesday"
+                                  value="Wednesday"
+                                  id="Wednesday"
+                                  checked={repeatOn.includes("Wednesday")}
+                                  onChange={handleRepeatOnChange}
+                                />
+                                <div>W</div>
+                              </label>
+                              <label htmlFor="Thursday">
+                                <input
+                                  type="checkbox"
+                                  name="Thursday"
+                                  value="Thursday"
+                                  id="Thursday"
+                                  checked={repeatOn.includes("Thursday")}
+                                  onChange={handleRepeatOnChange}
+                                />
+                                <div>T</div>
+                              </label>
+                              <label htmlFor="Friday">
+                                <input
+                                  type="checkbox"
+                                  name="Friday"
+                                  value="Friday"
+                                  id="Friday"
+                                  checked={repeatOn.includes("Friday")}
+                                  onChange={handleRepeatOnChange}
+                                />
+                                <div>F</div>
+                              </label>
+                              <label htmlFor="Saturday">
+                                <input
+                                  type="checkbox"
+                                  name="Saturday"
+                                  value="Saturday"
+                                  id="Saturday"
+                                  checked={repeatOn.includes("Saturday")}
+                                  onChange={handleRepeatOnChange}
+                                />
+                                <div>S</div>
+                              </label>
+                              <label htmlFor="Sunday">
+                                <input
+                                  type="checkbox"
+                                  name="Sunday"
+                                  value="Sunday"
+                                  id="Sunday"
+                                  checked={repeatOn.includes("Sunday")}
+                                  onChange={handleRepeatOnChange}
+                                />
+                                <div>S</div>
+                              </label>
+                              {/* <label htmlFor=''>
                           <input type='radio' name='weekday' value='W' />
                         </label>
                         <label htmlFor=''>
@@ -415,62 +549,83 @@ const CreateEvent = () => {
                         <label htmlFor=''>
                           <input type='radio' name='weekday' value='S' />
                         </label> */}
-                        </div>
-                      </Col>
-                      <Col span={8}>
-                        <span>Ends on</span>
-                      </Col>
-                      <Col span={16}>
-                        <DatePicker
-                          defaultValue={dayjs("2015/01/01", dateFormat)}
-                          format={dateFormat}
-                        />
-                      </Col>
-                    </Row>
+                            </div>
+                          </Col>
+                        )}
+                        <Col span={8}>
+                          <span>Ends on</span>
+                        </Col>
+                        <Col span={16}>
+                          <DatePicker
+                            // defaultValue={dayjs("2015/01/01", dateFormat)}
+                            disabledDate={(currentDate) =>
+                              currentDate &&
+                              currentDate.isBefore(
+                                dayjs(eventDataType.startDate),
+                                "day"
+                              )
+                            }
+                            value={dayjs(eventDataType.endDate)}
+                            onChange={(date: Dayjs | null) => {
+                              if (date) {
+                                setEventDataType((prev) => {
+                                  return {
+                                    ...prev,
+                                    endDate: date.toISOString(),
+                                  };
+                                });
+                              }
+                            }}
+                            name="endDate"
+                            format={dateFormat}
+                          />
+                        </Col>
+                      </Row>
+                    </div>
+                  )}
+                </div>
+
+                {/* About Event Start */}
+                <div className="about-event">
+                  <h4>About Event</h4>
+                  <div className="form-group">
+                    <label htmlFor="header-img">Header Image</label>
+                    <ImageUpload
+                      handleUpload={handleUpload}
+                      existImageUrl={
+                        eventId ? eventDataType.backgroundImageUrl : ""
+                      }
+                    />
                   </div>
-                )}
-              </div>
-
-              {/* About Event Start */}
-              <div className="about-event">
-                <h4>About Event</h4>
-                <div className="form-group">
-                  <label htmlFor="header-img">Header Image</label>
-                  <ImageUpload
-                    handleUpload={handleUpload}
-                    existImageUrl={
-                      eventId ? eventDataType.backgroundImageUrl : ""
-                    }
-                  />
+                  <div className="form-group">
+                    <label>Description</label>
+                    <FormTextArea
+                      placeholder="Event Description"
+                      onChange={handleOnChange}
+                      name="description"
+                      value={eventDataType.description}
+                    />
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>Description</label>
-                  <FormTextArea
-                    placeholder="Event Description"
-                    onChange={handleOnChange}
-                    name="description"
-                    value={eventDataType.description}
-                  />
-                </div>
-              </div>
 
-              <Flex gap="middle" justify="end">
-                <PrimaryButton
-                  variant="secondary"
-                  text="Cancel"
-                  onClick={() => router.back()}
-                />
-                <PrimaryButton
-                  variant="primary"
-                  text="Save"
-                  disabled={!isValidFormData(eventDataType)}
-                  onClick={handleSubmit}
-                />
-              </Flex>
-            </div>
-          </Col>
-        </Row>
-      </div>
+                <Flex gap="middle" justify="end">
+                  <PrimaryButton
+                    variant="secondary"
+                    text="Cancel"
+                    onClick={() => router.back()}
+                  />
+                  <PrimaryButton
+                    variant="primary"
+                    text="Save"
+                    disabled={!isValidFormData(eventDataType)}
+                    onClick={handleSubmit}
+                  />
+                </Flex>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </Spin>
     </>
   );
 };
