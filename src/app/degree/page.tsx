@@ -1,6 +1,6 @@
 "use client";
 
-import { Col, Row } from "antd";
+import { Col, Row, Spin } from "antd";
 
 import useAPI from "@/hooks/useApi";
 import { UserDegree } from "@/types";
@@ -10,6 +10,7 @@ import PageTitle from "../../../components/pagetitle";
 
 const Certification = () => {
   const { getUserDegrees } = useAPI();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userDegrees, setUserDegrees] = useState<UserDegree[]>([]);
 
   useEffect(() => {
@@ -17,10 +18,14 @@ const Certification = () => {
   }, []);
 
   const fetchUserDegrees = async () => {
+    setIsLoading(true);
     try {
       const degreeData = await getUserDegrees();
       if (degreeData && Array.isArray(degreeData)) setUserDegrees(degreeData);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -33,14 +38,16 @@ const Certification = () => {
       </Row>
       {/* Events Cards */}
 
-      <Row gutter={[16, 16]}>
-        {userDegrees &&
-          userDegrees.map((degree: UserDegree) => (
-            <Col span={8} key={degree?.id}>
-              <CertificationCard degree={degree} />
-            </Col>
-          ))}
-      </Row>
+      <Spin size="large" spinning={isLoading}>
+        <Row gutter={[16, 16]}>
+          {userDegrees &&
+            userDegrees.map((degree: UserDegree) => (
+              <Col span={8} key={degree?.id}>
+                <CertificationCard degree={degree} />
+              </Col>
+            ))}
+        </Row>
+      </Spin>
     </>
   );
 };

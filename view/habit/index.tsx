@@ -1,4 +1,12 @@
-import { Calendar, CalendarProps, Col, Row, Space, Typography } from "antd";
+import {
+  Calendar,
+  CalendarProps,
+  Col,
+  Row,
+  Space,
+  Spin,
+  Typography,
+} from "antd";
 import type { Dayjs } from "dayjs";
 
 import useAPI from "@/hooks/useApi";
@@ -14,6 +22,7 @@ const { Title } = Typography;
 
 export const Habit = () => {
   const { getUserHabits } = useAPI();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [habitData, setHabitData] = useState<HabitType[]>();
 
   const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
@@ -21,11 +30,13 @@ export const Habit = () => {
   };
 
   const fetchUserHabits = async () => {
+    setIsLoading(true);
     try {
       const habitData = await getUserHabits();
-      setHabitData(habitData ?? []);
+      if (habitData && Array.isArray(habitData)) setHabitData(habitData ?? []);
     } catch (error) {
     } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,47 +81,50 @@ export const Habit = () => {
             <PageTitle title="Habits" />
           </Col>
         </Row>
-        {/* Calendar And Complete habits Cards */}
-        <div className="list-calendar-wrapper">
-          <Row gutter={[16, 0]} style={{ height: "100%" }}>
-            {/* Calendar Start */}
-            <Col span={16} className="col">
-              <div className="border-box">
-                <Calendar
-                  onPanelChange={onPanelChange}
-                  cellRender={monthCellRender}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
-            </Col>
-            {/* Habits Cards Wrapper Start */}
-            <Col span={8} className="col">
-              <div className="border-box">
-                <Title
-                  level={5}
-                  className="sub-title"
-                  style={{ margin: "0 0 18px 0" }}
-                >
-                  Complete today's Habits
-                </Title>
-                <div className="habit-cards-wrapper">
-                  {habitData && (
-                    <Row gutter={[0, 12]}>
-                      {habitData.map((e, i) => (
-                        <Col span={24} key={i}>
-                          <MarkAsCompleteCard
-                            habitData={e}
-                            onMarkComplete={() => fetchUserHabits()}
-                          />
-                        </Col>
-                      ))}
-                    </Row>
-                  )}
+
+        <Spin size="large" spinning={isLoading}>
+          {/* Calendar And Complete habits Cards */}
+          <div className="list-calendar-wrapper">
+            <Row gutter={[16, 0]} style={{ height: "100%" }}>
+              {/* Calendar Start */}
+              <Col span={16} className="col">
+                <div className="border-box">
+                  <Calendar
+                    onPanelChange={onPanelChange}
+                    cellRender={monthCellRender}
+                    style={{ width: "100%", height: "100%" }}
+                  />
                 </div>
-              </div>
-            </Col>
-          </Row>
-        </div>
+              </Col>
+              {/* Habits Cards Wrapper Start */}
+              <Col span={8} className="col">
+                <div className="border-box">
+                  <Title
+                    level={5}
+                    className="sub-title"
+                    style={{ margin: "0 0 18px 0" }}
+                  >
+                    Complete today's Habits
+                  </Title>
+                  <div className="habit-cards-wrapper">
+                    {habitData && (
+                      <Row gutter={[0, 12]}>
+                        {habitData.map((e, i) => (
+                          <Col span={24} key={i}>
+                            <MarkAsCompleteCard
+                              habitData={e}
+                              onMarkComplete={() => fetchUserHabits()}
+                            />
+                          </Col>
+                        ))}
+                      </Row>
+                    )}
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </Spin>
       </div>
     </>
   );

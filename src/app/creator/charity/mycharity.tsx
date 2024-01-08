@@ -19,6 +19,7 @@ interface MyCharityTableType {
     myCharitiesStartDate?: string | null,
     myCharitiesEndDate?: string | null
   ) => void;
+  isLoading: boolean;
 }
 
 interface DataType {
@@ -29,7 +30,11 @@ interface DataType {
   organization: string;
 }
 
-const MyCharityTable = ({ data, fetchMyCharities }: MyCharityTableType) => {
+const MyCharityTable = ({
+  data,
+  fetchMyCharities,
+  isLoading,
+}: MyCharityTableType) => {
   const dispatch = useAppDispatch();
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
   const [myCharitiesStartDate, setMyCharitiesStartDate] = useState<
@@ -195,7 +200,7 @@ const MyCharityTable = ({ data, fetchMyCharities }: MyCharityTableType) => {
           </Col>
         </Row>
       </div>
-      <Table columns={columns} dataSource={data} />
+      <Table loading={isLoading} columns={columns} dataSource={data} />
     </>
   );
 };

@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { DataAnalyticsTypes } from '@/types';
-import { Button, Popconfirm, Popover, Table } from 'antd';
-import type { ColumnsType, TableProps } from 'antd/es/table';
-import dayjs from 'dayjs';
-import { PrimaryButton } from '../../../components/common/button';
-import { TableNoData } from '../../../components/common/tablenodata';
+import { DataAnalyticsTypes } from "@/types";
+import { Button, Popconfirm, Popover, Table } from "antd";
+import type { ColumnsType, TableProps } from "antd/es/table";
+import dayjs from "dayjs";
+import { PrimaryButton } from "../../../components/common/button";
+import { TableNoData } from "../../../components/common/tablenodata";
 
 interface DataType {
   id: string;
@@ -27,15 +27,16 @@ interface PropTypeForTable {
   CountData: number;
   dataPerPage: number;
   currentPage: number;
+  isLoading?: boolean;
 }
 
-const onChange: TableProps<DataType>['onChange'] = (
+const onChange: TableProps<DataType>["onChange"] = (
   pagination,
   filters,
   sorter,
   extra
 ) => {
-  console.log('params', pagination, filters, sorter, extra);
+  console.log("params", pagination, filters, sorter, extra);
 };
 
 export const BusinessData = ({
@@ -46,6 +47,7 @@ export const BusinessData = ({
   dataPerPage,
   CountData,
   currentPage,
+  isLoading,
 }: PropTypeForTable) => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
 
@@ -55,91 +57,91 @@ export const BusinessData = ({
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Month',
-      dataIndex: 'month',
+      title: "Month",
+      dataIndex: "month",
       render: (value, record) => {
-        return dayjs(value).format('MMM YYYY');
+        return dayjs(value).format("MMM YYYY");
       },
     },
     {
-      title: 'Total Revenue Earned',
-      dataIndex: 'revenueEarned',
+      title: "Total Revenue Earned",
+      dataIndex: "revenueEarned",
       width: 150,
       render: (value, record) => {
-        return `₹${value.toLocaleString('en-IN')}`;
+        return `₹${value.toLocaleString("en-IN")}`;
       },
     },
     {
-      title: 'Total Ad Spends',
-      dataIndex: 'adSpends',
+      title: "Total Ad Spends",
+      dataIndex: "adSpends",
       width: 150,
       render: (value, record) => {
-        return `₹${value.toLocaleString('en-IN')}`;
+        return `₹${value.toLocaleString("en-IN")}`;
       },
     },
     {
-      title: 'Average Cost/Lead',
-      dataIndex: 'costPerLead',
+      title: "Average Cost/Lead",
+      dataIndex: "costPerLead",
       width: 150,
       render: (value, record) => {
-        return `₹${value.toLocaleString('en-IN')}`;
+        return `₹${value.toLocaleString("en-IN")}`;
       },
     },
     {
-      title: 'Total Leads Generated ',
-      dataIndex: 'totalLeadsGenerated',
+      title: "Total Leads Generated ",
+      dataIndex: "totalLeadsGenerated",
     },
     {
-      title: 'Total Paid Customers',
-      dataIndex: 'totalPaidCustomers',
+      title: "Total Paid Customers",
+      dataIndex: "totalPaidCustomers",
     },
     {
-      title: 'Total Group Size',
-      dataIndex: 'vipGroupSize',
+      title: "Total Group Size",
+      dataIndex: "vipGroupSize",
     },
     {
-      title: 'ROAS',
-      dataIndex: 'adSpendsReturn',
+      title: "ROAS",
+      dataIndex: "adSpendsReturn",
     },
 
     {
-      title: '',
-      dataIndex: '',
-      key: 'x',
-      fixed: 'right',
+      title: "",
+      dataIndex: "",
+      key: "x",
+      fixed: "right",
       width: 80,
       render: (text, record, index) => (
         <Popover
-          placement='top'
+          placement="top"
           content={
             <>
               <Button
-                type='text'
+                type="text"
                 onClick={() => handleUpdate(record)}
                 style={{
-                  width: '100%',
-                  textAlign: 'left',
-                  marginBottom: '8px',
+                  width: "100%",
+                  textAlign: "left",
+                  marginBottom: "8px",
                 }}
               >
                 Edit
               </Button>
               <Popconfirm
-                onConfirm={() => handleDelete(record?.id ?? '')}
-                title='Are you sure to delete?'
-                okText='Yes'
-                cancelText='No'
+                onConfirm={() => handleDelete(record?.id ?? "")}
+                title="Are you sure to delete?"
+                okText="Yes"
+                cancelText="No"
               >
                 <Button
-                  style={{ width: '100%', textAlign: 'left' }}
-                  type='text'
+                  style={{ width: "100%", textAlign: "left" }}
+                  type="text"
                 >
                   Delete
                 </Button>
               </Popconfirm>
             </>
           }
-          trigger='click'
+          trigger="click"
           open={openPopoverIndex === index}
           onOpenChange={(visible) => {
             if (!visible) {
@@ -148,8 +150,8 @@ export const BusinessData = ({
           }}
         >
           <PrimaryButton
-            text=''
-            variant='info'
+            text=""
+            variant="info"
             onClick={() => handlePopoverOpen(index)}
           />
         </Popover>
@@ -159,8 +161,9 @@ export const BusinessData = ({
 
   return (
     <>
-      <div style={{ paddingTop: '15px' }}>
+      <div style={{ paddingTop: "15px" }}>
         <Table
+          loading={isLoading}
           columns={columns}
           dataSource={data as any}
           onChange={onChange}

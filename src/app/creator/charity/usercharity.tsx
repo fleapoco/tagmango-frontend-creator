@@ -12,6 +12,7 @@ interface UsersCharityType {
     usersCharitiesStartDate?: string | null,
     usersCharitiesEndDate?: string | null
   ) => void;
+  isLoading: boolean;
 }
 
 interface DataType {
@@ -59,7 +60,11 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const UsersCharity = ({ data, fetchUsersCharities }: UsersCharityType) => {
+const UsersCharity = ({
+  data,
+  fetchUsersCharities,
+  isLoading,
+}: UsersCharityType) => {
   const [usersCharitiesStartDate, setUsersCharitiesStartDate] = useState<
     string | null
   >(null);
@@ -109,7 +114,7 @@ const UsersCharity = ({ data, fetchUsersCharities }: UsersCharityType) => {
           </Col>
         </Row>
       </div>
-      <Table columns={columns} dataSource={data} />
+      <Table loading={isLoading} columns={columns} dataSource={data} />
     </>
   );
 };

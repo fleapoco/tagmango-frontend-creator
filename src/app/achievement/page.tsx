@@ -1,6 +1,6 @@
 "use client";
 
-import { Col, Row } from "antd";
+import { Col, Row, Spin } from "antd";
 
 import useAPI from "@/hooks/useApi";
 import { UserAchievement } from "@/types";
@@ -10,6 +10,7 @@ import PageTitle from "../../../components/pagetitle";
 
 const Certification = () => {
   const { getUserAchievements } = useAPI();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>(
     []
   );
@@ -19,11 +20,15 @@ const Certification = () => {
   }, []);
 
   const fetchUserAchievements = async () => {
+    setIsLoading(true);
     try {
       const achievementsData = await getUserAchievements();
       if (achievementsData && Array.isArray(achievementsData))
         setUserAchievements(achievementsData);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -36,14 +41,16 @@ const Certification = () => {
       </Row>
       {/* Events Cards */}
 
-      <Row gutter={[16, 16]}>
-        {userAchievements &&
-          userAchievements.map((achievement: UserAchievement) => (
-            <Col span={8} key={achievement?.id}>
-              <CertificationCard achievement={achievement} />
-            </Col>
-          ))}
-      </Row>
+      <Spin size="large" spinning={isLoading}>
+        <Row gutter={[16, 16]}>
+          {userAchievements &&
+            userAchievements.map((achievement: UserAchievement) => (
+              <Col span={8} key={achievement?.id}>
+                <CertificationCard achievement={achievement} />
+              </Col>
+            ))}
+        </Row>
+      </Spin>
     </>
   );
 };

@@ -23,6 +23,7 @@ export interface ChartData {
 const CharityPage = () => {
   const dispatch = useAppDispatch();
   const { getCharities, deleteCharity, getCharitiesGraphData } = useAPI();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [chartData, setChartData] = useState<ChartData>({
     series: [],
     labels: [],
@@ -68,10 +69,14 @@ const CharityPage = () => {
   console.log({ filterDate });
 
   const _getCharities = async () => {
+    setIsLoading(true);
     try {
       const charities = await getCharities({ createdAt: filterDate });
       setCharities(charities);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -150,6 +155,7 @@ const CharityPage = () => {
           </Col>
         </Row>
         <Charity
+          isLoading={isLoading}
           data={charities}
           handleDelete={(id) => handleDeleteCharity(id)}
           handlePagination={function (page: number, pageSize: number): void {

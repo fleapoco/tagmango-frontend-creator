@@ -34,6 +34,9 @@ export const Data = () => {
     useState<GetAnalyticsGraphDataTypes | null>(null);
 
   const storedAnalytics = useAppSelector(getDataAnalyticsStored);
+  const [isAnalyticsLoading, setIsAnalyticsLoading] = useState<boolean>(false);
+  const [isAnalyticsGraphLoading, setIsAnalyticsGraphLoading] =
+    useState<boolean>(false);
   const { getDataAnalytics, deleteAnalytic, getAnalyticsGraphData } = useAPI();
   const [value, setValue] = useState(1);
 
@@ -43,11 +46,13 @@ export const Data = () => {
   };
 
   const fetchAnalyticsGraphData = async () => {
+    setIsAnalyticsGraphLoading(true);
     try {
       const data = await getAnalyticsGraphData();
       setAnalyticGraphData(data);
     } catch (error) {
     } finally {
+      setIsAnalyticsGraphLoading(false);
     }
   };
 
@@ -57,10 +62,14 @@ export const Data = () => {
   // };
 
   const _getAnalytics = async () => {
+    setIsAnalyticsLoading(true);
     try {
       const dataAnalytics = await getDataAnalytics();
       dispatch(setDataAnalytics(dataAnalytics));
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsAnalyticsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -117,6 +126,7 @@ export const Data = () => {
             <Tabs defaultActiveKey="1" onChange={() => onChange}>
               <TabPane tab="Business Data" key="1">
                 <BusinessData
+                  isLoading={isAnalyticsLoading}
                   data={storedAnalytics || []}
                   handleDelete={(id) => handleDeleteAnalytics(id)}
                   handlePagination={function (
@@ -132,7 +142,10 @@ export const Data = () => {
                 />
               </TabPane>
               <TabPane tab="Business Statistics" key="2">
-                <BusinessStatistics chartData={analyticGraphData!} />
+                <BusinessStatistics
+                  chartData={analyticGraphData!}
+                  isLoading={isAnalyticsGraphLoading}
+                />
               </TabPane>
             </Tabs>
           </Col>

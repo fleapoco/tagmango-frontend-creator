@@ -2,7 +2,7 @@
 
 import useAPI from "@/hooks/useApi";
 import { APIError, UserAchievement } from "@/types";
-import { Col, Flex, Row } from "antd";
+import { Col, Flex, Row, Spin } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { BreadCrumbNav } from "../../../../../components/common/breadcrumb";
@@ -29,6 +29,7 @@ type AchievementDataType = {
 
 const NewCertification = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { createAchievement, getCreatorAchievementById, updateAchievement } =
     useAPI();
   const params = useSearchParams();
@@ -60,6 +61,7 @@ const NewCertification = () => {
 
   const fetchAchievementById = async (id: string) => {
     if (!id) return;
+    setIsLoading(true);
     try {
       let data: APIError | UserAchievement = await getCreatorAchievementById(
         id
@@ -73,7 +75,10 @@ const NewCertification = () => {
           thumbnailUrl: data.thumbnailUrl,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleUpload = (fileUrl: string) => {
@@ -139,66 +144,68 @@ const NewCertification = () => {
 
   return (
     <>
-      <div className={`${style["creator-task-details-form"]} `}>
-        {/* Page Title */}
-        <Row style={{ padding: "15px 0" }}>
-          <Col span={24}>
-            <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle
-              title={achievementId ? "Edit Achievement" : "New Achievement"}
-            />
-          </Col>
-        </Row>
-        <Row gutter={[12, 0]}>
-          <Col span={12}>
-            <div className="border-box p-15">
-              <ImageUpload
-                handleUpload={handleUpload}
-                existImageUrl={
-                  achievementId ? achievementDataType.thumbnailUrl : ""
-                }
+      <Spin size="large" spinning={isLoading}>
+        <div className={`${style["creator-task-details-form"]} `}>
+          {/* Page Title */}
+          <Row style={{ padding: "15px 0" }}>
+            <Col span={24}>
+              <BreadCrumbNav item={breadCrumbItems} />
+              <PageTitle
+                title={achievementId ? "Edit Achievement" : "New Achievement"}
               />
-              <FormInput
-                label="Achievement Title"
-                placeholder="Add Title"
-                onChange={handleOnChange}
-                name="title"
-                value={achievementDataType.title}
-              />
-              <FormInput
-                label="Achievement Link"
-                type="link"
-                onChange={handleOnChange}
-                placeholder="Add Achievement Link"
-                name="achievementLink"
-                value={achievementDataType.achievementLink}
-              />
-              <div className="form-group">
-                <label htmlFor="requirement">Requirement</label>
-                <FormTextArea
-                  placeholder="Description"
+            </Col>
+          </Row>
+          <Row gutter={[12, 0]}>
+            <Col span={12}>
+              <div className="border-box p-15">
+                <ImageUpload
+                  handleUpload={handleUpload}
+                  existImageUrl={
+                    achievementId ? achievementDataType.thumbnailUrl : ""
+                  }
+                />
+                <FormInput
+                  label="Achievement Title"
+                  placeholder="Add Title"
                   onChange={handleOnChange}
-                  name="description"
-                  value={achievementDataType.description}
+                  name="title"
+                  value={achievementDataType.title}
                 />
+                <FormInput
+                  label="Achievement Link"
+                  type="link"
+                  onChange={handleOnChange}
+                  placeholder="Add Achievement Link"
+                  name="achievementLink"
+                  value={achievementDataType.achievementLink}
+                />
+                <div className="form-group">
+                  <label htmlFor="requirement">Requirement</label>
+                  <FormTextArea
+                    placeholder="Description"
+                    onChange={handleOnChange}
+                    name="description"
+                    value={achievementDataType.description}
+                  />
+                </div>
+                <Flex gap={"middle"} justify="end">
+                  <PrimaryButton
+                    text="Cancel"
+                    variant="secondary"
+                    onClick={() => router.back()}
+                  />
+                  <PrimaryButton
+                    text="Save"
+                    variant="primary"
+                    disabled={!isValidFormData(achievementDataType)}
+                    onClick={handleSubmit}
+                  />
+                </Flex>
               </div>
-              <Flex gap={"middle"} justify="end">
-                <PrimaryButton
-                  text="Cancel"
-                  variant="secondary"
-                  onClick={() => router.back()}
-                />
-                <PrimaryButton
-                  text="Save"
-                  variant="primary"
-                  disabled={!isValidFormData(achievementDataType)}
-                  onClick={handleSubmit}
-                />
-              </Flex>
-            </div>
-          </Col>
-        </Row>
-      </div>
+            </Col>
+          </Row>
+        </div>
+      </Spin>
     </>
   );
 };

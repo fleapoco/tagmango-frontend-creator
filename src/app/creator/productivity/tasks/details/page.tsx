@@ -53,6 +53,7 @@ const breadCrumbItems = [
 
 const DetailsTaks = () => {
   const [data, setData] = useState<DataType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalCompletedTask, setTotalCompletedTask] = useState<number>(0);
   const [totalPendingTask, setTotalPendingTask] = useState<number>(0);
   const [currentUserName, setCurrentUserName] = useState<string>("User");
@@ -65,6 +66,7 @@ const DetailsTaks = () => {
   }, []);
 
   const fetchCreatorsUserTasks = async () => {
+    setIsLoading(true);
     try {
       if (userId) {
         const taskData = await getCreatorTaskByUserId(userId);
@@ -77,7 +79,10 @@ const DetailsTaks = () => {
           console.log(transformedData);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Function to transform data
@@ -166,7 +171,7 @@ const DetailsTaks = () => {
 
         <Row>
           <Col span={24}>
-            <Table columns={columns} dataSource={data} />
+            <Table loading={isLoading} columns={columns} dataSource={data} />
           </Col>
         </Row>
       </div>

@@ -18,6 +18,7 @@ const { Title } = Typography;
 const CreatorEvent = () => {
   const router = useRouter();
   const { getCreatorEvents } = useAPI();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [eventsData, setEventsData] = useState<EventData[]>([]);
   const [upcoming, setUpcoming] = useState<EventData[]>([]);
   const [previous, setPrevious] = useState<EventData[]>([]);
@@ -109,6 +110,7 @@ const CreatorEvent = () => {
     startDate?: string | null,
     endDate?: string | null
   ) => {
+    setIsLoading(true);
     try {
       let data = await getCreatorEvents({
         startDate: startDate,
@@ -117,7 +119,10 @@ const CreatorEvent = () => {
       if (data && Array.isArray(data)) {
         setEventsData(data);
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const HangleButttonClick = () => {
@@ -143,12 +148,13 @@ const CreatorEvent = () => {
                   <UpcomingEvents
                     data={groupedUpcoming}
                     fetchEventData={fetchEventData}
+                    isLoading={isLoading}
                   />
                 </div>
               </TabPane>
               <TabPane tab="Previous" key="2">
                 <div className="previous-wrapper">
-                  <PreviousEvents data={previous} />
+                  <PreviousEvents data={previous} isLoading={isLoading} />
                 </div>
               </TabPane>
             </Tabs>

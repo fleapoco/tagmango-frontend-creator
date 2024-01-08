@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { CharitiesType } from '@/types';
-import { Button, Popconfirm, Popover, Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import dayjs from 'dayjs';
-import { useRouter } from 'next/navigation';
-import { PrimaryButton } from '../../components/common/button';
+import { CharitiesType } from "@/types";
+import { Button, Popconfirm, Popover, Table } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import { PrimaryButton } from "../../components/common/button";
 
 interface PropTypeForTable {
   data: CharitiesType[];
@@ -15,6 +15,7 @@ interface PropTypeForTable {
   CountData: number;
   dataPerPage: number;
   currentPage: number;
+  isLoading?: boolean;
 }
 
 export const Charity = ({
@@ -25,6 +26,7 @@ export const Charity = ({
   dataPerPage,
   CountData,
   currentPage,
+  isLoading,
 }: PropTypeForTable) => {
   const [openPopoverIndex, setOpenPopoverIndex] = useState<number | null>(null);
 
@@ -35,72 +37,72 @@ export const Charity = ({
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push('/charity/addcharity');
+    router.push("/charity/addcharity");
   };
 
   const columns: ColumnsType<CharitiesType> = [
     {
-      title: 'Date',
-      dataIndex: 'date',
+      title: "Date",
+      dataIndex: "date",
       render: (value, record) => {
-        return dayjs(value).format('DD-MM-YYYY');
+        return dayjs(value).format("DD-MM-YYYY");
       },
     },
     {
-      title: 'Organization Name',
-      dataIndex: 'organizationName',
+      title: "Organization Name",
+      dataIndex: "organizationName",
     },
     {
-      title: 'Category',
-      dataIndex: 'category',
+      title: "Category",
+      dataIndex: "category",
       render: (value, record) => {
         return record.category?.title;
       },
     },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
+      title: "Amount",
+      dataIndex: "amount",
       render: (value, record) => {
-        return `₹ ${value.toLocaleString('en-IN')}`;
+        return `₹ ${value.toLocaleString("en-IN")}`;
       },
     },
 
     {
-      title: '',
-      dataIndex: '',
-      key: 'x',
+      title: "",
+      dataIndex: "",
+      key: "x",
       render: (text, record, index) => (
         <Popover
-          placement='top'
+          placement="top"
           content={
             <>
               <Button
-                type='text'
+                type="text"
                 onClick={() => handleUpdate(record)}
                 style={{
-                  width: '100%',
-                  textAlign: 'left',
-                  marginBottom: '8px',
+                  width: "100%",
+                  textAlign: "left",
+                  marginBottom: "8px",
                 }}
               >
                 Edit
               </Button>
               <Popconfirm
-                onConfirm={() => handleDelete(record?.id ?? '')}
-                title='Are you sure to delete?'
-                okText='Yes'
-                cancelText='No'
+                onConfirm={() => handleDelete(record?.id ?? "")}
+                title="Are you sure to delete?"
+                okText="Yes"
+                cancelText="No"
               >
                 <Button
-                  style={{ width: '100%', textAlign: 'left' }}
-                  type='text'
+                  style={{ width: "100%", textAlign: "left" }}
+                  type="text"
                 >
                   Delete
                 </Button>
               </Popconfirm>
             </>
           }
-          trigger='click'
+          trigger="click"
           open={openPopoverIndex === index}
           onOpenChange={(visible) => {
             if (!visible) {
@@ -109,8 +111,8 @@ export const Charity = ({
           }}
         >
           <PrimaryButton
-            text=''
-            variant='info'
+            text=""
+            variant="info"
             onClick={() => handlePopoverOpen(index)}
           />
         </Popover>
@@ -121,6 +123,7 @@ export const Charity = ({
   return (
     <>
       <Table
+        loading={isLoading}
         columns={columns}
         dataSource={data}
         // onChange={onChange}

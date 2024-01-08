@@ -47,6 +47,9 @@ const CharityPage = () => {
     getCreatorUsersCharities,
     getCharitiesGraphData,
   } = useAPI();
+  const [isMyCharityLoading, setIsMyCharityLoading] = useState<boolean>(false);
+  const [isUserCharityLoading, setIsUserCharityLoading] =
+    useState<boolean>(false);
   const [myCharityTotalAmount, setMyCharityTotalAmount] = useState<number>(0);
   const [usersCharityTotalAmount, setUsersCharityTotalAmount] =
     useState<number>(0);
@@ -84,6 +87,7 @@ const CharityPage = () => {
     myCharitiesStartDate?: string | null,
     myCharitiesEndDate?: string | null
   ) => {
+    setIsMyCharityLoading(true);
     try {
       const data = await getCreatorMyCharities({
         startDate: myCharitiesStartDate,
@@ -97,7 +101,10 @@ const CharityPage = () => {
         setMyCharityTotalAmount(totalAmount);
         setMyCharitiesData(transformMyCharityData(data));
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsMyCharityLoading(false);
+    }
   };
 
   const transformMyCharityData = (
@@ -125,6 +132,7 @@ const CharityPage = () => {
     usersCharitiesStartDate?: string | null,
     usersCharitiesEndDate?: string | null
   ) => {
+    setIsUserCharityLoading(true);
     try {
       const data = await getCreatorUsersCharities({
         startDate: usersCharitiesStartDate,
@@ -138,7 +146,10 @@ const CharityPage = () => {
         setUsersCharityTotalAmount(totalAmount);
         setUsersCharitiesData(transformUserCharityData(data));
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsUserCharityLoading(false);
+    }
   };
 
   const transformUserCharityData = (
@@ -237,12 +248,14 @@ const CharityPage = () => {
                 <MyCharityTable
                   data={myCharitiesData}
                   fetchMyCharities={fetchMyCharities}
+									isLoading={isMyCharityLoading}
                 />
               </TabPane>
               <TabPane tab={`${"User"}'s Charity`} key="2">
                 <UsersCharity
                   data={usersCharitiesData}
                   fetchUsersCharities={fetchUsersCharities}
+									isLoading={isUserCharityLoading}
                 />
               </TabPane>
             </Tabs>

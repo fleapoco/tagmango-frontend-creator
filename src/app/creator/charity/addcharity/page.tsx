@@ -4,7 +4,7 @@ import useAPI from "@/hooks/useApi";
 import { useAppSelector } from "@/hooks/useRedux";
 import { getCharityStored } from "@/redux/reducers/charity.reducer";
 import { CharitiesType, TypeCategory } from "@/types";
-import { Col, Flex, Row, message } from "antd";
+import { Col, Flex, Row, Spin, message } from "antd";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ const AddCharity = () => {
 
   const type = params.get("type");
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { createCharities, getCategories, updateCharity } = useAPI();
   const [categories, setCategories] = useState<
@@ -55,6 +56,7 @@ const AddCharity = () => {
   };
 
   const fetchCategories = async () => {
+    setIsLoading(true);
     try {
       const data = await getCategories({ type: TypeCategory.CHARITY });
       setCategories(
@@ -64,7 +66,10 @@ const AddCharity = () => {
         }))
       );
       setFormData((formData) => ({ ...formData, categoryId: data.at(0)?.id }));
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -90,85 +95,87 @@ const AddCharity = () => {
 
   return (
     <>
-      <Row style={{ paddingTop: "16px" }}>
-        <Col span={16} className="border-box">
-          <BreadCrumbNav item={breadCrumbItems} />
-          {/* Page Title */}
-          <Row justify={"space-between"} style={{ alignItems: "center" }}>
-            <Col span={24}>
-              <PageTitle
-                title={type === "update" ? "Edit Charity" : "Add Charity"}
+      <Spin size="large" spinning={isLoading}>
+        <Row style={{ paddingTop: "16px" }}>
+          <Col span={16} className="border-box">
+            <BreadCrumbNav item={breadCrumbItems} />
+            {/* Page Title */}
+            <Row justify={"space-between"} style={{ alignItems: "center" }}>
+              <Col span={24}>
+                <PageTitle
+                  title={type === "update" ? "Edit Charity" : "Add Charity"}
+                />
+              </Col>
+            </Row>
+            {/* Add Form Filed */}
+            <div style={{ paddingTop: "15px" }}>
+              <FormSelect
+                label="Category"
+                options={categories}
+                handleChange={(value) =>
+                  setFormData((formData) => ({
+                    ...formData,
+                    categoryId: value,
+                  }))
+                }
+                value={formData.categoryId}
               />
-            </Col>
-          </Row>
-          {/* Add Form Filed */}
-          <div style={{ paddingTop: "15px" }}>
-            <FormSelect
-              label="Category"
-              options={categories}
-              handleChange={(value) =>
-                setFormData((formData) => ({
-                  ...formData,
-                  categoryId: value,
-                }))
-              }
-              value={formData.categoryId}
-            />
 
-            <FormInput
-              placeholder=""
-              label="Amount Donated"
-              icon={"₹"}
-              type="number"
-              value={formData.amount}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  amount: Number(e.target.value),
-                })
-              }
-            />
-
-            <FormInput
-              placeholder=""
-              label="Organisation Name"
-              type="text"
-              value={formData.organizationName}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  organizationName: e.target.value,
-                })
-              }
-            />
-
-            <FormInput
-              placeholder="Charity date"
-              label="Date"
-              type="date"
-              value={formData.date ?? dayjs().toISOString()}
-              onDateChange={(date, dateString) =>
-                setFormData({ ...formData, date: dateString })
-              }
-            />
-
-            <Flex gap="middle" justify="end">
-              <PrimaryButton
-                variant="secondary"
-                text="Cancel"
-                onClick={() => router.push("/creator/charity")}
+              <FormInput
+                placeholder=""
+                label="Amount Donated"
+                icon={"₹"}
+                type="number"
+                value={formData.amount}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    amount: Number(e.target.value),
+                  })
+                }
               />
-              <PrimaryButton
-                disabled={!formData.organizationName || !formData.amount}
-                variant="primary"
-                text="Save"
-                loading={loading}
-                onClick={handleCreateCharity}
+
+              <FormInput
+                placeholder=""
+                label="Organisation Name"
+                type="text"
+                value={formData.organizationName}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    organizationName: e.target.value,
+                  })
+                }
               />
-            </Flex>
-          </div>
-        </Col>
-      </Row>
+
+              <FormInput
+                placeholder="Charity date"
+                label="Date"
+                type="date"
+                value={formData.date ?? dayjs().toISOString()}
+                onDateChange={(date, dateString) =>
+                  setFormData({ ...formData, date: dateString })
+                }
+              />
+
+              <Flex gap="middle" justify="end">
+                <PrimaryButton
+                  variant="secondary"
+                  text="Cancel"
+                  onClick={() => router.push("/creator/charity")}
+                />
+                <PrimaryButton
+                  disabled={!formData.organizationName || !formData.amount}
+                  variant="primary"
+                  text="Save"
+                  loading={loading}
+                  onClick={handleCreateCharity}
+                />
+              </Flex>
+            </div>
+          </Col>
+        </Row>
+      </Spin>
     </>
   );
 };

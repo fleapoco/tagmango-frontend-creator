@@ -48,6 +48,7 @@ const TasksPage = () => {
     },
   ];
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<DataType[]>([]);
   const { getCreatorTasks } = useAPI();
   const router = useRouter();
@@ -57,13 +58,17 @@ const TasksPage = () => {
   }, []);
 
   const fetchAllUserTasks = async () => {
+    setIsLoading(true);
     try {
       const taskData = await getCreatorTasks();
       if (taskData && Array.isArray(taskData)) {
         let transformedData = transformData(taskData);
         setData(transformedData);
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const transformData = (data: CreatorAllUsersTasks[]): DataType[] => {
@@ -94,7 +99,7 @@ const TasksPage = () => {
         </Row>
         <Row>
           <Col span={24}>
-            <Table columns={columns} dataSource={data} />
+            <Table loading={isLoading} columns={columns} dataSource={data} />
           </Col>
         </Row>
       </div>

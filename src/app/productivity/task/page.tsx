@@ -1,6 +1,6 @@
 "use client";
 import type { RadioChangeEvent } from "antd";
-import { Col, Row, Tabs } from "antd";
+import { Col, Row, Spin, Tabs } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import style from "../../../../style/task.module.scss";
@@ -31,6 +31,7 @@ const Task = () => {
 
   console.log({ tab });
   const counts = useAppSelector(getTasksCounts);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
   const debouncedQuery = useDebounce<string>(searchQuery, 500);
@@ -39,10 +40,14 @@ const Task = () => {
   const storedTasks: GetTask[] = useAppSelector(getTaskStored);
 
   const _getTasks = async () => {
+    setIsLoading(true);
     try {
       const tasks = await getTasks({ query: debouncedSearchQuery });
       dispatch(setTasks(tasks));
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getTaskCounts = async () => {
@@ -108,94 +113,96 @@ const Task = () => {
 
   return (
     <>
-      <div className={`${style["task-page"]} common-panel-wrapper`}>
-        {/* Page Title */}
-        <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
-        >
-          <Col span={12}>
-            <PageTitle title="Tasks" />
-          </Col>
-          <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
-            <PrimaryButton
-              text="New Task"
-              icon={<AddIcon />}
-              variant="primary"
-              onClick={handleButtonClick}
-            />
-          </Col>
-        </Row>
-        {/* Task Total Count Section */}
-        <div className="gray-box task-count-wrapper p-15">
-          <Row gutter={[12, 0]} className=" ">
-            {[
-              {
-                taskName: "Total Tasks completed",
-                count: counts.completed,
-              },
-              {
-                taskName: "Total Tasks Pending",
-                count: counts.pending,
-              },
-            ].map((ele, i) => (
-              <Col key={i} span={6} className="count-card">
-                <PrimaryCard title={ele.taskName}>
-                  <span style={{ margin: 0 }}>{ele.count}</span>
-                </PrimaryCard>
-              </Col>
-            ))}
+      <Spin size="large" spinning={isLoading}>
+        <div className={`${style["task-page"]} common-panel-wrapper`}>
+          {/* Page Title */}
+          <Row
+            justify={"space-between"}
+            style={{ alignItems: "center" }}
+            className="p-15"
+          >
+            <Col span={12}>
+              <PageTitle title="Tasks" />
+            </Col>
+            <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
+              <PrimaryButton
+                text="New Task"
+                icon={<AddIcon />}
+                variant="primary"
+                onClick={handleButtonClick}
+              />
+            </Col>
+          </Row>
+          {/* Task Total Count Section */}
+          <div className="gray-box task-count-wrapper p-15">
+            <Row gutter={[12, 0]} className=" ">
+              {[
+                {
+                  taskName: "Total Tasks completed",
+                  count: counts.completed,
+                },
+                {
+                  taskName: "Total Tasks Pending",
+                  count: counts.pending,
+                },
+              ].map((ele, i) => (
+                <Col key={i} span={6} className="count-card">
+                  <PrimaryCard title={ele.taskName}>
+                    <span style={{ margin: 0 }}>{ele.count}</span>
+                  </PrimaryCard>
+                </Col>
+              ))}
+            </Row>
+          </div>
+          {/* Calendar And My Task Tab Changing */}
+          <Row>
+            <Col span={24}>
+              <Tabs
+                defaultActiveKey="1"
+                activeKey={tab === "my-task" ? "2" : "1"}
+                onChange={(key: string) => handleTabChange(key)}
+              >
+                <TabPane tab="Calendar" key="1">
+                  <div className="p-15">
+                    <CalendarTask />
+                  </div>
+                </TabPane>
+                <TabPane tab="My Tasks" key="2">
+                  <div className="my-tasks-wrapper">
+                    <Row className="p-15 table-searching-functionality">
+                      <Col span={10}>
+                        <FormInput
+                          type="search"
+                          variant="dark"
+                          placeholder="Search"
+                          icon={<SearchIcon />}
+                          onChange={(e) => search(e)}
+                          value={searchQuery}
+                        />
+                      </Col>
+                    </Row>
+
+                    <TaskTable
+                      data={storedTasks}
+                      handleDelete={(id) => handleDeleteTask(id)}
+                      handlePagination={function (
+                        page: number,
+                        pageSize: number
+                      ): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                      CountData={0}
+                      dataPerPage={0}
+                      currentPage={0}
+                      handleUpdate={(groupId) => handleUpdateTakButton(groupId)}
+                    />
+                  </div>
+                </TabPane>
+              </Tabs>
+            </Col>
           </Row>
         </div>
-        {/* Calendar And My Task Tab Changing */}
-        <Row>
-          <Col span={24}>
-            <Tabs
-              defaultActiveKey="1"
-              activeKey={tab === "my-task" ? "2" : "1"}
-              onChange={(key: string) => handleTabChange(key)}
-            >
-              <TabPane tab="Calendar" key="1">
-                <div className="p-15">
-                  <CalendarTask />
-                </div>
-              </TabPane>
-              <TabPane tab="My Tasks" key="2">
-                <div className="my-tasks-wrapper">
-                  <Row className="p-15 table-searching-functionality">
-                    <Col span={10}>
-                      <FormInput
-                        type="search"
-                        variant="dark"
-                        placeholder="Search"
-                        icon={<SearchIcon />}
-                        onChange={(e) => search(e)}
-                        value={searchQuery}
-                      />
-                    </Col>
-                  </Row>
-
-                  <TaskTable
-                    data={storedTasks}
-                    handleDelete={(id) => handleDeleteTask(id)}
-                    handlePagination={function (
-                      page: number,
-                      pageSize: number
-                    ): void {
-                      throw new Error("Function not implemented.");
-                    }}
-                    CountData={0}
-                    dataPerPage={0}
-                    currentPage={0}
-                    handleUpdate={(groupId) => handleUpdateTakButton(groupId)}
-                  />
-                </div>
-              </TabPane>
-            </Tabs>
-          </Col>
-        </Row>
-      </div>
+      </Spin>
     </>
   );
 };
