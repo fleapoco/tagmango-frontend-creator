@@ -12,6 +12,7 @@ import { Card } from "antd";
 
 const { Meta } = Card;
 
+import Loading from "@/app/loading";
 import { default as useAPI, default as useApi } from "@/hooks/useApi";
 import { Quiz } from "@/types";
 import { Typography } from "antd";
@@ -26,6 +27,8 @@ const { Title } = Typography;
 
 const CreatorCertification = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const { createQuiz } = useApi();
   const [disabledTitleField, setDisabledTitleField] = useState<boolean>(false);
@@ -40,10 +43,14 @@ const CreatorCertification = () => {
   };
 
   const fetchCreatorQuizzes = async () => {
+    setLoading(true);
     try {
       const creatorQuizzes = await getCreatorQuizzes();
       setQuizzes(creatorQuizzes ?? []);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -65,7 +72,9 @@ const CreatorCertification = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <Loading loading />
+  ) : (
     <>
       <div className={`${style["creator-quizzes-page"]} common-panel-wrapper `}>
         {/* Page Title */}

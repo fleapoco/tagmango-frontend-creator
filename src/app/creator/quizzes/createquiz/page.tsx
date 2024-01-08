@@ -1,7 +1,8 @@
 "use client";
 
+import Loading from "@/app/loading";
 import useApi from "@/hooks/useApi";
-import { Card, Col, Flex, List, Radio, Row, Spin, Typography } from "antd";
+import { Card, Col, Flex, List, Radio, Row, Typography } from "antd";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdCreate, MdDelete, MdSettingsSuggest } from "react-icons/md";
@@ -100,11 +101,7 @@ const CreatorCreateQuiz = () => {
   }, [questions]);
 
   return loadQuiz ? (
-    <>
-      <Spin size="large" spinning={loadQuiz} fullscreen>
-        {undefined}
-      </Spin>
-    </>
+    <Loading loading={loadQuiz} />
   ) : (
     <>
       <div className={`${style["quizzes-create-creator-page"]}`}>
