@@ -26,7 +26,7 @@ export const Dashboard = () => {
   const fetchUserHabits = async () => {
     try {
       const data = await getUserHabits();
-      setHabitData(data ?? []);
+      if (data && Array.isArray(data)) setHabitData(data ?? []);
     } catch (error) {
     } finally {
     }
