@@ -46,10 +46,11 @@ const CreatorHabit = () => {
     data: CreateCreatorHabitType[]
   ): HabitCalenderType[] => {
     return data.map((item, index) => ({
+      habitId: item.id!,
       title: item.title,
       start: dayjs(item.date!).format("YYYY-MM-DD"),
       end: dayjs(item.date!).format("YYYY-MM-DD")!,
-      url: `${window.location.href}/details?id=${item.id}`,
+      reDirectUrl: `${window.location.href}/details?id=${item.id}`,
       progress: (
         <Progress
           percent={parseFloat(
@@ -60,6 +61,17 @@ const CreatorHabit = () => {
       backgroundColor: index % 2 ? "#fa6800" : "d80473",
       borderColor: index % 2 ? "#fa6800" : "d80473",
     }));
+  };
+
+  const handleEventClick = (arg: any) => {
+    router.push(arg.event._def.extendedProps.reDirectUrl);
+  };
+
+  const handleEventChange = (arg: any) => {
+    // console.log(arg);
+    console.log(arg.event?.start);
+    // console.log(arg?.event?.end);
+    // console.log(arg?.event?._def?.extendedProps?.habitId);
   };
 
   const handleButtonClick = () => {
@@ -93,7 +105,12 @@ const CreatorHabit = () => {
           <Row>
             <Col span={24}>
               <div className="p-15">
-                <FullCalendarData data={habitData} editable={true} />
+                <FullCalendarData
+                  data={habitData}
+                  editable={true}
+                  handleEventClick={handleEventClick}
+                  handleEventChange={handleEventChange}
+                />
               </div>
             </Col>
           </Row>
