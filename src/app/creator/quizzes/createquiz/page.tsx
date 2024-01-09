@@ -37,7 +37,7 @@ const CreatorCreateQuiz = () => {
   const breadCrumbItems = [
     {
       title: 'Back to Quiz',
-      link: '/quizzes',
+      link: '/creator/quizzes',
     },
   ];
   return (
@@ -47,7 +47,7 @@ const CreatorCreateQuiz = () => {
         <Row className='p-15'>
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title='Create Quiz' />
+            <PageTitle title='Create Quiz title' />
           </Col>
         </Row>
         <Row className='p-r-b-l-15 '>

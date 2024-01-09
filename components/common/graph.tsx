@@ -53,13 +53,13 @@ export const DisplayGraph = (props: {
   return (
     <>
       <div className='border-box'>
-        <Row>
-          <Col span={18}>
-            <Title level={4} className='sub-title'>
+        <Row style={{ alignItems: 'center' }}>
+          <Col span={17}>
+            <Title level={4} className='sub-title' style={{ marginBottom: 0 }}>
               {props.title}
             </Title>
           </Col>
-          <Col span={6} style={{ textAlign: 'right' }}>
+          <Col span={7} style={{ textAlign: 'right' }}>
             <RangePicker
               picker='month'
               presets={rangePresets}
@@ -70,7 +70,7 @@ export const DisplayGraph = (props: {
         </Row>
         <Row>
           <Col span={24}>
-            <div className='graph-wrapper'>
+            <div className='chart-graph-wrapper'>
               <Chart chartData={props.chartData} type={props.type} />
             </div>
           </Col>

@@ -1,20 +1,20 @@
-"use client";
-import { Col, DatePicker, Row, Tabs } from "antd";
-import { useRouter } from "next/navigation";
+'use client';
+import { Col, DatePicker, Row, Tabs } from 'antd';
+import { useRouter } from 'next/navigation';
 
-import useAPI from "@/hooks/useApi";
-import { CategoryType, CreatorCharitiesType } from "@/types";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { PrimaryButton } from "../../../../components/common/button";
-import { PrimaryCard } from "../../../../components/common/card";
-import { DisplayGraph } from "../../../../components/common/graph";
-import { AddIcon } from "../../../../components/common/icons";
-import { UserName } from "../../../../components/common/username";
-import PageTitle from "../../../../components/pagetitle";
-import style from "../../../../style/task.module.scss";
-import MyCharityTable from "./mycharity";
-import UsersCharity from "./usercharity";
+import useAPI from '@/hooks/useApi';
+import { CategoryType, CreatorCharitiesType } from '@/types';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { PrimaryButton } from '../../../../components/common/button';
+import { PrimaryCard } from '../../../../components/common/card';
+import { DisplayGraph } from '../../../../components/common/graph';
+import { AddIcon } from '../../../../components/common/icons';
+import { UserName } from '../../../../components/common/username';
+import PageTitle from '../../../../components/pagetitle';
+import style from '../../../../style/task.module.scss';
+import MyCharityTable from './mycharity';
+import UsersCharity from './usercharity';
 
 const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
@@ -63,7 +63,7 @@ const CharityPage = () => {
     series: [],
     labels: [],
   });
-  const [dateRange, setDateRange] = useState<[string, string]>(["", ""]);
+  const [dateRange, setDateRange] = useState<[string, string]>(['', '']);
 
   useEffect(() => {
     graphData();
@@ -122,8 +122,8 @@ const CharityPage = () => {
   // Function to format the date in "MM/DD/YYYY" string format
   const formatDate = (inputDate: string | Date): string => {
     const date = new Date(inputDate);
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
     const year = date.getFullYear().toString();
     return `${month}/${day}/${year}`;
   };
@@ -160,10 +160,10 @@ const CharityPage = () => {
       date: formatDate(item.date),
       user: (
         <>
-          <UserName username={item.userName ? item.userName : ""} />
+          <UserName username={item.userName ? item.userName : ''} />
         </>
       ),
-      category: item.category ? item.category.title : "",
+      category: item.category ? item.category.title : '',
       amount: item.amount,
       organization: item.organizationName,
     }));
@@ -179,43 +179,43 @@ const CharityPage = () => {
   };
 
   const handleButtonClick = () => {
-    router.push("/creator/charity/addcharity");
+    router.push('/creator/charity/addcharity');
   };
 
   return (
     <>
-      <div className={`${style["charity-page"]} common-panel-wrapper`}>
+      <div className={`${style['charity-page']} common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
+          justify={'space-between'}
+          style={{ alignItems: 'center' }}
+          className='p-15'
         >
           <Col span={12}>
-            <PageTitle title="Charity" />
+            <PageTitle title='Charity' />
           </Col>
-          <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
+          <Col span={12} style={{ display: 'flex', justifyContent: 'end' }}>
             <PrimaryButton
-              text="Add Data"
+              text='Add Data'
               icon={<AddIcon />}
-              variant="primary"
+              variant='primary'
               onClick={handleButtonClick}
             />
           </Col>
         </Row>
         {/* Task Total Count Section */}
-        <div className="gray-box task-count-wrapper p-15">
-          <Row gutter={[12, 0]} className=" ">
+        <div className='gray-box task-count-wrapper p-15'>
+          <Row gutter={[12, 0]} className=' '>
             {[
               {
-                taskName: "Overall Charity",
+                taskName: 'Overall Charity',
                 count: myCharityTotalAmount + usersCharityTotalAmount,
               },
             ].map((ele, i) => (
-              <Col key={i} span={6} className="count-card">
+              <Col key={i} span={6} className='count-card'>
                 <PrimaryCard title={ele.taskName}>
                   <span style={{ margin: 0 }}>
-                    ₹{ele.count.toLocaleString("en-IN")}
+                    ₹{ele.count.toLocaleString('en-IN')}
                   </span>
                 </PrimaryCard>
               </Col>
@@ -223,17 +223,17 @@ const CharityPage = () => {
           </Row>
         </div>
 
-        <div className="p-15">
+        <div className='p-15'>
           <Row gutter={[0, 12]}>
             <Col span={24}>
               <DisplayGraph
                 chartData={chartData}
-                title="Charity Tracker"
+                title='Charity Tracker'
                 onDateChange={(
                   dates: dayjs.Dayjs,
                   dateStrings: [string, string]
                 ) => handleDateChangeCallback(dates, dateStrings)}
-                type={"area"}
+                type={'area'}
               />
             </Col>
           </Row>
@@ -241,17 +241,16 @@ const CharityPage = () => {
 
         <Row>
           <Col span={24}>
-            <Tabs defaultActiveKey="1">
-              <TabPane tab="My Charity" key="1">
+            <Tabs defaultActiveKey='1'>
+              <TabPane tab='My Charity' key='1'>
                 {/* Upcoming Events */}
-
                 <MyCharityTable
                   data={myCharitiesData}
                   fetchMyCharities={fetchMyCharities}
 									isLoading={isMyCharityLoading}
                 />
               </TabPane>
-              <TabPane tab={`${"User"}'s Charity`} key="2">
+              <TabPane tab={`${'User'}'s Charity`} key='2'>
                 <UsersCharity
                   data={usersCharitiesData}
                   fetchUsersCharities={fetchUsersCharities}

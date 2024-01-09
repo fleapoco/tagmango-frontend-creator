@@ -2,6 +2,7 @@
 import { Col, Row } from 'antd';
 import { useRouter } from 'next/navigation';
 import { PrimaryButton } from '../../../../../components/common/button';
+import FullCalendarData from '../../../../../components/common/fullcalendar';
 import { AddIcon } from '../../../../../components/common/icons';
 import PageTitle from '../../../../../components/pagetitle';
 import style from '../../../../../style/creator.module.scss';
@@ -35,7 +36,11 @@ const CreatorHabit = () => {
           </Col>
         </Row>
         <Row>
-          <Col span={24}>Calendar</Col>
+          <Col span={24}>
+            <div className='p-15'>
+              <FullCalendarData />
+            </div>
+          </Col>
         </Row>
       </div>
     </>

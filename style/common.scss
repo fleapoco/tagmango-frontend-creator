@@ -463,3 +463,45 @@
     }
   }
 }
+
+.chart-graph-wrapper {
+  transform: scale(1.02);
+}
+.full-calendar {
+  .fc-h-event .fc-event-title {
+    white-space: break-spaces;
+  }
+  a {
+    color: rgba(0, 0, 0, 0.85) !important;
+  }
+
+  .on-calendar-content {
+    color: var(--white-color);
+    padding: 10px;
+
+    &.green {
+      background: green !important;
+    }
+    &.purple {
+      background: purple;
+    }
+    h6 {
+      margin: 0;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .ant-progress-line {
+      margin-bottom: 0;
+      .ant-progress-inner {
+        background: rgba(255, 255, 255, 0.4);
+      }
+      .ant-progress-bg {
+        background-color: var(--white-color);
+      }
+      .ant-progress-text {
+        color: var(--white-color);
+      }
+    }
+  }
+}

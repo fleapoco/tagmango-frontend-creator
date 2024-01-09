@@ -1,7 +1,7 @@
 'use client';
-
-import { Col, Flex, Row } from 'antd';
+import { Col, Flex, Row, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import style from '../../../../style/creator.module.scss';
 
 import { PrimaryButton } from '../../../../components/common/button';
@@ -12,15 +12,17 @@ import { Card } from 'antd';
 
 const { Meta } = Card;
 
-import { Typography } from 'antd';
 import Link from 'next/link';
 import { ActionButton } from '../../../../components/common/actionbutton';
 import { PrimaryCard } from '../../../../components/common/card';
+import { ActionModal } from '../../../../components/common/modal';
 import { CustomTag } from '../../../../components/common/tag';
+import { FormInput } from '../../../../components/form/input';
 
 const { Title } = Typography;
 
 const CreatorCertification = () => {
+  const [modal, setModal] = useState(false);
   const router = useRouter();
 
   const handleButtonClick = () => {
@@ -38,11 +40,12 @@ const CreatorCertification = () => {
             <PrimaryButton
               text='Create Quiz'
               icon={<AddIcon />}
-              onClick={handleButtonClick}
+              onClick={() => setModal(!modal)}
               variant='primary'
             />
           </Col>
         </Row>
+
         {/* Events Cards */}
         <Row gutter={[16, 16]} className='creator-quiz-card-wrapper p-r-b-l-15'>
           <Col span={24}>
@@ -78,6 +81,24 @@ const CreatorCertification = () => {
             </PrimaryCard>
           </Col>
         </Row>
+        {/* Create Quiz Modal */}
+        <ActionModal
+          className='create-quiz-title-modal'
+          title='Create Quiz title'
+          show={modal}
+          onClose={() => setModal(!modal)}
+          footer={
+            <PrimaryButton
+              text='Create'
+              variant='primary'
+              onClick={handleButtonClick}
+            />
+          }
+        >
+          <div className='create-quiz-modal-content'>
+            <FormInput placeholder='Quiz title' label='Add Quiz title' />
+          </div>
+        </ActionModal>
       </div>
     </>
   );
