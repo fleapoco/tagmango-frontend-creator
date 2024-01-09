@@ -1,9 +1,8 @@
-import { Option, Question, QuizSubmission } from "@/types";
-import { Flex, Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import dayjs from "dayjs";
-import { CustomTag } from "../../../../components/common/tag";
-import { Questionbox } from "../common/questionbox";
+import { Option, Question, QuizSubmission } from '@/types';
+import { Flex, Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
+import { Questionbox } from '../common/questionbox';
 
 interface DataType {
   key: React.Key;
@@ -40,21 +39,21 @@ export const AnswerTable = ({
 PropTypeForTable) => {
   const columns: ColumnsType<DataType> = [
     {
-      title: "Date",
-      dataIndex: "createdAt",
-      align: "start",
-      render: (value) => dayjs(value).format("DD MMM YYYY"),
+      title: 'Date',
+      dataIndex: 'createdAt',
+      align: 'start',
+      render: (value) => dayjs(value).format('DD MMM YYYY'),
     },
     {
-      title: "Questions",
-      dataIndex: "questions",
+      title: 'Questions',
+      dataIndex: 'questions',
       render: (_, record) => {
         return (
-          <Flex vertical gap={10} justify="start" align="start">
+          <Flex vertical gap={10} justify='start' align='start'>
             <Questionbox
               question={record}
               onSelectOption={function (optionId: string): void {
-                throw new Error("Function not implemented.");
+                throw new Error('Function not implemented.');
               }}
             />
             {/* <RemarkBox /> */}
@@ -63,29 +62,20 @@ PropTypeForTable) => {
       },
     },
     {
-      title: "Point Assigned",
-      dataIndex: "points",
+      title: 'Point Assigned',
+      dataIndex: 'points',
       render: (value) => {
-        return (
-          <Flex vertical gap={10} justify="start" align="start">
-            <CustomTag title={`${value} XP`} color="#87d068" />
-            {/* <RemarkBox /> */}
-          </Flex>
-        );
+        return `${value} XP`;
       },
     },
     {
-      title: "Point Earned",
-      dataIndex: "pointearned",
+      title: 'Point Earned',
+      dataIndex: 'pointearned',
       render: (value, record) => {
         return (
-          <Flex vertical gap={10} justify="start" align="start">
-            <CustomTag
-              title={`${record?.submissions[0]?.score ?? 0} XP`}
-              color="#87d068"
-            />
-            {/* <RemarkBox /> */}
-          </Flex>
+          <>
+            <strong>{record?.submissions[0]?.score ?? 0} XP</strong>
+          </>
         );
       },
       width: 300,
@@ -125,7 +115,7 @@ PropTypeForTable) => {
 
   return (
     <>
-      <div className="quize-answer-main-table">
+      <div className='quize-answer-main-table'>
         <Table columns={columns as any} dataSource={question} />
       </div>
     </>

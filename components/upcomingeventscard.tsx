@@ -2,6 +2,7 @@ import { Flex, Typography } from 'antd';
 import { PrimaryCard } from './common/card';
 import { CustomTag } from './common/tag';
 
+import { ActionButton } from './common/actionbutton';
 import { PrimaryButton } from './common/button';
 
 const { Title } = Typography;
@@ -12,7 +13,7 @@ const UpcomingEventsCard = () => {
       <PrimaryCard
         extra={
           <>
-            <PrimaryButton variant='info' />
+            <ActionButton horizontal={false} />
           </>
         }
       >
@@ -33,7 +34,7 @@ const UpcomingEventsCard = () => {
             Learn - Podcast or course Podcast or course Podcast or css Podcast
             or course dsd
           </Title>
-          <PrimaryButton text='Join' size='small' variant='primary' />
+          <PrimaryButton text='Join' variant='primary' />
         </div>
       </PrimaryCard>
     </div>

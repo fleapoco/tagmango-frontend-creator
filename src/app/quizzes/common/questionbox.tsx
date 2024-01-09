@@ -1,6 +1,7 @@
-import { Question } from "@/types";
-import { Flex, Radio } from "antd";
-import { useState } from "react";
+import { Question } from '@/types';
+import { Flex } from 'antd';
+import { useState } from 'react';
+import { MdClose, MdOutlineDone } from 'react-icons/md';
 
 interface HtmlRendererProps {
   htmlString: string;
@@ -20,9 +21,9 @@ export const Questionbox = ({
   };
   return (
     <>
-      <div className="question-box-wrapper">
+      <div className='question-box-wrapper'>
         <h2>{<HtmlRenderer htmlString={question.text} />}</h2>
-        <Flex vertical className="q-wrapper">
+        <Flex vertical className='q-wrapper'>
           {question?.options?.length > 0 ? (
             question.options.map((option, index) => (
               <li
@@ -30,14 +31,14 @@ export const Questionbox = ({
                 className={
                   option.submissions.length &&
                   option.submissions?.[0]?.score !== 0
-                    ? "right-question"
+                    ? 'right-question'
                     : option.submissions.length &&
                       option.submissions?.[0]?.score === 0
-                    ? "wrong-answer"
-                    : ""
+                    ? 'wrong-answer'
+                    : ''
                 }
               >
-                <Radio
+                {/* <Radio
                   className="q-name-list"
                   checked={selectedOptionIndex === index}
                   onChange={() => {
@@ -45,8 +46,25 @@ export const Questionbox = ({
                     onSelectOption(option.id);
                   }}
                 >
+                  
+                </Radio> */}
+                <Flex align='center' justify='space-between'>
                   {<HtmlRenderer htmlString={option.text} />}
-                </Radio>
+                  {/* {option.submissions?.[0]?.score !== 0 ? (
+                    'right-question'
+                  ) : (
+                    <MdOutlineDone size={24} />
+                  )} */}
+                  {option.submissions.length &&
+                  option.submissions?.[0]?.score !== 0 ? (
+                    <MdClose size={20} />
+                  ) : option.submissions.length &&
+                    option.submissions?.[0]?.score === 0 ? (
+                    <MdOutlineDone size={20} />
+                  ) : (
+                    ''
+                  )}
+                </Flex>
               </li>
             ))
           ) : (

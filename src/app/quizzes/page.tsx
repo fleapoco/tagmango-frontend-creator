@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import useApi from "@/hooks/useApi";
-import { Quiz } from "@/types";
-import { Button, Col, Row, Typography } from "antd";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { PrimaryButton } from "../../../components/common/button";
-import { PrimaryCard } from "../../../components/common/card";
-import { CustomTag } from "../../../components/common/tag";
-import PageTitle from "../../../components/pagetitle";
-import style from "../../../style/task.module.scss";
+import useApi from '@/hooks/useApi';
+import { Quiz } from '@/types';
+import { Button, Col, Row, Typography } from 'antd';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { PrimaryButton } from '../../../components/common/button';
+import { PrimaryCard } from '../../../components/common/card';
+import { CustomTag } from '../../../components/common/tag';
+import PageTitle from '../../../components/pagetitle';
+import style from '../../../style/task.module.scss';
 
 const { Title } = Typography;
 
@@ -39,30 +39,29 @@ const QuizzesPage = () => {
   return (
     <>
       {!loading && (
-        <div className={`${style["quizzes-page"]}`}>
+        <div className={`${style['quizzes-page']}`}>
           {/* Page Title */}
-          <Row style={{ padding: "15px 0" }}>
+          <Row style={{ padding: '15px 0' }}>
             <Col span={24}>
-              <PageTitle title="Quizzes" />
+              <PageTitle title='Quizzes' />
             </Col>
           </Row>
 
           {quiz.length > 0 && (
-            <Row className="select-quizzes-card-wrapper" gutter={[12, 12]}>
+            <Row className='select-quizzes-card-wrapper' gutter={[12, 12]}>
               {quiz.map((e, i) => (
                 <Col span={8} key={i}>
                   <PrimaryCard title={e.name}>
                     <Title level={5}>{e.questions?.length} Question</Title>
-
                     {e.submissions.length > 0 ? (
-                      <Button className="review-btn">
-                        Yo've completed the quiz and earned &nbsp;
-                        <span className="s-text">{`${e.submissions.reduce(
+                      <Button className='review-btn'>
+                        Yo've completed the quiz and earned <br />
+                        <span className='s-text'>{`${e.submissions.reduce(
                           (accumulator, currentValue) =>
                             accumulator + currentValue.score,
                           0
                         )}XP`}</span>
-                        &nbsp;{" "}
+                        &nbsp;{' '}
                         <Link href={`/quizzes/reviewanswers/${e.id}`}>
                           Review Answers
                         </Link>
@@ -71,7 +70,7 @@ const QuizzesPage = () => {
                       <PrimaryButton
                         onClick={() => router.push(`/quizzes/${e.id}`)}
                         text={
-                          <div style={{ display: "flex", gap: "12px" }}>
+                          <div style={{ display: 'flex', gap: '12px' }}>
                             <span>Play & Earn</span>
                             <CustomTag
                               title={`${e.questions.reduce(
@@ -79,11 +78,11 @@ const QuizzesPage = () => {
                                   accumulator + currentValue.points,
                                 0
                               )}XP`}
-                              color="#87d068"
+                              color='#87d068'
                             />
                           </div>
                         }
-                        variant="secondary"
+                        variant='secondary'
                       />
                     )}
                   </PrimaryCard>
