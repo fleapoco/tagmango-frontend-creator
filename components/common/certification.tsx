@@ -25,20 +25,33 @@ export const CertificationCard = ({
       {degree && (
         <Card
           className='certification-card'
-          style={{ width: '100%' }}
           cover={<img alt={degree?.title} src={degree?.thumbnailUrl} />}
         >
           <Meta
             title={degree?.title}
             description={
-              <div className='events-card-description'>
-                <p>{degree?.description}</p>
+              <>
+                <div className='events-card-description'>
+                  <Paragraph
+                    style={{ margin: '0 0 15px 0' }}
+                    ellipsis={{
+                      rows: 2,
+                      expandable: true,
+                      onEllipsis: (ellipsis) => {
+                        console.log('Ellipsis changed:', ellipsis);
+                      },
+                    }}
+                    title={`${degree?.description}`}
+                  >
+                    {degree?.description}
+                  </Paragraph>
+                </div>
                 <PrimaryButton
                   text='Apply Now'
                   variant='primary'
                   onClick={() => handleApplyButtonClick(degree?.degreeLink)}
                 />
-              </div>
+              </>
             }
           />
         </Card>
@@ -55,20 +68,22 @@ export const CertificationCard = ({
           <Meta
             title={achievement?.title}
             description={
-              <div className='events-card-description'>
-                <Paragraph
-                  style={{ margin: 0 }}
-                  ellipsis={{
-                    rows: 2,
-                    expandable: true,
-                    onEllipsis: (ellipsis) => {
-                      console.log('Ellipsis changed:', ellipsis);
-                    },
-                  }}
-                  title={`${achievement?.description}`}
-                >
-                  {achievement?.description}
-                </Paragraph>
+              <>
+                <div className='events-card-description'>
+                  <Paragraph
+                    style={{ margin: '0 0 15px 0' }}
+                    ellipsis={{
+                      rows: 2,
+                      expandable: true,
+                      onEllipsis: (ellipsis) => {
+                        console.log('Ellipsis changed:', ellipsis);
+                      },
+                    }}
+                    title={`${achievement?.description}`}
+                  >
+                    {achievement?.description}
+                  </Paragraph>
+                </div>
                 <PrimaryButton
                   text='Apply Now'
                   variant='primary'
@@ -76,7 +91,7 @@ export const CertificationCard = ({
                     handleApplyButtonClick(achievement?.achievementLink)
                   }
                 />
-              </div>
+              </>
             }
           />
         </Card>

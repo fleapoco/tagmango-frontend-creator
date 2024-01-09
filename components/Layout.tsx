@@ -87,7 +87,7 @@ const fanItems: ItemType[] = [
   {
     key: '4',
     label: 'Charity',
-    icon: <MdOutlineHandshake />,
+    icon: <MdOutlineHandshake size={20} />,
     link: '/charity',
     creator: false,
   },

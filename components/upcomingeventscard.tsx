@@ -22,7 +22,9 @@ const UpcomingEventsCard = () => {
             title={
               <>
                 <Flex align='center' gap={3}>
-                  <span>Today, 20:22 PM - 10PM</span>
+                  <span style={{ color: 'rgba(0,0,0,.85)' }}>
+                    Today, 20:22 PM - 10PM
+                  </span>
                 </Flex>
               </>
             }
