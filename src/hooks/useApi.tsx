@@ -2,6 +2,7 @@ import {
   APIError,
   CategoryType,
   CharitiesType,
+  CreateCreatorHabitType,
   CreatorAllUsersTasks,
   CreatorCharitiesType,
   CreatorsUserTasks,
@@ -23,6 +24,7 @@ import {
   UserDetails,
 } from "@/types";
 import { getCookie } from "cookies-next";
+import { ApiError } from "next/dist/server/api-utils";
 
 const useAPI = () => {
   const http = async (path: string, options?: IFetchAPICall) => {
@@ -430,6 +432,14 @@ const useAPI = () => {
     return http(`mcq-options`, { method: "POST", data });
   };
 
+  const createCreatorHabit = (data: CreateCreatorHabitType) => {
+    return http(`/habits/create`, { method: "POST", data });
+  };
+
+  const getCreatorHabits = (): Promise<CreateCreatorHabitType[] | ApiError> => {
+    return http("/habit-entities");
+  };
+
   const updateQuestion = (
     questionId: string,
     data: {
@@ -511,6 +521,8 @@ const useAPI = () => {
     deleteQuizById,
     createQuestion,
     createMcqOption,
+    createCreatorHabit,
+    getCreatorHabits,
     updateQuestion,
     updateMcqOptions,
     deleteQuestion,
