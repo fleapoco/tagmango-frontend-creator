@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { Spin } from 'antd';
+import { Spin } from "antd";
 
-const Loading = () => {
+const Loading = ({ loading }: { loading?: boolean }) => {
   return (
     <>
-      <div className='page-loader'>
-        <Spin size='large' />
+      <div className="page-loader">
+        <Spin size="large" spinning={loading ?? false} />
       </div>
     </>
   );

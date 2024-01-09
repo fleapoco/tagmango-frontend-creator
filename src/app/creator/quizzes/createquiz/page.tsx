@@ -1,173 +1,269 @@
-'use client';
+"use client";
 
-import { Card, Checkbox, Col, Flex, List, Row, Typography } from 'antd';
-import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { MdCreate, MdDelete, MdSettingsSuggest } from 'react-icons/md';
-import { BreadCrumbNav } from '../../../../../components/common/breadcrumb';
-import { PrimaryButton } from '../../../../../components/common/button';
-import { AddIcon } from '../../../../../components/common/icons';
-import { CustomTag } from '../../../../../components/common/tag';
-import TextEditor from '../../../../../components/common/texteditor';
-import ImageUpload from '../../../../../components/form/imgupload';
-import { FormInput } from '../../../../../components/form/input';
-import PageTitle from '../../../../../components/pagetitle';
-import style from '../../../../../style/creator.module.scss';
-const onChange = (e: CheckboxChangeEvent) => {
-  console.log(`checked = ${e.target.checked}`);
-};
+import Loading from "@/app/loading";
+import useApi from "@/hooks/useApi";
+import { Card, Col, Flex, List, Radio, Row, Typography } from "antd";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { MdCreate, MdDelete, MdSettingsSuggest } from "react-icons/md";
+import { BreadCrumbNav } from "../../../../../components/common/breadcrumb";
+import { PrimaryButton } from "../../../../../components/common/button";
+import { AddIcon } from "../../../../../components/common/icons";
+import { CustomTag } from "../../../../../components/common/tag";
+import TextEditor from "../../../../../components/common/texteditor";
+import ImageUpload from "../../../../../components/form/imgupload";
+import { FormInput } from "../../../../../components/form/input";
+import PageTitle from "../../../../../components/pagetitle";
+import style from "../../../../../style/creator.module.scss";
 
 const { Title } = Typography;
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
+const initialQuizState = {
+  quizId: "",
+  text: "",
+  imageUrl: "",
+  points: 0,
+  options: Array.from({ length: 4 }, (_, index) => ({
+    text: "",
+    isCorrect: false,
+  })),
+};
+
+export interface QuizType {
+  quizId: string;
+  imageUrl: string;
+  text: string;
+  points: number;
+  options: Array<{ text: string; isCorrect: boolean }>;
+}
 
 const CreatorCreateQuiz = () => {
+  const { getUserQuizByQuizId, createQuestion, createMcqOption } = useApi();
+
+  const [loadQuiz, setLoadQuiz] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const params = useSearchParams();
+  const quizId = params.get("quizId");
+  const [quiz, setQuiz] = useState<{ name: string }>({ name: "" });
+  const [questions, setQuestions] = useState<QuizType[]>([]);
+  const [questionIndex, setNewQuestionIndex] = useState<number>(0);
+  const [newQuestion, setNewQuestion] = useState<QuizType>(initialQuizState);
+
   const breadCrumbItems = [
     {
-      title: 'Back to Quiz',
-      link: '/creator/quizzes',
+      title: "Back to Quiz",
+      link: "/creator/quizzes",
     },
   ];
-  return (
+
+  const fetchQuiz = async () => {
+    setLoadQuiz(true);
+    try {
+      const data = await getUserQuizByQuizId(quizId!);
+      setQuiz({ ...quiz, name: data.name });
+      setQuestions(
+        data.questions.map((ques) => ({
+          ...ques,
+          imageUrl: ques.imageUrl ?? "",
+          quizId: ques.quizId ?? "",
+          options: ques.options ?? [],
+        }))
+      );
+    } catch (error) {
+    } finally {
+      setLoadQuiz(false);
+    }
+  };
+
+  useEffect(() => {
+    if (quizId) fetchQuiz();
+  }, [quizId]);
+
+  const handleUpload = (fileUrl: string) => {
+    console.log(fileUrl);
+    setNewQuestion({ ...newQuestion, imageUrl: fileUrl });
+  };
+
+  const addNewQuestion = () => {
+    const newQuestionIndex = questions.length + 1;
+    setNewQuestionIndex(newQuestionIndex);
+    const newQuestionData = initialQuizState;
+
+    setQuestions((prevData) => [...prevData, newQuestionData]);
+  };
+
+  const createQuestionSet = async (item: QuizType) => {
+    setLoading(true);
+    try {
+      const createdQuestion = await createQuestion({
+        quizId: quizId!,
+        text: item.text,
+        imageUrl: item.imageUrl,
+        points: Number(item.points),
+      });
+
+      if (createdQuestion) {
+        const optionPromises = item.options.map((option) => {
+          createMcqOption({
+            questionId: createdQuestion.id,
+            text: option.text,
+            isCorrect: option.isCorrect,
+          });
+        });
+
+        await Promise.all(optionPromises);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (questions.length < 1) addNewQuestion();
+  }, [questions]);
+
+  return loadQuiz ? (
+    <Loading loading={loadQuiz} />
+  ) : (
     <>
-      <div className={`${style['quizzes-create-creator-page']}`}>
+      <div className={`${style["quizzes-create-creator-page"]}`}>
         {/* Page Title */}
-        <Row className='p-15'>
+        <Row className="p-15">
           <Col span={24}>
             <BreadCrumbNav item={breadCrumbItems} />
-            <PageTitle title='Create Quiz title' />
+            <PageTitle title="Create Quiz title" />
           </Col>
         </Row>
-        <Row className='p-r-b-l-15 '>
+        <Row className="p-r-b-l-15 ">
           <Col span={16}>
+            <FormInput
+              disabled={true}
+              type="text"
+              value={quiz.name}
+              placeholder="Quiz Title"
+            />
+
             <div>
-              <div className='creator-quiz-card'>
-                <Card
-                  style={{ width: '100%' }}
-                  cover={
-                    <div className='header-wrapper p-15'>
-                      <div className='label-tag'>
-                        <CustomTag title='Question 1' className='q-label' />
-                      </div>
-                      <Flex
-                        gap={12}
-                        align='center'
-                        justify='flex-end'
-                        className='actions-box-wrapper'
-                      >
-                        <PrimaryButton
-                          variant={'dark'}
-                          icon={<MdSettingsSuggest size={22} />}
-                        />
-                        <PrimaryButton
-                          variant={'secondary'}
-                          icon={<MdCreate size={22} />}
-                        />
-                        <PrimaryButton
-                          variant={'secondary'}
-                          icon={<MdDelete size={22} />}
-                        />
-                      </Flex>
-                      {/* Upload Media For Question Start */}
-                      <div className='media-image-quiz'>
-                        <ImageUpload />
-                      </div>
-                      {/* Create Question Box Start*/}
-                      <TextEditor placeholder='Write a question' />
-                      {/* Submitted Questions Display */}
-                      <div className='question-box-wrapper'>
-                        <Flex
-                          className='heading-flex'
-                          justify='space-between'
-                          align='center'
-                        >
-                          <h2>Select language</h2>
+              {questions.map((item, index) => (
+                <div className="creator-quiz-card" key={index}>
+                  <Card
+                    style={{ width: "100%" }}
+                    cover={
+                      <div className="header-wrapper p-15">
+                        <div className="label-tag">
                           <CustomTag
-                            color='#87d068'
-                            title='20xp'
-                            className='point-tag'
+                            title={`Question ${index + 1}`}
+                            className="q-label"
                           />
+                        </div>
+                        <Flex
+                          gap={5}
+                          align="center"
+                          justify="flex-end"
+                          className="actions-box-wrapper"
+                        >
+                          <div className="action-box">
+                            <MdSettingsSuggest size={22} />
+                          </div>
+                          <div className="action-box">
+                            <MdCreate size={22} />
+                          </div>
+                          <div className="action-box">
+                            <MdDelete size={22} />
+                          </div>
                         </Flex>
-                        <Flex vertical className='q-wrapper'>
-                          <li>HTML</li>
-                          <li>CSS</li>
-                          <li>JS</li>
-                          <li>React</li>
-                        </Flex>
-                      </div>
-                    </div>
-                  }
-                  // Footer Buttons Start
-                  actions={[
-                    <Flex
-                      justify='flex-end'
-                      align='center'
-                      gap={16}
-                      className='action-buttons remove-from-group'
-                    >
-                      <FormInput
-                        addonAfter='XP'
-                        type='text'
-                        placeholder='Points'
-                      />
-                      <PrimaryButton text='Save' variant='primary' />
-                    </Flex>,
-                  ]}
-                >
-                  {/* Write Answers Box Start */}
-                  <div className='card-main-content'>
-                    <div className='create-questions-list-wrapper'>
-                      <div className='heading-wrapper'>
-                        <h4>Answers</h4>
-                        <p>
-                          Make the correct answer by selecting the circle (0)
-                        </p>
-                      </div>
-                      <List className='q-list-wrap'>
-                        {[1, 2, 3].map((i) => (
-                          <List.Item key={i} style={{ padding: 0 }}>
-                            <Flex
-                              align='start'
-                              gap='0'
-                              style={{ width: '100%' }}
-                            >
-                              <Checkbox
-                                className='question-box'
-                                style={{ width: '100%' }}
-                                onChange={onChange}
-                              >
-                                <TextEditor placeholder='Add an answer' />
-                              </Checkbox>
-                            </Flex>
-                          </List.Item>
-                        ))}
-                        <List.Item style={{ padding: 0 }}>
-                          <PrimaryButton
-                            text='Add Answer'
-                            variant='secondary'
-                            icon={<AddIcon />}
+
+                        {/* Upload Media For Question Start */}
+                        <div className="media-image-quiz">
+                          <ImageUpload
+                            handleUpload={handleUpload}
+                            existImageUrl={item.imageUrl}
                           />
-                        </List.Item>
-                      </List>
-                    </div>
-                  </div>
-                </Card>
-              </div>
+                        </div>
+                        {/* Create Question Box Start*/}
+                        <TextEditor
+                          onChange={(newContent) => {
+                            setNewQuestion({
+                              ...newQuestion,
+                              text: newContent,
+                            });
+                          }}
+                        />
+                      </div>
+                    }
+                    // Footer Buttons Start
+                    actions={[
+                      <Flex
+                        justify="flex-end"
+                        align="center"
+                        gap={16}
+                        className="action-buttons remove-from-group"
+                      >
+                        <FormInput
+                          addonAfter="XP"
+                          type="text"
+                          placeholder="Points"
+                          onChange={(e) =>
+                            setNewQuestion({
+                              ...newQuestion,
+                              points: Number(e.target.value),
+                            })
+                          }
+                        />
+                        <PrimaryButton
+                          text="Save"
+                          loading={loading}
+                          variant="primary"
+                          onClick={() => createQuestionSet(newQuestion)}
+                        />
+                      </Flex>,
+                    ]}
+                  >
+                    {/* Write Answers Box Start */}
+                    {newQuestion.options && (
+                      <div className="card-main-content">
+                        <div className="create-newQuestions-list-wrapper">
+                          <h4>Answers</h4>
+                          {newQuestion.options.map((option, optionIndex) => (
+                            <List key={optionIndex}>
+                              <List.Item>
+                                <Flex
+                                  align="start"
+                                  gap={12}
+                                  style={{ width: "100%" }}
+                                >
+                                  <Radio className="radio-list" />
+                                  <TextEditor
+                                    // value={option.text}
+                                    onChange={(newContent) => {
+                                      const updatedOptions = [
+                                        ...newQuestion.options,
+                                      ];
+                                      updatedOptions[optionIndex].text =
+                                        newContent;
+                                      setNewQuestion({
+                                        ...newQuestion,
+                                        options: updatedOptions,
+                                      });
+                                    }}
+                                  />
+                                </Flex>
+                              </List.Item>
+                            </List>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </Card>
+                </div>
+              ))}
+
               <PrimaryButton
-                text='Add New Question'
-                variant='secondary'
+                text="Add New Question"
+                variant="secondary"
+                onClick={addNewQuestion}
                 icon={<AddIcon />}
               />
             </div>
