@@ -1,4 +1,5 @@
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import interactionPlugin from '@fullcalendar/interaction'; // import the interaction plugin
 import FullCalendar from '@fullcalendar/react';
 import { Progress } from 'antd';
 import React from 'react';
@@ -23,7 +24,7 @@ const customEvents = [
   {
     title: 'Fleapo Event 3',
     start: '2024-01-03',
-    end: '2024-01-05',
+    end: '2024-01-03',
     progress: <Progress percent={20} />,
     backgroundColor: '#d80473',
     borderColor: '#d80473',
@@ -44,8 +45,10 @@ export default class FullCalendarData extends React.Component {
     return (
       <div className='full-calendar'>
         <FullCalendar
-          plugins={[dayGridPlugin]}
+          plugins={[dayGridPlugin, interactionPlugin]}
           initialView='dayGridMonth'
+          editable={true}
+          droppable={true}
           weekends={false}
           height='auto'
           events={customEvents}
