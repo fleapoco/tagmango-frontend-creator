@@ -5,16 +5,28 @@ import React from 'react';
 
 const customEvents = [
   {
-    title: 'Custom Event 1',
+    title: 'Tagmango Event',
     start: '2024-01-15',
     end: '2024-01-15',
     progress: <Progress percent={50} />,
+    backgroundColor: '#fa6800',
+    borderColor: '#fa6800',
   },
   {
-    title: 'Custom Event 1',
+    title: 'Fleapo Event 1',
     start: '2024-01-15',
     end: '2024-01-15',
-    progress: <Progress percent={50} />,
+    progress: <Progress percent={20} />,
+    backgroundColor: '#d80473',
+    borderColor: '#d80473',
+  },
+  {
+    title: 'Fleapo Event 3',
+    start: '2024-01-03',
+    end: '2024-01-05',
+    progress: <Progress percent={20} />,
+    backgroundColor: '#d80473',
+    borderColor: '#d80473',
   },
 ];
 
@@ -35,8 +47,9 @@ export default class FullCalendarData extends React.Component {
           plugins={[dayGridPlugin]}
           initialView='dayGridMonth'
           weekends={false}
-          eventColor='var(--primary-color)'
+          height='auto'
           events={customEvents}
+          eventTextColor='#fff'
           eventContent={renderEventContent}
         />
       </div>
