@@ -413,6 +413,23 @@ const useAPI = () => {
     return http(`quizzes/${quizId}`, { method: "DELETE" });
   };
 
+  const createQuestion = (data: {
+    imageUrl: string;
+    quizId: string;
+    text: string;
+    points: number;
+  }) => {
+    return http(`questions`, { method: "POST", data });
+  };
+
+  const createMcqOption = (data: {
+    questionId: string;
+    text: string;
+    isCorrect: boolean;
+  }) => {
+    return http(`mcq-options`, { method: "POST", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -465,6 +482,8 @@ const useAPI = () => {
     createQuiz,
     getCreatorQuizzes,
     deleteQuizById,
+    createQuestion,
+    createMcqOption,
   };
 };
 

@@ -38,9 +38,10 @@ export interface QuizType {
 }
 
 const CreatorCreateQuiz = () => {
-  const { getUserQuizByQuizId } = useApi();
+  const { getUserQuizByQuizId, createQuestion, createMcqOption } = useApi();
 
   const [loadQuiz, setLoadQuiz] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const params = useSearchParams();
   const quizId = params.get("quizId");
@@ -92,8 +93,31 @@ const CreatorCreateQuiz = () => {
     setQuestions((prevData) => [...prevData, newQuestionData]);
   };
 
-  const createQuestionSet = (item: QuizType) => {
-    console.log({ item });
+  const createQuestionSet = async (item: QuizType) => {
+    setLoading(true);
+    try {
+      const createdQuestion = await createQuestion({
+        quizId: quizId!,
+        text: item.text,
+        imageUrl: item.imageUrl,
+        points: Number(item.points),
+      });
+
+      if (createdQuestion) {
+        const optionPromises = item.options.map((option) => {
+          createMcqOption({
+            questionId: createdQuestion.id,
+            text: option.text,
+            isCorrect: option.isCorrect,
+          });
+        });
+
+        await Promise.all(optionPromises);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -191,6 +215,7 @@ const CreatorCreateQuiz = () => {
                         />
                         <PrimaryButton
                           text="Save"
+                          loading={loading}
                           variant="primary"
                           onClick={() => createQuestionSet(newQuestion)}
                         />
