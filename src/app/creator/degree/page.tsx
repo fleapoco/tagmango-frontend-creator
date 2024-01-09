@@ -75,7 +75,7 @@ const CreatorCertification = () => {
           >
             {creatorDegrees &&
               creatorDegrees.map((degree: UserDegree) => (
-                <Col md={12} lg={8} xl={6} key={degree?.id}>
+                <Col md={12} lg={8} xl={8} key={degree?.id}>
                   <Card
                     className='certification-card'
                     style={{ width: '100%' }}

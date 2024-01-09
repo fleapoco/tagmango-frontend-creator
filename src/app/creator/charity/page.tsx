@@ -247,14 +247,14 @@ const CharityPage = () => {
                 <MyCharityTable
                   data={myCharitiesData}
                   fetchMyCharities={fetchMyCharities}
-									isLoading={isMyCharityLoading}
+                  isLoading={isMyCharityLoading}
                 />
               </TabPane>
               <TabPane tab={`${'User'}'s Charity`} key='2'>
                 <UsersCharity
                   data={usersCharitiesData}
                   fetchUsersCharities={fetchUsersCharities}
-									isLoading={isUserCharityLoading}
+                  isLoading={isUserCharityLoading}
                 />
               </TabPane>
             </Tabs>

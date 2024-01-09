@@ -68,7 +68,7 @@ export const DisplayGraph = (props: {
             />
           </Col>
         </Row>
-        <Row>
+        <Row style={{ paddingTop: '20px' }}>
           <Col span={24}>
             <div className='chart-graph-wrapper'>
               <Chart chartData={props.chartData} type={props.type} />
