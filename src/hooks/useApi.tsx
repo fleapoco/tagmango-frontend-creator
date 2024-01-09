@@ -467,6 +467,14 @@ const useAPI = () => {
     return http(`questions/${questionId}`, { method: "DELETE" });
   };
 
+  const getHabitDetailsById = (id?: string) => {
+    return http(`/habit-entities/${id}`);
+  };
+
+  const getHabitSubmissionDetailsById = (id?: string) => {
+    return http(`/habit-entities/submissions/${id}`);
+  };
+
   return {
     getTasks,
     createTask,
@@ -526,6 +534,8 @@ const useAPI = () => {
     updateQuestion,
     updateMcqOptions,
     deleteQuestion,
+    getHabitDetailsById,
+    getHabitSubmissionDetailsById,
   };
 };
 
