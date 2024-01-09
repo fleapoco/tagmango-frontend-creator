@@ -176,16 +176,19 @@ export interface Option {
   id: string;
   text: string;
   submissions: QuizSubmission[];
+  isCorrect: boolean;
 }
 
 export interface QuizSubmission {
   id: string;
   score: number;
+  selectedOption: Option;
 }
 
 export interface Question {
   id: string;
   creatorId: string;
+  quizId?: string;
   text: string;
   options: Option[];
   points: number;

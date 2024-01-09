@@ -401,6 +401,35 @@ const useAPI = () => {
     return http(endPoint, { method: "GET" });
   };
 
+  const createQuiz = (data: { name: string }) => {
+    return http(`/quizzes`, { method: "POST", data });
+  };
+
+  const getCreatorQuizzes = () => {
+    return http("quizzes/creator");
+  };
+
+  const deleteQuizById = (quizId: string) => {
+    return http(`quizzes/${quizId}`, { method: "DELETE" });
+  };
+
+  const createQuestion = (data: {
+    imageUrl: string;
+    quizId: string;
+    text: string;
+    points: number;
+  }) => {
+    return http(`questions`, { method: "POST", data });
+  };
+
+  const createMcqOption = (data: {
+    questionId: string;
+    text: string;
+    isCorrect: boolean;
+  }) => {
+    return http(`mcq-options`, { method: "POST", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -450,6 +479,11 @@ const useAPI = () => {
     getCreatorTaskByUserId,
     getCreatorMyCharities,
     getCreatorUsersCharities,
+    createQuiz,
+    getCreatorQuizzes,
+    deleteQuizById,
+    createQuestion,
+    createMcqOption,
   };
 };
 
