@@ -18,7 +18,7 @@ const customEvents = [
   },
 ];
 
-const renderEventContent = (eventInfo) => {
+const renderEventContent = (eventInfo: any) => {
   return (
     <div className='on-calendar-content'>
       <h6>{eventInfo.event.title}</h6>
