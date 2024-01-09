@@ -13,15 +13,18 @@ export default function Home() {
     const userData = localStorage.getItem("userData");
     if (!userData) {
       router.push("/not-found");
+      setLoading(false);
       return;
     }
     let user = JSON.parse(userData);
     if (user?.roles === "creator_completed") {
       router.push("/creator/dashboard");
+      setLoading(false);
       return;
     }
-    setLoading(false);
   }, []);
 
-  return loading ? <>Loading...</> : <Dashboard />;
+  console.log({ loading });
+
+  return <Dashboard />;
 }
