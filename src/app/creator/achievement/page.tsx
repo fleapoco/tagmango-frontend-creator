@@ -78,7 +78,7 @@ const CreatorCertification = () => {
           >
             {creatorAchievements &&
               creatorAchievements.map((achievement: UserAchievement) => (
-                <Col md={12} lg={8} xl={6} key={achievement?.id}>
+                <Col md={12} lg={8} xl={8} key={achievement?.id}>
                   <Card
                     className='certification-card'
                     style={{ width: '100%' }}
