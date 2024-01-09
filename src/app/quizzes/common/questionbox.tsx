@@ -1,14 +1,30 @@
 import { Question } from "@/types";
 import { Flex, Radio } from "antd";
+import { useState } from "react";
 
-export const Questionbox = ({ question }: { question: Question }) => {
+interface HtmlRendererProps {
+  htmlString: string;
+}
+
+export const Questionbox = ({
+  question,
+  onSelectOption,
+}: {
+  question: Question;
+  onSelectOption: (optionId: string) => void;
+}) => {
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1);
+
+  const HtmlRenderer: React.FC<HtmlRendererProps> = ({ htmlString }) => {
+    return <div dangerouslySetInnerHTML={{ __html: htmlString }} />;
+  };
   return (
     <>
       <div className="question-box-wrapper">
-        <h2>{question.text}</h2>
+        <h2>{<HtmlRenderer htmlString={question.text} />}</h2>
         <Flex vertical className="q-wrapper">
           {question?.options?.length > 0 ? (
-            question.options.map((option) => (
+            question.options.map((option, index) => (
               <li
                 key={option.id}
                 className={
@@ -21,7 +37,16 @@ export const Questionbox = ({ question }: { question: Question }) => {
                     : ""
                 }
               >
-                <Radio className="q-name-list">{option.text}</Radio>
+                <Radio
+                  className="q-name-list"
+                  checked={selectedOptionIndex === index}
+                  onChange={() => {
+                    setSelectedOptionIndex(index);
+                    onSelectOption(option.id);
+                  }}
+                >
+                  {<HtmlRenderer htmlString={option.text} />}
+                </Radio>
               </li>
             ))
           ) : (

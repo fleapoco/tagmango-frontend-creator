@@ -2,6 +2,7 @@
 
 import { Card, Col, Flex, Input, Row, Typography } from "antd";
 
+import Loading from "@/app/loading";
 import useAPI from "@/hooks/useApi";
 import { Question, Quiz } from "@/types";
 import { useParams } from "next/navigation";
@@ -21,6 +22,7 @@ const { Title } = Typography;
 
 const QuizQuestions = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedOptionId, setSelectedOptionId] = useState<string>("");
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [question, setQuestion] = useState<Question | null>(null);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
@@ -80,7 +82,7 @@ const QuizQuestions = () => {
       <div className={`${style["quiz-questions-page"]}`}>
         {/* Page Title */}
 
-        {quiz && !loading && (
+        {quiz && !loading ? (
           <>
             <Row style={{ padding: "15px 0" }}>
               <Col span={24}>
@@ -115,11 +117,17 @@ const QuizQuestions = () => {
                         </h4>
                         <CustomTag
                           color="#87d068"
-                          title={`${quiz?.points}XP`}
+                          title={`${quiz?.questions[questionIndex].points}XP`}
                         />
                       </Flex>
                       {/* Questions Wrapper */}
-                      <Questionbox question={question} />
+                      <Questionbox
+                        question={question}
+                        onSelectOption={(id) => {
+                          setSelectedOptionId(id);
+                          console.log({ optionId: id });
+                        }}
+                      />
                       {/* Textarea Box Wrapper Start */}
                       {/* <div className="textarea-box">
                         <TextArea
@@ -159,6 +167,8 @@ const QuizQuestions = () => {
               </Row>
             )}
           </>
+        ) : (
+          <Loading loading={!quiz && loading} />
         )}
       </div>
     </>

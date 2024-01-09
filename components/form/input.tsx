@@ -27,6 +27,7 @@ interface Props {
     | "number";
 
   placeholder?: string;
+  defaultValue?: string;
   variant?: "dark";
   addonAfter?: string;
   value?: string | number;
@@ -106,6 +107,7 @@ export const FormInput = (props: Props) => {
             min={props.type === "number" ? 0 : ""}
             disabled={props.disabled}
             className={_className}
+            defaultValue={props.defaultValue}
             id="label"
             value={props.value}
             name={props.name}

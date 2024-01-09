@@ -5,13 +5,14 @@ const Editor = dynamic(() => import("jodit-react"), {
 });
 
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface TextEditorProps {
   onChange: (content: string) => void;
+  value: string;
 }
 
-const TextEditor: React.FC<TextEditorProps> = ({ onChange }) => {
+const TextEditor: React.FC<TextEditorProps> = ({ onChange, value }) => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
@@ -19,6 +20,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ onChange }) => {
     setContent(newContent);
     onChange(newContent);
   };
+
+  useEffect(() => {
+    if (value) setContent(value);
+  }, []);
 
   // const config2 = {
   //   useSearch: false,

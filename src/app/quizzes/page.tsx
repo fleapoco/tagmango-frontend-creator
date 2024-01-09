@@ -74,7 +74,11 @@ const QuizzesPage = () => {
                           <div style={{ display: "flex", gap: "12px" }}>
                             <span>Play & Earn</span>
                             <CustomTag
-                              title={`${e.points}XP`}
+                              title={`${e.questions.reduce(
+                                (accumulator, currentValue) =>
+                                  accumulator + currentValue.points,
+                                0
+                              )}XP`}
                               color="#87d068"
                             />
                           </div>

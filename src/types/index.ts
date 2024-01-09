@@ -187,13 +187,13 @@ export interface QuizSubmission {
 
 export interface Question {
   id: string;
-  creatorId: string;
+  creatorId?: string;
   quizId?: string;
   text: string;
   options: Option[];
   points: number;
   imageUrl?: string;
-  submissions: QuizSubmission[];
+  submissions?: QuizSubmission[];
 }
 
 export interface Quiz {
