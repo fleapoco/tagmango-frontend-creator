@@ -292,10 +292,10 @@ const CreatorCreateQuiz = () => {
                                 >
                                   <Radio
                                     className="radio-list"
+                                    defaultChecked={option.isCorrect}
                                     checked={
                                       selectedOptionIndex === optionIndex
                                     }
-                                    defaultChecked={option.isCorrect}
                                     onChange={() => {
                                       setSelectedOptionIndex(optionIndex);
                                       const updatedOptions =

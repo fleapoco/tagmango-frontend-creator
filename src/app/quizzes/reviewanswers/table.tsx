@@ -52,10 +52,9 @@ PropTypeForTable) => {
         return (
           <Flex vertical gap={10} justify="start" align="start">
             <Questionbox
+              disablesRadio={true}
               question={record}
-              onSelectOption={function (optionId: string): void {
-                throw new Error("Function not implemented.");
-              }}
+              onSelectOption={() => null}
             />
             {/* <RemarkBox /> */}
           </Flex>

@@ -1,6 +1,6 @@
 import { Question } from "@/types";
 import { Flex, Radio } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface HtmlRendererProps {
   htmlString: string;
@@ -9,15 +9,22 @@ interface HtmlRendererProps {
 export const Questionbox = ({
   question,
   onSelectOption,
+  disablesRadio = false,
 }: {
   question: Question;
   onSelectOption: (optionId: string) => void;
+  disablesRadio?: boolean;
 }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1);
 
   const HtmlRenderer: React.FC<HtmlRendererProps> = ({ htmlString }) => {
     return <div dangerouslySetInnerHTML={{ __html: htmlString }} />;
   };
+
+  useEffect(() => {
+    setSelectedOptionIndex(-1);
+  }, [question]);
+
   return (
     <>
       <div className="question-box-wrapper">
@@ -25,29 +32,51 @@ export const Questionbox = ({
         <Flex vertical className="q-wrapper">
           {question?.options?.length > 0 ? (
             question.options.map((option, index) => (
-              <li
-                key={option.id}
-                className={
-                  option.submissions.length &&
-                  option.submissions?.[0]?.score !== 0
-                    ? "right-question"
-                    : option.submissions.length &&
-                      option.submissions?.[0]?.score === 0
-                    ? "wrong-answer"
-                    : ""
-                }
-              >
-                <Radio
-                  className="q-name-list"
-                  checked={selectedOptionIndex === index}
-                  onChange={() => {
-                    setSelectedOptionIndex(index);
-                    onSelectOption(option.id);
-                  }}
-                >
-                  {<HtmlRenderer htmlString={option.text} />}
-                </Radio>
-              </li>
+              <>
+                {disablesRadio ? (
+                  <li
+                    key={option.id}
+                    className={
+                      option.submissions.length &&
+                      option.submissions?.[0]?.score !== 0
+                        ? "right-question"
+                        : option.submissions.length &&
+                          option.submissions?.[0]?.score === 0
+                        ? "wrong-answer"
+                        : ""
+                    }
+                  >
+                    <Radio disabled={disablesRadio} className="q-name-list">
+                      {<HtmlRenderer htmlString={option.text} />}
+                    </Radio>
+                  </li>
+                ) : (
+                  <li
+                    key={option.id}
+                    className={
+                      option.submissions.length &&
+                      option.submissions?.[0]?.score !== 0
+                        ? "wrong-answer"
+                        : option.submissions.length &&
+                          option.submissions?.[0]?.score === 0
+                        ? "right-question"
+                        : ""
+                    }
+                  >
+                    <Radio
+                      disabled={disablesRadio}
+                      className="q-name-list"
+                      checked={selectedOptionIndex === index}
+                      onChange={() => {
+                        setSelectedOptionIndex(index);
+                        onSelectOption(option.id);
+                      }}
+                    >
+                      {<HtmlRenderer htmlString={option.text} />}
+                    </Radio>
+                  </li>
+                )}
+              </>
             ))
           ) : (
             <>---</>

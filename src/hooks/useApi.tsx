@@ -457,6 +457,14 @@ const useAPI = () => {
     return http(`questions/${questionId}`, { method: "DELETE" });
   };
 
+  const submitQuizByUser = (data: {
+    quizId: string;
+    questionId: string;
+    optionId: string;
+  }) => {
+    return http(`submissions`, { method: "POST", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -514,6 +522,7 @@ const useAPI = () => {
     updateQuestion,
     updateMcqOptions,
     deleteQuestion,
+    submitQuizByUser,
   };
 };
 

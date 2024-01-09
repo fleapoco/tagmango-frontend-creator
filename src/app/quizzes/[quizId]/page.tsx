@@ -5,7 +5,7 @@ import { Card, Col, Flex, Input, Row, Typography } from "antd";
 import Loading from "@/app/loading";
 import useAPI from "@/hooks/useApi";
 import { Question, Quiz } from "@/types";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BreadCrumbNav } from "../../../../components/common/breadcrumb";
 import { PrimaryButton } from "../../../../components/common/button";
@@ -21,13 +21,14 @@ const { Meta } = Card;
 const { Title } = Typography;
 
 const QuizQuestions = () => {
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedOptionId, setSelectedOptionId] = useState<string>("");
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [question, setQuestion] = useState<Question | null>(null);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
 
-  const { getUserQuizByQuizId } = useAPI();
+  const { getUserQuizByQuizId, submitQuizByUser } = useAPI();
   const param = useParams();
   const { quizId } = param;
 
@@ -54,7 +55,7 @@ const QuizQuestions = () => {
         setQuestionIndex(nextIndex);
         setQuestion(questions[nextIndex]);
       } else {
-        //
+        router.push("/quizzes");
       }
     } catch (error) {
       console.error(error);
@@ -67,7 +68,7 @@ const QuizQuestions = () => {
     if (quizId) fetchQuizById();
   }, [quizId]);
 
-  const changeQuestion = () => {
+  const changeQuestion = async () => {
     const questions = quiz?.questions ?? [];
     const nextIndex = questionIndex + 1;
 
@@ -75,6 +76,14 @@ const QuizQuestions = () => {
       setQuestion(questions[nextIndex]);
       setQuestionIndex(nextIndex);
     }
+
+    try {
+      await submitQuizByUser({
+        quizId: quizId as string,
+        optionId: selectedOptionId,
+        questionId: question?.id!,
+      });
+    } catch (error) {}
   };
 
   return (
@@ -123,10 +132,7 @@ const QuizQuestions = () => {
                       {/* Questions Wrapper */}
                       <Questionbox
                         question={question}
-                        onSelectOption={(id) => {
-                          setSelectedOptionId(id);
-                          console.log({ optionId: id });
-                        }}
+                        onSelectOption={(id) => setSelectedOptionId(id)}
                       />
                       {/* Textarea Box Wrapper Start */}
                       {/* <div className="textarea-box">
@@ -156,7 +162,10 @@ const QuizQuestions = () => {
                           <PrimaryButton
                             text="Submit"
                             variant="primary"
-                            onClick={() => changeQuestion()}
+                            onClick={() => {
+                              changeQuestion();
+                              router.push("/quizzes");
+                            }}
                           />
                         )}
                       </Flex>

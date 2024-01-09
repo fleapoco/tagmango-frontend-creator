@@ -25,17 +25,6 @@ const ReviewAnswers = () => {
       setLoading(true);
       const data = await getUserQuizByQuizId(quizId as string);
       setQuiz(data);
-
-      // const questions = data?.questions ?? [];
-      // const nextIndex = questions.findIndex(
-      //   (question) => !question.submissions?.length
-      // );
-      // if (nextIndex >= 0) {
-      //   setQuestionIndex(nextIndex);
-      //   setQuestion(questions[nextIndex]);
-      // } else {
-      //   //
-      // }
     } catch (error) {
       console.error(error);
     } finally {
