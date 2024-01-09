@@ -93,7 +93,7 @@ const CreatorHabit = () => {
           <Row>
             <Col span={24}>
               <div className="p-15">
-                <FullCalendarData data={habitData} />
+                <FullCalendarData data={habitData} editable={true} />
               </div>
             </Col>
           </Row>

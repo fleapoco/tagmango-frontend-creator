@@ -14,6 +14,7 @@ interface HabitCalenderType {
 
 interface FullCalendarDataType {
   data: HabitCalenderType[];
+  editable?: boolean;
 }
 
 // const customEvents = [
@@ -54,15 +55,15 @@ const renderEventContent = (eventInfo: any) => {
 
 export default class FullCalendarData extends React.Component<FullCalendarDataType> {
   render() {
-    const { data } = this.props;
+    const { data, editable = false } = this.props;
 
     return (
       <div className="full-calendar">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          editable={true}
-          droppable={true}
+          editable={editable}
+          droppable={editable}
           weekends={false}
           height="auto"
           eventClick={(arg) => console.log(arg)}
