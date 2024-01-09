@@ -4,7 +4,6 @@ import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import { CustomTag } from "../../../../components/common/tag";
 import { Questionbox } from "../common/questionbox";
-import { RemarkBox } from "../common/remarkbox";
 
 interface DataType {
   key: React.Key;
@@ -52,7 +51,12 @@ PropTypeForTable) => {
       render: (_, record) => {
         return (
           <Flex vertical gap={10} justify="start" align="start">
-            <Questionbox question={record} />
+            <Questionbox
+              question={record}
+              onSelectOption={function (optionId: string): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
             {/* <RemarkBox /> */}
           </Flex>
         );
