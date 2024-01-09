@@ -430,6 +430,33 @@ const useAPI = () => {
     return http(`mcq-options`, { method: "POST", data });
   };
 
+  const updateQuestion = (
+    questionId: string,
+    data: {
+      imageUrl: string;
+      quizId: string;
+      text: string;
+      points: number;
+    }
+  ) => {
+    return http(`questions/${questionId}`, { method: "PATCH", data });
+  };
+
+  const updateMcqOptions = (
+    optionId: string,
+    data: {
+      questionId: string;
+      text: string;
+      isCorrect: boolean;
+    }
+  ) => {
+    return http(`mcq-options/${optionId}`, { method: "PATCH", data });
+  };
+
+  const deleteQuestion = (questionId: string) => {
+    return http(`questions/${questionId}`, { method: "DELETE" });
+  };
+
   return {
     getTasks,
     createTask,
@@ -484,6 +511,9 @@ const useAPI = () => {
     deleteQuizById,
     createQuestion,
     createMcqOption,
+    updateQuestion,
+    updateMcqOptions,
+    deleteQuestion,
   };
 };
 

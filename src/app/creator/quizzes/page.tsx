@@ -29,6 +29,7 @@ const { Title } = Typography;
 const CreatorCertification = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [createQuizLoading, setCreateQuizLoading] = useState<boolean>(false);
 
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const { createQuiz } = useApi();
@@ -59,6 +60,7 @@ const CreatorCertification = () => {
   }, []);
 
   const handleCreateQuiz = async () => {
+    setCreateQuizLoading(true);
     try {
       const createdQuiz = await createQuiz({ name: quiz.name });
       message.success("quiz created");
@@ -70,6 +72,7 @@ const CreatorCertification = () => {
       setQuiz({ ...quiz, name: "" });
     } catch (error) {
     } finally {
+      setCreateQuizLoading(false);
     }
   };
 
@@ -186,6 +189,7 @@ const CreatorCertification = () => {
           <PrimaryButton
             text="Save Quiz"
             variant="primary"
+            loading={createQuizLoading}
             onClick={handleCreateQuiz}
           />
         </div>
