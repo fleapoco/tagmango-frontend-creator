@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/loading";
 import useAPI from "@/hooks/useApi";
 import { CreateCreatorHabitType } from "@/types";
 import { Col, Progress, Row } from "antd";
@@ -23,6 +24,7 @@ interface HabitCalenderType {
 const CreatorHabit = () => {
   const router = useRouter();
   const { getCreatorHabits } = useAPI();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [habitData, setHabitData] = useState<HabitCalenderType[]>([]);
 
   useEffect(() => {
@@ -30,10 +32,14 @@ const CreatorHabit = () => {
   }, []);
 
   const fetchHabits = async () => {
+    setIsLoading(true);
     try {
       let data = await getCreatorHabits();
       if (data && Array.isArray(data)) setHabitData(transformHabitData(data));
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const transformHabitData = (
@@ -43,6 +49,7 @@ const CreatorHabit = () => {
       title: item.title,
       start: dayjs(item.date!).format("YYYY-MM-DD"),
       end: dayjs(item.date!).format("YYYY-MM-DD")!,
+      url: `${window.location.href}/details?id=${item.id}`,
       progress: (
         <Progress
           percent={parseFloat(
@@ -61,33 +68,37 @@ const CreatorHabit = () => {
 
   return (
     <>
-      <div className={`${style["event-tasks-page"]} common-panel-wrapper`}>
-        {/* Page Title */}
-        <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
-        >
-          <Col span={12}>
-            <PageTitle title="Habits Tracker" />
-          </Col>
-          <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
-            <PrimaryButton
-              text="Add Habits"
-              icon={<AddIcon />}
-              variant="primary"
-              onClick={handleButtonClick}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <div className="p-15">
-              <FullCalendarData data={habitData} />
-            </div>
-          </Col>
-        </Row>
-      </div>
+      {isLoading ? (
+        <Loading pageloader={true} loading={isLoading} />
+      ) : (
+        <div className={`${style["event-tasks-page"]} common-panel-wrapper`}>
+          {/* Page Title */}
+          <Row
+            justify={"space-between"}
+            style={{ alignItems: "center" }}
+            className="p-15"
+          >
+            <Col span={12}>
+              <PageTitle title="Habits Tracker" />
+            </Col>
+            <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
+              <PrimaryButton
+                text="Add Habits"
+                icon={<AddIcon />}
+                variant="primary"
+                onClick={handleButtonClick}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <div className="p-15">
+                <FullCalendarData data={habitData} />
+              </div>
+            </Col>
+          </Row>
+        </div>
+      )}
     </>
   );
 };

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
+import Loading from "@/app/loading";
 import useAPI from "@/hooks/useApi";
 import { CreateCreatorHabitType, TypeCategory } from "@/types";
 import { Col, Flex, Radio, Row, Space, message } from "antd";
@@ -16,6 +17,7 @@ const typeArray = ["one-time", "recurring"];
 
 const CreatorAddHabits = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { getCategories, createCreatorHabit } = useAPI();
 
   const [categories, setCategories] = useState<
@@ -38,6 +40,7 @@ const CreatorAddHabits = () => {
   }, []);
 
   const fetchCategories = async () => {
+    setIsLoading(true);
     try {
       const data = await getCategories({ type: TypeCategory.HABIT });
       setCategories(
@@ -49,6 +52,7 @@ const CreatorAddHabits = () => {
       setFormData((formData) => ({ ...formData, categoryId: data.at(0)?.id! }));
     } catch (error) {
     } finally {
+      setIsLoading(false);
     }
   };
 
@@ -91,131 +95,138 @@ const CreatorAddHabits = () => {
   ];
   return (
     <>
-      <Row style={{ paddingTop: "15px" }}>
-        <Col span={16} className="border-box">
-          <BreadCrumbNav item={breadCrumbItems} />
+      {isLoading ? (
+        <Loading pageloader={true} loading={isLoading} />
+      ) : (
+        <Row style={{ paddingTop: "15px" }}>
+          <Col span={16} className="border-box">
+            <BreadCrumbNav item={breadCrumbItems} />
 
-          {/* Page Title */}
-          <Row justify={"space-between"} style={{ alignItems: "center" }}>
-            <Col span={24}>
-              <PageTitle title="Create Habit" />
-            </Col>
-          </Row>
-          <Row style={{ paddingTop: "15px" }}>
-            <Col span={24}>
-              <FormSelect
-                label="Category"
-                options={categories}
-                handleChange={(value) =>
-                  setFormData((formData) => ({
-                    ...formData,
-                    categoryId: value,
-                  }))
-                }
-                value={formData.categoryId}
-              />
-              <FormInput
-                label="Title"
-                placeholder="Add Title"
-                type="text"
-                onChange={handleOnChange}
-                name="title"
-                value={formData.title}
-              />
-              <FormInput
-                label="Points"
-                placeholder="Add Points"
-                type="number"
-                onChange={handleOnChange}
-                name="points"
-                value={formData.points}
-              />
-              <div className="form-group">
-                <label htmlFor="type">Type</label>
-                <Radio.Group
-                  onChange={(e) =>
-                    setFormData((prev) => {
-                      return { ...prev, type: e.target.value };
-                    })
+            {/* Page Title */}
+            <Row justify={"space-between"} style={{ alignItems: "center" }}>
+              <Col span={24}>
+                <PageTitle title="Create Habit" />
+              </Col>
+            </Row>
+            <Row style={{ paddingTop: "15px" }}>
+              <Col span={24}>
+                <FormSelect
+                  label="Category"
+                  options={categories}
+                  handleChange={(value) =>
+                    setFormData((formData) => ({
+                      ...formData,
+                      categoryId: value,
+                    }))
                   }
-                  name="habit-type"
-                  value={formData.type}
-                >
-                  <Space direction="horizontal">
-                    {typeArray.map((e, i) => (
-                      <Radio
-                        key={i}
-                        value={e}
-                        style={{ textTransform: "capitalize", fontWeight: 400 }}
-                      >
-                        {e}
-                      </Radio>
-                    ))}
-                  </Space>
-                </Radio.Group>
-              </div>
-
-              {formData.type === "one-time" && (
-                <>
-                  <FormInput
-                    label="Date"
-                    type="date"
-                    onDateChange={(date: Date) => {
-                      setFormData((prev) => {
-                        return { ...prev, startDate: date.toISOString() };
-                      });
-
-                      if (formData.type === "one-time") {
-                        setFormData((prev) => {
-                          return { ...prev, endDate: date.toISOString() };
-                        });
-                      }
-                    }}
-                    name="startDate"
-                    dateTimeValue={formData.startDate}
-                  />
-                  <FormInput
-                    label="Time "
-                    type="time"
-                    onTimeChange={(time: Date) => {
-                      setFormData((prev) => {
-                        return { ...prev, startTime: time.toISOString() };
-                      });
-
-                      if (formData.type === "one-time") {
-                        setFormData((prev) => {
-                          return { ...prev, endTime: time.toISOString() };
-                        });
-                      }
-                    }}
-                    name="startTime"
-                    dateTimeValue={formData.startTime}
-                  />
-                </>
-              )}
-              {formData.type === "recurring" && (
-                <>
-                  <FormInput label="Frequency" />
-                  <FormInput label="Start Date" type="date" />
-                </>
-              )}
-
-              <Flex gap={"middle"} justify="end">
-                <PrimaryButton
-                  text="Cancel"
-                  variant="secondary"
-                  onClick={() => router.back()}
+                  value={formData.categoryId}
                 />
-                <PrimaryButton
-                  text="Save"
-                  variant="primary"
-                  onClick={handleSubmit}
+                <FormInput
+                  label="Title"
+                  placeholder="Add Title"
+                  type="text"
+                  onChange={handleOnChange}
+                  name="title"
+                  value={formData.title}
                 />
-              </Flex>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+                <FormInput
+                  label="Points"
+                  placeholder="Add Points"
+                  type="number"
+                  onChange={handleOnChange}
+                  name="points"
+                  value={formData.points}
+                />
+                <div className="form-group">
+                  <label htmlFor="type">Type</label>
+                  <Radio.Group
+                    onChange={(e) =>
+                      setFormData((prev) => {
+                        return { ...prev, type: e.target.value };
+                      })
+                    }
+                    name="habit-type"
+                    value={formData.type}
+                  >
+                    <Space direction="horizontal">
+                      {typeArray.map((e, i) => (
+                        <Radio
+                          key={i}
+                          value={e}
+                          style={{
+                            textTransform: "capitalize",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {e}
+                        </Radio>
+                      ))}
+                    </Space>
+                  </Radio.Group>
+                </div>
+
+                {formData.type === "one-time" && (
+                  <>
+                    <FormInput
+                      label="Date"
+                      type="date"
+                      onDateChange={(date: Date) => {
+                        setFormData((prev) => {
+                          return { ...prev, startDate: date.toISOString() };
+                        });
+
+                        if (formData.type === "one-time") {
+                          setFormData((prev) => {
+                            return { ...prev, endDate: date.toISOString() };
+                          });
+                        }
+                      }}
+                      name="startDate"
+                      dateTimeValue={formData.startDate}
+                    />
+                    <FormInput
+                      label="Time "
+                      type="time"
+                      onTimeChange={(time: Date) => {
+                        setFormData((prev) => {
+                          return { ...prev, startTime: time.toISOString() };
+                        });
+
+                        if (formData.type === "one-time") {
+                          setFormData((prev) => {
+                            return { ...prev, endTime: time.toISOString() };
+                          });
+                        }
+                      }}
+                      name="startTime"
+                      dateTimeValue={formData.startTime}
+                    />
+                  </>
+                )}
+                {formData.type === "recurring" && (
+                  <>
+                    <FormInput label="Frequency" />
+                    <FormInput label="Start Date" type="date" />
+                  </>
+                )}
+
+                <Flex gap={"middle"} justify="end">
+                  <PrimaryButton
+                    text="Cancel"
+                    variant="secondary"
+                    onClick={() => router.back()}
+                  />
+                  <PrimaryButton
+                    text="Save"
+                    variant="primary"
+                    onClick={handleSubmit}
+                  />
+                </Flex>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      )}
     </>
   );
 };
