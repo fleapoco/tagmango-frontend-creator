@@ -2,7 +2,7 @@
 import Loading from "@/app/loading";
 import useAPI from "@/hooks/useApi";
 import { CreateCreatorHabitType } from "@/types";
-import { Col, Progress, Row } from "antd";
+import { Col, Progress, Row, message } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,7 +23,7 @@ interface HabitCalenderType {
 
 const CreatorHabit = () => {
   const router = useRouter();
-  const { getCreatorHabits } = useAPI();
+  const { getCreatorHabits, updateCreatorHabitByDragDrop } = useAPI();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [habitData, setHabitData] = useState<HabitCalenderType[]>([]);
 
@@ -67,11 +67,20 @@ const CreatorHabit = () => {
     router.push(arg.event._def.extendedProps.reDirectUrl);
   };
 
-  const handleEventChange = (arg: any) => {
-    // console.log(arg);
-    console.log(arg.event?.start);
+  const handleEventChange = async (arg: any) => {
     // console.log(arg?.event?.end);
-    // console.log(arg?.event?._def?.extendedProps?.habitId);
+    try {
+      let habitId = arg?.event?._def?.extendedProps?.habitId;
+      let updatedDate = new Date(arg.event?.start).toISOString();
+      let data = await updateCreatorHabitByDragDrop(
+        { date: updatedDate },
+        habitId
+      );
+
+      if ("statusCode" in data) {
+        message.error("Something went wrong!");
+      }
+    } catch (error) {}
   };
 
   const handleButtonClick = () => {

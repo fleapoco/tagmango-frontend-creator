@@ -475,6 +475,13 @@ const useAPI = () => {
     return http(`/habit-entities/submissions/${id}`);
   };
 
+  const updateCreatorHabitByDragDrop = (
+    data: { date: string },
+    id?: string
+  ) => {
+    return http(`/habit-entities/${id}`, { method: "PATCH", data });
+  };
+
   return {
     getTasks,
     createTask,
@@ -536,6 +543,7 @@ const useAPI = () => {
     deleteQuestion,
     getHabitDetailsById,
     getHabitSubmissionDetailsById,
+    updateCreatorHabitByDragDrop,
   };
 };
 
