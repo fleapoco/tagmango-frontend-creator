@@ -88,6 +88,16 @@
     margin-bottom: 0;
   }
 }
+.ant-tag.pending-tag {
+  border: 2px solid #ffe58f;
+  background: #fffbe6;
+  color: #d48806 !important;
+}
+.ant-tag.completed-tag {
+  border: 2px solid #b7eb8f;
+  background: #f6ffed;
+  color: #389e0d !important;
+}
 .ant-dropdown {
   width: 100%;
   padding: 0;
@@ -495,18 +505,18 @@
     margin: 0;
   }
   .fc-daygrid-event-harness {
-    padding: 10px 10px 0 10px;
+    padding: 5px 5px 0 5px;
   }
 
   .on-calendar-content {
     color: var(--white-color);
-    padding: 10px;
+    padding: 5px;
 
     h6 {
       margin: 0;
       margin-bottom: 6px;
       font-weight: 500;
-      font-size: 14px;
+      font-size: 12px;
     }
     .ant-progress-line {
       margin-bottom: 0;

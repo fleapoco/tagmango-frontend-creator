@@ -6,6 +6,7 @@ import type { ColumnsType, TableProps } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { PrimaryButton } from '../../../components/common/button';
 import { TableNoData } from '../../../components/common/tablenodata';
+import { CustomTag } from '../../../components/common/tag';
 
 interface DataType {
   id?: string;
@@ -95,6 +96,35 @@ export const TaskTable = ({
           return `from ${dayjs(record.startDate).format(
             'DD MMM YYYY'
           )}- till ${dayjs(record.endDate).format('DD MMM YYYY')}`;
+        }
+      },
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      render: (value, record) => {
+        if (record.status == 'completed') {
+          return (
+            <CustomTag
+              title='Completed'
+              className='completed-tag'
+              color='red'
+            />
+          );
+        } else if (record.status == 'pending') {
+          return (
+            <CustomTag title='Pending' className='pending-tag' color='red' />
+          );
+        } else if (record.status == 'in-progress') {
+          return (
+            <CustomTag
+              title='In-Progress'
+              className='pending-tag'
+              color='red'
+            />
+          );
+        } else {
+          ('');
         }
       },
     },
