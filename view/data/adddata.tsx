@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { initialDataAnalyticsState } from "@/empty-state-objects/empty";
-import useApi from "@/hooks/useApi";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+import { initialDataAnalyticsState } from '@/empty-state-objects/empty';
+import useApi from '@/hooks/useApi';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 
-import { getUpdateDataAnalyticState } from "@/redux/reducers/update-analytic.reducer";
-import { DataAnalyticsTypes } from "@/types";
-import { Col, Flex, Row, message } from "antd";
-import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { BreadCrumbNav } from "../../components/common/breadcrumb";
-import { PrimaryButton } from "../../components/common/button";
-import { FormInput } from "../../components/form/input";
-import PageTitle from "../../components/pagetitle";
+import { getUpdateDataAnalyticState } from '@/redux/reducers/update-analytic.reducer';
+import { DataAnalyticsTypes } from '@/types';
+import { Col, Flex, Row, message } from 'antd';
+import dayjs from 'dayjs';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { BreadCrumbNav } from '../../components/common/breadcrumb';
+import { PrimaryButton } from '../../components/common/button';
+import { FormInput } from '../../components/form/input';
+import PageTitle from '../../components/pagetitle';
 
 export const AddData = () => {
   const router = useRouter();
@@ -25,18 +25,18 @@ export const AddData = () => {
     initialDataAnalyticsState
   );
   const params = useSearchParams();
-  const type = params.get("type");
+  const type = params.get('type');
 
   const isButtonDisabled = Object.keys(data)
-    .filter((key) => key !== "month" && key !== "adSpendsReturn")
+    .filter((key) => key !== 'month' && key !== 'adSpendsReturn')
     .some(
-      (key) => data[key] === undefined || data[key] === 0 || data[key] === ""
+      (key) => data[key] === undefined || data[key] === 0 || data[key] === ''
     );
 
   const handleSaveData = async () => {
     try {
       setLoading(true);
-      if (type && type === "update") {
+      if (type && type === 'update') {
         await updateDataAnalytic(dataAnalytic.id!, {
           ...data,
           adSpendsReturn: Math.round(
@@ -45,7 +45,7 @@ export const AddData = () => {
               : 0
           ),
         });
-        message.success("data updated successfully");
+        message.success('data updated successfully');
       } else {
         await createAnalytics({
           ...data,
@@ -58,7 +58,7 @@ export const AddData = () => {
         });
         setData(initialDataAnalyticsState);
       }
-      router.push("/data");
+      router.push('/data');
     } catch (error) {
     } finally {
       setLoading(false);
@@ -67,8 +67,8 @@ export const AddData = () => {
 
   const breadCrumbItems = [
     {
-      title: "Back to Data",
-      link: "/productivity/task",
+      title: 'Back to Data',
+      link: '/data',
     },
   ];
 
@@ -80,24 +80,23 @@ export const AddData = () => {
 
   return (
     <>
-      <Row>
-        <Col span={16} className="border-box">
+      <Row style={{ paddingTop: '16px' }}>
+        <Col span={16} className='border-box'>
           <BreadCrumbNav item={breadCrumbItems} />
-
           {/* Page Title */}
-          <Row justify={"space-between"} style={{ alignItems: "center" }}>
+          <Row justify={'space-between'} style={{ alignItems: 'center' }}>
             <Col span={24}>
               <PageTitle
-                title={type === "update" ? "Update Data" : "Add Data"}
+                title={type === 'update' ? 'Update Data' : 'Add Data'}
               />
             </Col>
           </Row>
 
-          <div style={{ paddingTop: "15px" }}>
+          <div style={{ paddingTop: '15px' }}>
             <FormInput
-              placeholder="Select Month"
-              label="Month"
-              type="month"
+              placeholder='Select Month'
+              label='Month'
+              type='month'
               value={data.month ?? undefined}
               onDateChange={(date, dateString) =>
                 setData({ ...data, month: dateString })
@@ -105,9 +104,9 @@ export const AddData = () => {
             />
 
             <FormInput
-              placeholder=""
-              label="Revenue Earned"
-              icon={"₹"}
+              placeholder=''
+              label='Revenue Earned'
+              icon={'₹'}
               value={data.revenueEarned}
               onChange={(e) =>
                 setData({
@@ -115,13 +114,13 @@ export const AddData = () => {
                   revenueEarned: Number(e.target.value),
                 })
               }
-              type="number"
+              type='number'
             />
 
             <FormInput
-              label="Ad Spends"
-              icon={"₹"}
-              type="number"
+              label='Ad Spends'
+              icon={'₹'}
+              type='number'
               value={data.adSpends}
               onChange={(e) =>
                 setData({ ...data, adSpends: Number(e.target.value) })
@@ -129,17 +128,17 @@ export const AddData = () => {
             />
 
             <FormInput
-              label="Average Cost Per Lead"
-              icon={"₹"}
+              label='Average Cost Per Lead'
+              icon={'₹'}
               value={data.costPerLead}
               onChange={(e) =>
                 setData({ ...data, costPerLead: Number(e.target.value) })
               }
-              type="number"
+              type='number'
             />
 
             <FormInput
-              label="Total Leads Generated"
+              label='Total Leads Generated'
               value={data.totalLeadsGenerated}
               onChange={(e) =>
                 setData({
@@ -150,7 +149,7 @@ export const AddData = () => {
             />
 
             <FormInput
-              label="Total Paid Customers"
+              label='Total Paid Customers'
               value={data.totalPaidCustomers}
               onChange={(e) =>
                 setData({
@@ -160,8 +159,8 @@ export const AddData = () => {
               }
             />
             <FormInput
-              label="Total Group Size"
-              type="number"
+              label='Total Group Size'
+              type='number'
               value={data.vipGroupSize}
               onChange={(e) =>
                 setData({
@@ -177,7 +176,7 @@ export const AddData = () => {
                   : 0
               }
               disabled={true}
-              label="ROAS"
+              label='ROAS'
               onChange={(e) =>
                 setData({
                   ...data,
@@ -185,13 +184,13 @@ export const AddData = () => {
                 })
               }
             />
-            <Flex gap="middle" justify="end">
-              <PrimaryButton variant="secondary" text="Cancel" />
+            <Flex gap='middle' justify='end'>
+              <PrimaryButton variant='secondary' text='Cancel' />
               <PrimaryButton
                 loading={loading}
                 disabled={isButtonDisabled}
-                variant="primary"
-                text="Save"
+                variant='primary'
+                text='Save'
                 onClick={handleSaveData}
               />
             </Flex>

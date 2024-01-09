@@ -82,7 +82,7 @@ export default async function RootLayout({
 
                   DatePicker: {
                     colorBorder: '#ced0d4',
-                    borderRadius: 4,
+                    borderRadius: 8,
                     fontSize: 16,
                     colorPrimaryText: '#424242',
                     colorTextPlaceholder: 'rgb(117, 117, 117)',

@@ -119,7 +119,7 @@ export const TaskTable = ({
           return (
             <CustomTag
               title='In-Progress'
-              className='pending-tag'
+              className='progress-tag'
               color='red'
             />
           );
