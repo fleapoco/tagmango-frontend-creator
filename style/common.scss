@@ -474,17 +474,19 @@
   a {
     color: rgba(0, 0, 0, 0.85) !important;
   }
-
+  .fc .fc-button-primary {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    text-transform: capitalize;
+  }
+  .fc-toolbar-title {
+    font-size: 16px;
+    margin: 0;
+  }
   .on-calendar-content {
     color: var(--white-color);
     padding: 10px;
 
-    &.green {
-      background: green !important;
-    }
-    &.purple {
-      background: purple;
-    }
     h6 {
       margin: 0;
       margin-bottom: 6px;
