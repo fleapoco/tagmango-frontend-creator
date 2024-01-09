@@ -1,15 +1,15 @@
-'use client';
-import Loading from '@/app/loading';
-import useAPI from '@/hooks/useApi';
-import { EventData } from '@/types';
-import { Col, DatePicker, Flex, List, Row, Typography } from 'antd';
-import dayjs, { Dayjs } from 'dayjs';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { ActionButton } from '../../../../components/common/actionbutton';
-import { PrimaryButton } from '../../../../components/common/button';
-import { AddIcon } from '../../../../components/common/icons';
-import { ActionModal } from '../../../../components/common/modal';
+"use client";
+import Loading from "@/app/loading";
+import useAPI from "@/hooks/useApi";
+import { EventData } from "@/types";
+import { Col, DatePicker, Flex, List, Row, Typography } from "antd";
+import dayjs, { Dayjs } from "dayjs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { ActionButton } from "../../../../components/common/actionbutton";
+import { PrimaryButton } from "../../../../components/common/button";
+import { AddIcon } from "../../../../components/common/icons";
+import { ActionModal } from "../../../../components/common/modal";
 
 const { RangePicker } = DatePicker;
 const { Title } = Typography;
@@ -29,12 +29,12 @@ export const UpcomingEvents = ({
   const { deleteEvent } = useAPI();
   const [eventStartDate, setEventStartDate] = useState<string | null>(null);
   const [eventEndDate, setEventEndDate] = useState<string | null>(null);
-  const [currentModalEventId, setCurrentModalEventId] = useState('');
+  const [currentModalEventId, setCurrentModalEventId] = useState("");
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const options: Intl.DateTimeFormatOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
+    hour: "2-digit",
+    minute: "2-digit",
     hour12: true,
   };
 
@@ -53,18 +53,18 @@ export const UpcomingEvents = ({
   };
 
   const handleEditCloseModal = () => {
-    setCurrentModalEventId('');
+    setCurrentModalEventId("");
     setEditModalVisible(false);
   };
 
   const handleDeleteCloseModal = () => {
-    setCurrentModalEventId('');
+    setCurrentModalEventId("");
     setDeleteModalVisible(false);
   };
 
   const startButtonAction = (link: string | undefined) => {
     if (!link) return;
-    window.open(link, '_blank');
+    window.open(link, "_blank");
   };
 
   const editEventAction = async (id: string) => {
@@ -81,6 +81,14 @@ export const UpcomingEvents = ({
       if (fetchEventData) fetchEventData();
       handleDeleteCloseModal();
     }
+  };
+
+  const handleSingleEventEdit = (id: string) => {
+    editEventAction(id);
+  };
+
+  const handleSingleEventDelete = (id: string) => {
+    deleteEventAction(id);
   };
 
   const handleEdit = () => {
@@ -104,7 +112,7 @@ export const UpcomingEvents = ({
   };
 
   const HandleButtonClick = () => {
-    router.push('/creator/events/createevent');
+    router.push("/creator/events/createevent");
   };
   return (
     <>
@@ -119,11 +127,11 @@ export const UpcomingEvents = ({
             onChange={handleDateChange}
           />
         </Col>
-        <Col span={18} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Col span={18} style={{ display: "flex", justifyContent: "flex-end" }}>
           <PrimaryButton
-            text='Create Event'
+            text="Create Event"
             icon={<AddIcon />}
-            variant='primary'
+            variant="primary"
             onClick={HandleButtonClick}
           />
         </Col>
@@ -132,44 +140,44 @@ export const UpcomingEvents = ({
         <Loading pageloader={true} loading={isLoading} />
       ) : (
         <>
-          <div className='upcoming-events-list'>
-            <List itemLayout='horizontal'>
+          <div className="upcoming-events-list">
+            <List itemLayout="horizontal">
               {data &&
                 Object.keys(data).map((key) => {
                   if (data && data[key] && data[key].length > 0) {
                     return (
-                      <List.Item className='list-item'>
-                        <div style={{ width: '100%' }} key={key}>
-                          <div className='date-label'>
+                      <List.Item className="list-item">
+                        <div style={{ width: "100%" }} key={key}>
+                          <div className="date-label">
                             <span>{key}</span>
                           </div>
 
                           {data[key].map((event: EventData) => (
                             <div
-                              className='event-details-wrapper'
+                              className="event-details-wrapper"
                               key={event?.id}
                             >
                               <Row
                                 gutter={[15, 0]}
                                 style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
+                                  display: "flex",
+                                  alignItems: "center",
                                 }}
                               >
                                 <Col span={6}>
-                                  <div className='date-time-count'>
+                                  <div className="date-time-count">
                                     {event?.startTime && event?.endTime && (
                                       <Title level={4}>
                                         {new Date(
                                           event?.startTime
                                         ).toLocaleTimeString(
-                                          'en-US',
+                                          "en-US",
                                           options
-                                        )}{' '}
-                                        -{' '}
+                                        )}{" "}
+                                        -{" "}
                                         {new Date(
                                           event?.endTime
-                                        ).toLocaleTimeString('en-US', options)}
+                                        ).toLocaleTimeString("en-US", options)}
                                       </Title>
                                     )}
                                     {event.recurringStatus && (
@@ -179,18 +187,18 @@ export const UpcomingEvents = ({
                                 </Col>
                                 <Col span={12}>
                                   <Flex
-                                    className='event-details'
+                                    className="event-details"
                                     gap={16}
-                                    align='center'
+                                    align="center"
                                   >
-                                    <div className='img-box'>
+                                    <div className="img-box">
                                       <img
                                         src={event?.backgroundImageUrl}
-                                        style={{ objectFit: 'fill' }}
+                                        style={{ objectFit: "fill" }}
                                         alt={event?.title}
                                       />
                                     </div>
-                                    <div className='content-wrap'>
+                                    <div className="content-wrap">
                                       <Title level={5}>{event?.title}</Title>
                                     </div>
                                   </Flex>
@@ -198,70 +206,76 @@ export const UpcomingEvents = ({
                                 <Col
                                   span={6}
                                   style={{
-                                    display: 'flex',
-                                    justifyContent: 'flex-end',
+                                    display: "flex",
+                                    justifyContent: "flex-end",
                                   }}
                                 >
-                                  <div className='event-action'>
+                                  <div className="event-action">
                                     <Flex gap={16}>
                                       <PrimaryButton
-                                        text='Start'
-                                        variant='primary'
+                                        text="Start"
+                                        variant="primary"
                                         onClick={() =>
                                           startButtonAction(event?.eventLink)
                                         }
                                       />
                                       <ActionButton
-                                        actionFor='event'
+                                        actionFor="event"
                                         id={event?.id}
                                         confirm={false}
-                                        handleEventEdit={handleEditOpenModal}
+                                        handleEventEdit={
+                                          event.recurringStatus
+                                            ? handleEditOpenModal
+                                            : handleSingleEventEdit
+                                        }
                                         handleEventDelete={
-                                          handleDeleteOpenModal
+                                          event.recurringStatus
+                                            ? handleDeleteOpenModal
+                                            : handleSingleEventDelete
                                         }
                                       />
                                       {/* Edit workshop Modal */}
                                       <ActionModal
                                         title={
                                           event.recurringStatus
-                                            ? 'Edit Recurring Workshop'
-                                            : 'Edit Single Workshop'
+                                            ? "Edit Recurring Workshop"
+                                            : "Edit Single Workshop"
                                         }
-                                        className='event-actions-modal'
+                                        className="event-actions-modal"
                                         show={editModalVisible}
                                         onClose={handleEditCloseModal}
                                         footer={
                                           <>
-                                            <Flex justify='end'>
+                                            <Flex justify="end">
                                               <PrimaryButton
-                                                text='Edit this occurrence'
-                                                variant='primary'
+                                                text="Edit this occurrence"
+                                                variant="primary"
                                                 onClick={handleEdit}
                                               />
                                               <PrimaryButton
                                                 disabled={
                                                   !event.recurringStatus
                                                 }
-                                                text='Edit all occurrence'
-                                                variant='primary'
+                                                text="Edit all occurrence"
+                                                variant="primary"
                                                 onClick={handleEdit}
                                                 ghost
                                               />
                                               <PrimaryButton
-                                                text='Cancel'
-                                                variant='secondary'
+                                                text="Cancel"
+                                                variant="secondary"
                                                 onClick={handleEditCloseModal}
                                               />
                                             </Flex>
                                           </>
                                         }
                                       >
-                                        <div className='content-wrapper'>
+                                        <div className="content-wrapper">
                                           <h3>
-                                            You are editing a{' '}
+                                            You are editing a{" "}
                                             {event.recurringStatus
-                                              ? 'Recurring'
-                                              : 'Single'}{' '}
+                                              ? "Recurring"
+                                              : "Single"}{" "}
                                             Workshop
                                           </h3>
                                           <p>
@@ -275,18 +289,18 @@ export const UpcomingEvents = ({
                                       <ActionModal
                                         title={
                                           event.recurringStatus
-                                            ? 'Delete Recurring Workshop'
-                                            : 'Delete Single Workshop'
+                                            ? "Delete Recurring Workshop"
+                                            : "Delete Single Workshop"
                                         }
-                                        className='event-actions-modal'
+                                        className="event-actions-modal"
                                         show={deleteModalVisible}
                                         onClose={handleDeleteCloseModal}
                                         footer={
                                           <>
-                                            <Flex justify='end'>
+                                            <Flex justify="end">
                                               <PrimaryButton
-                                                text='Delete this occurrence'
-                                                variant='primary'
+                                                text="Delete this occurrence"
+                                                variant="primary"
                                                 onClick={handleDelete}
                                                 danger
                                               />
@@ -294,22 +308,22 @@ export const UpcomingEvents = ({
                                                 disabled={
                                                   !event.recurringStatus
                                                 }
-                                                text='Delete all occurrence'
-                                                variant='primary'
+                                                text="Delete all occurrence"
+                                                variant="primary"
                                                 onClick={handleDelete}
                                                 ghost
                                                 danger
                                               />
                                               <PrimaryButton
-                                                text='Cancel'
-                                                variant='secondary'
+                                                text="Cancel"
+                                                variant="secondary"
                                                 onClick={handleDeleteCloseModal}
                                               />
                                             </Flex>
                                           </>
                                         }
                                       >
-                                        <div className='content-wrapper'>
+                                        <div className="content-wrapper">
                                           <h3>
                                             Deleted workshop can'be retrieved
                                             later

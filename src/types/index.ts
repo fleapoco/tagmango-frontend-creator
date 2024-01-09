@@ -23,6 +23,7 @@ export enum TaskFrequency {
 export enum TypeCategory {
   TASK = "task",
   CHARITY = "charity",
+  HABIT = "habit",
 }
 export enum FormInputType {
   SEARCH = "search",
@@ -305,6 +306,21 @@ export interface CreatorCharitiesType {
   amount: number;
   date: string;
   category: CategoryType | null;
+}
+
+export interface CreateCreatorHabitType {
+  id?: string;
+  title: string;
+  points: number;
+  categoryId: string;
+  type: string;
+  date?: string | Date;
+  subscriberCount?: number;
+  completedCount?: number;
+  startDate: string | Date;
+  endDate: string | Date;
+  startTime: string | Date;
+  endTime: string | Date;
 }
 
 export interface APIError {
