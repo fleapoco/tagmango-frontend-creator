@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import useAPI from "@/hooks/useApi";
-import { CreatorAllUsersTasks } from "@/types";
-import { Col, Row, Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { PrimaryButton } from "../../../../../components/common/button";
-import { UserName } from "../../../../../components/common/username";
-import PageTitle from "../../../../../components/pagetitle";
-import style from "../../../../../style/creator.module.scss";
+import useAPI from '@/hooks/useApi';
+import { CreatorAllUsersTasks } from '@/types';
+import { Col, Row, Table } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { PrimaryButton } from '../../../../../components/common/button';
+import { UserName } from '../../../../../components/common/username';
+import PageTitle from '../../../../../components/pagetitle';
+import style from '../../../../../style/creator.module.scss';
 
 interface DataType {
   key: string;
@@ -21,27 +21,27 @@ interface DataType {
 const TasksPage = () => {
   const columns: ColumnsType<DataType> = [
     {
-      title: "User",
-      dataIndex: "user",
-      key: "name",
+      title: 'User',
+      dataIndex: 'user',
+      key: 'name',
     },
     {
-      title: "Total Tasks Completed",
-      dataIndex: "totaltaskscompleted",
-      key: "age",
+      title: 'Total Tasks Completed',
+      dataIndex: 'totaltaskscompleted',
+      key: 'age',
     },
     {
-      title: "Total Tasks Pending",
-      dataIndex: "totaltaskspending",
-      key: "address",
+      title: 'Total Tasks Pending',
+      dataIndex: 'totaltaskspending',
+      key: 'address',
     },
     {
-      title: "",
-      key: "action",
+      title: '',
+      key: 'action',
       render: (record) => (
         <PrimaryButton
-          text="View Details"
-          variant="secondary"
+          text='View Details'
+          variant='secondary'
           onClick={() => handleButtonClick(record.key)}
         />
       ),
@@ -86,15 +86,15 @@ const TasksPage = () => {
 
   return (
     <>
-      <div className={`${style["event-tasks-page"]} common-panel-wrapper`}>
+      <div className={`${style['event-tasks-page']} common-panel-wrapper`}>
         {/* Page Title */}
         <Row
-          justify={"space-between"}
-          style={{ alignItems: "center" }}
-          className="p-15"
+          justify={'space-between'}
+          style={{ alignItems: 'center' }}
+          className='p-15'
         >
           <Col span={24}>
-            <PageTitle title="Tasks overview" />
+            <PageTitle title='Tasks overview' />
           </Col>
         </Row>
         <Row>

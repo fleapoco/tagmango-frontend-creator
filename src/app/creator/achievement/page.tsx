@@ -1,6 +1,6 @@
 'use client';
 
-import { Col, Row, Spin, Typography } from 'antd';
+import { Col, Row, Typography } from 'antd';
 import { useRouter } from 'next/navigation';
 import style from '../../../../style/task.module.scss';
 
@@ -15,6 +15,7 @@ const { Meta } = Card;
 import useAPI from '@/hooks/useApi';
 import { UserAchievement } from '@/types';
 
+import Loading from '@/app/loading';
 import { useEffect, useState } from 'react';
 import { ActionButton } from '../../../../components/common/actionbutton';
 
@@ -49,7 +50,9 @@ const CreatorCertification = () => {
   };
   return (
     <>
-      <Spin size='large' spinning={isLoading}>
+      {isLoading ? (
+        <Loading pageloader={true} loading={isLoading} />
+      ) : (
         <div className={`${style['task-page']}`}>
           {/* Page Title */}
           <Row
@@ -120,7 +123,7 @@ const CreatorCertification = () => {
               ))}
           </Row>
         </div>
-      </Spin>
+      )}
     </>
   );
 };
